@@ -266,13 +266,16 @@ const winrate =
 `)
 })
 
-    const {
-        whatsapp,
-        kills,
-        deaths,
-        victoria,
-        mvp
-    } = req.body
+const {
+    whatsapp,
+    kills,
+    deaths,
+    assists,
+    puntos,
+    victoria,
+    mvp,
+    tipo
+} = req.body
 
     const jugador = jugadores.find(j => j.whatsapp === whatsapp)
 
@@ -284,6 +287,8 @@ const tipo = req.body.tipo || "mix"
 
 jugador[tipo].kills += Number(kills)
 jugador[tipo].deaths += Number(deaths)
+jugador[tipo].assists += Number(assists || 0)
+jugador[tipo].puntos += Number(puntos || 0)
 
 jugador[tipo].partidas += 1
 
