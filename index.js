@@ -393,6 +393,60 @@ app.get("/topkd", (req, res) => {
     res.send(respuesta)
 })
 
+app.get("/topkillsmes", (req, res) => {
+
+const ranking = [...jugadores]
+.sort((a, b) => b.mensual.kills - a.mensual.kills)
+.slice(0, 10)
+
+let respuesta = "🔥 TOP KILLS MENSUAL C4<br><br>"
+
+ranking.forEach((j, i) => {
+respuesta += `${i + 1}. ${j.nombre} - ${j.mensual.kills} kills<br>`
+})
+
+res.send(respuesta)
+})
+
+app.get("/topkdmes", (req, res) => {
+
+const ranking = [...jugadores]
+.filter(j => j.mensual.deaths > 0)
+.sort((a, b) =>
+(b.mensual.kills / b.mensual.deaths) -
+(a.mensual.kills / a.mensual.deaths)
+)
+.slice(0, 10)
+
+let respuesta = "🎯 TOP KD MENSUAL C4<br><br>"
+
+ranking.forEach((j, i) => {
+
+const kd = (
+j.mensual.kills / j.mensual.deaths
+).toFixed(2)
+
+respuesta += `${i + 1}. ${j.nombre} - KD ${kd}<br>`
+})
+
+res.send(respuesta)
+})
+
+app.get("/topmvpsmes", (req, res) => {
+
+const ranking = [...jugadores]
+.sort((a, b) => b.mensual.mvps - a.mensual.mvps)
+.slice(0, 10)
+
+let respuesta = "🏆 TOP MVP MENSUAL C4<br><br>"
+
+ranking.forEach((j, i) => {
+respuesta += `${i + 1}. ${j.nombre} - ${j.mensual.mvps} MVPs<br>`
+})
+
+res.send(respuesta)
+})
+
 app.post("/resultado", (req, res) => {
     const { nombre, kills, deaths, resultado, tipo } = req.body
 
