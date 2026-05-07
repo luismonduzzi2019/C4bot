@@ -9,6 +9,11 @@ async function startBot() {
         printQRInTerminal: false
     })
 
+if (!sock.authState.creds.registered) {
+    const code = await sock.requestPairingCode("542460584275")
+    console.log("CODIGO DE WHATSAPP:", code)
+}
+
     sock.ev.on("creds.update", saveCreds)
 
     sock.ev.on("connection.update", ({ connection, qr }) => {
