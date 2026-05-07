@@ -485,6 +485,97 @@ respuesta += `${i + 1}. ${j.nombre} - ${j.mensual.mvps} MVPs<br>`
 res.send(respuesta)
 })
 
+app.get("/tophistorico", (req, res) => {
+
+const topKills = [...jugadores]
+.sort((a, b) =>
+(b.mix.kills + b.torneo.kills) -
+(a.mix.kills + a.torneo.kills)
+)[0]
+
+const topMvps = [...jugadores]
+.sort((a, b) =>
+(b.mix.mvps + b.torneo.mvps) -
+(a.mix.mvps + a.torneo.mvps)
+)[0]
+
+const topVictorias = [...jugadores]
+.sort((a, b) =>
+(b.mix.victorias + b.torneo.victorias) -
+(a.mix.victorias + a.torneo.victorias)
+)[0]
+
+const topPartidas = [...jugadores]
+.sort((a, b) =>
+(b.mix.partidas + b.torneo.partidas) -
+(a.mix.partidas + a.torneo.partidas)
+)[0]
+
+const topKd = [...jugadores]
+.filter(j =>
+(j.mix.deaths + j.torneo.deaths) > 0
+)
+.sort((a, b) => {
+
+const kdA =
+(a.mix.kills + a.torneo.kills) /
+(a.mix.deaths + a.torneo.deaths)
+
+const kdB =
+(b.mix.kills + b.torneo.kills) /
+(b.mix.deaths + b.torneo.deaths)
+
+return kdB - kdA
+})[0]
+
+const kdHistorico =
+(
+(topKd.mix.kills + topKd.torneo.kills) /
+(topKd.mix.deaths + topKd.torneo.deaths)
+).toFixed(2)
+
+res.send(`
+👑 TOP HISTÓRICO C4
+
+🥇 Más kills:
+${topKills.nombre}
+
+🎯 ${
+topKills.mix.kills +
+topKills.torneo.kills
+} kills
+
+🏆 Más MVPs:
+${topMvps.nombre}
+
+🔥 ${
+topMvps.mix.mvps +
+topMvps.torneo.mvps
+} MVPs
+
+✅ Más victorias:
+${topVictorias.nombre}
+
+🏅 ${
+topVictorias.mix.victorias +
+topVictorias.torneo.victorias
+} victorias
+
+🎮 Más partidas:
+${topPartidas.nombre}
+
+📊 ${
+topPartidas.mix.partidas +
+topPartidas.torneo.partidas
+} partidas
+
+⚖️ Mejor KD:
+${topKd.nombre}
+
+💀 KD ${kdHistorico}
+`)
+})
+
 app.post("/resultado", (req, res) => {
     const { nombre, kills, deaths, resultado, tipo } = req.body
 
