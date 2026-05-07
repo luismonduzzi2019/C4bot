@@ -350,6 +350,56 @@ app.get("/topkd", (req, res) => {
 
     res.send(respuesta)
 })
+
+app.post("/resultado", (req, res) => {
+    const { nombre, kills, deaths, resultado, tipo } = req.body
+
+    if (!nombre || kills === undefined || deaths === undefined || !resultado) {
+        return res.send("Faltan datos")
+    }
+
+    const jugador = jugadores.find(j => j.nombre.toLowerCase() === nombre.toLowerCase())
+
+    if (!jugador) {
+        return res.send("Jugador no encontrado")
+    }
+
+    const modo = tipo || "mix"
+
+    if (!jugador[modo]) {
+        return res.send("Modo inválido")
+    }
+
+    jugador[modo].kills += Number(kills)
+    jugador[modo].deaths += Number(deaths)
+    jugador[modo].partidas += 1
+
+    if (resultado === "win") {
+        jugador[modo].victorias += 1
+    } else if (resultado === "lose") {
+        jugador[modo].derrotas += 1
+    }
+
+    fs.writeFileSync("jugadores.json", JSON.stringify(jugadores, null, 2))
+
+    const kd = jugador[modo].deaths === 0 
+        ? jugador[modo].kills 
+        : (jugador[modo].kills / jugador[modo].deaths).toFixed(2)
+
+    res.send(`
+📊 Resultado cargado
+
+Jugador: ${jugador.nombre}
+Modo: ${modo}
+Kills totales: ${jugador[modo].kills}
+Deaths totales: ${jugador[modo].deaths}
+KD: ${kd}
+Victorias: ${jugador[modo].victorias}
+Derrotas: ${jugador[modo].derrotas}
+Partidas: ${jugador[modo].partidas}
+    `)
+})
+
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
 })
