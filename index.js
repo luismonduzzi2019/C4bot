@@ -213,6 +213,44 @@ app.post("/votar", (req, res) => {
 })
 
 app.post("/resultado", (req, res) => {
+app.post("/stats", (req, res) => {
+
+    const { whatsapp } = req.body
+
+    const jugador = jugadores.find(j => j.whatsapp === whatsapp)
+
+    if (!jugador) {
+        return res.send("Jugador no encontrado")
+    }
+
+    const kd = jugador.deaths > 0
+        ? (jugador.kills / jugador.deaths).toFixed(2)
+        : jugador.kills
+
+    const winrate =
+        jugador.mixes > 0
+            ? ((jugador.victorias / jugador.mixes) * 100).toFixed(0)
+            : 0
+
+    res.send(`
+📈 STATS — ${jugador.nombre}
+
+🆔 Game ID: ${jugador.gameid}
+
+🎯 Kills: ${jugador.kills}
+💀 Deaths: ${jugador.deaths}
+⚖️ KD: ${kd}
+
+🏆 MVPs: ${jugador.mvps}
+
+✅ Victorias: ${jugador.victorias}
+❌ Derrotas: ${jugador.derrotas}
+
+📊 Winrate: ${winrate}%
+
+🎮 Mixes jugadas: ${jugador.mixes}
+`)
+})
 
     const {
         whatsapp,
