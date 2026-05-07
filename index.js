@@ -37,6 +37,10 @@ if (fs.existsSync("admins.json")) {
 admins = JSON.parse(fs.readFileSync("admins.json"))
 }
 
+function esAdmin(whatsapp) {
+return admins.includes(whatsapp)
+}
+
 app.get("/", (req, res) => {
     res.send(`
         <h1>🔥 C4 BOT PANEL</h1>
@@ -602,6 +606,12 @@ ${topKd.nombre}
 `)
 })
 app.get("/resetmensual", (req, res) => {
+
+const { whatsapp } = req.query
+
+if (!esAdmin(whatsapp)) {
+return res.send("⛔ Sin permisos de administrador")
+}
 
 jugadores.forEach(j => {
 
