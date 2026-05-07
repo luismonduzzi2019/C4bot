@@ -51,17 +51,37 @@ app.get("/jugadores", (req, res) => {
 })
 
 app.post("/registrar", (req, res) => {
-    const { nombre } = req.body
 
-    if (!nombre) return res.send("Falta nombre")
+    const { nombre, gameid, whatsapp } = req.body
 
-    if (jugadores.includes(nombre)) {
+    if (!nombre || !gameid || !whatsapp) {
+        return res.send("Faltan datos")
+    }
+
+    const existe = jugadores.find(j => j.whatsapp === whatsapp)
+
+    if (existe) {
         return res.send("Jugador ya registrado")
     }
 
-    jugadores.push(nombre)
-fs.writeFileSync("jugadores.json", JSON.stringify(jugadores))
-    res.send(`✅ ${nombre} registrado`)
+    const nuevoJugador = {
+        nombre,
+        gameid,
+        whatsapp,
+
+        kills: 0,
+        deaths: 0,
+        victorias: 0,
+        derrotas: 0,
+        mvps: 0,
+        mixes: 0
+    }
+
+    jugadores.push(nuevoJugador)
+
+    fs.writeFileSync("jugadores.json", JSON.stringify(jugadores))
+
+    res.send(`✅ ${nombre} registrado correctamente`)
 })
 
 app.post("/abrir-mix", (req, res) => {
