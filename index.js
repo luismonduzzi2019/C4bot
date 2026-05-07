@@ -88,6 +88,7 @@ app.post("/entrar", (req, res) => {
         ${equipoB.map((j, i) => `${i + 1}. ${j}`).join("<br>")}
     `)
 }
+}
 
     res.send(`✅ ${nombre} entró (${listaMix.length}/10)`)
 })
