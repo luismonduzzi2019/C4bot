@@ -1,3 +1,5 @@
+const fs = require("fs")
+
 const express = require("express")
 
 const app = express()
@@ -7,6 +9,14 @@ app.use(express.urlencoded({ extended: true }))
 let jugadores = []
 let mixAbierta = false
 let listaMix = []
+
+if (fs.existsSync("jugadores.json")) {
+    jugadores = JSON.parse(fs.readFileSync("jugadores.json"))
+}
+
+if (fs.existsSync("mix.json")) {
+    listaMix = JSON.parse(fs.readFileSync("mix.json"))
+}
 
 app.get("/", (req, res) => {
     res.send(`
@@ -50,6 +60,7 @@ app.post("/registrar", (req, res) => {
     }
 
     jugadores.push(nombre)
+fs.writeFileSync("jugadores.json", JSON.stringify(jugadores))
     res.send(`✅ ${nombre} registrado`)
 })
 
@@ -68,6 +79,7 @@ app.post("/entrar", (req, res) => {
     if (listaMix.length >= 10) return res.send("⛔ Lista completa")
 
     listaMix.push(nombre)
+fs.writeFileSync("mix.json", JSON.stringify(listaMix))
 
    if (listaMix.length === 10) {
     mixAbierta = false
