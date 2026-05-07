@@ -55,6 +55,12 @@ app.get("/", (req, res) => {
         </form>
 
         <h2>Lista actual</h2>
+<h2>Votar mapa</h2>
+<form action="/votar" method="POST">
+    <input name="whatsapp" placeholder="Número de WhatsApp" />
+    <input name="mapa" placeholder="Mapa elegido" />
+    <button type="submit">Votar</button>
+</form>
         <a href="/lista">Ver lista</a>
 
         <h2>Jugadores registrados</h2>
