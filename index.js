@@ -575,6 +575,26 @@ ${topKd.nombre}
 💀 KD ${kdHistorico}
 `)
 })
+app.get("/resetmensual", (req, res) => {
+
+jugadores.forEach(j => {
+
+j.mensual = {
+kills: 0,
+deaths: 0,
+vitorias: 0,
+derrotas: 0,
+partidas: 0,
+mvp: 0
+}
+
+})
+
+fs.writeFileSync("jugadores.json", JSON.stringify(jugadores))
+
+res.send("🔄 STATS MENSUALES REINICIADAS")
+
+})
 
 app.post("/resultado", (req, res) => {
     const { nombre, kills, deaths, resultado, tipo } = req.body
