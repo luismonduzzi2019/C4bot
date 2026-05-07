@@ -69,25 +69,27 @@ app.post("/entrar", (req, res) => {
 
     listaMix.push(nombre)
 
-    if (listaMix.length === 10) {
+   if (listaMix.length === 10) {
     mixAbierta = false
 
     const mezclados = [...listaMix].sort(() => Math.random() - 0.5)
+
     const equipoA = mezclados.slice(0, 5)
     const equipoB = mezclados.slice(5, 10)
 
-    return res.send(`
-        🔥 MIX COMPLETA 10/10
+    let resultado = "🔥 MIX COMPLETA 10/10<br><br>"
 
-        🔵 Equipo A:
-        ${equipoA.map((j, i) => `${i + 1}. ${j}`).join("<br>")}
+    resultado += "🔵 Equipo A:<br>"
+    equipoA.forEach((j) => {
+        resultado += j + "<br>"
+    })
 
-        <br><br>
+    resultado += "<br>🔴 Equipo B:<br>"
+    equipoB.forEach((j) => {
+        resultado += j + "<br>"
+    })
 
-        🔴 Equipo B:
-        ${equipoB.map((j, i) => `${i + 1}. ${j}`).join("<br>")}
-    `)
-}
+    return res.send(resultado)
 }
 
     res.send(`✅ ${nombre} entró (${listaMix.length}/10)`)
