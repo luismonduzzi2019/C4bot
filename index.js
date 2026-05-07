@@ -9,6 +9,7 @@ app.use(express.urlencoded({ extended: true }))
 let jugadores = []
 let mixAbierta = false
 let listaMix = []
+let admins = []
 
 let votosMapa = {}
 let votacionActiva = false
@@ -30,6 +31,10 @@ if (fs.existsSync("jugadores.json")) {
 
 if (fs.existsSync("mix.json")) {
     listaMix = JSON.parse(fs.readFileSync("mix.json"))
+}
+
+if (fs.existsSync("admins.json")) {
+admins = JSON.parse(fs.readFileSync("admins.json"))
 }
 
 app.get("/", (req, res) => {
@@ -414,6 +419,27 @@ app.get("/topkills", (req, res) => {
 
     res.send(respuesta)
 })
+
+app.post("/addadmin", (req, res) => {
+
+const { whatsapp } = req.body
+
+if (!whatsapp) {
+return res.send("Falta WhatsApp")
+}
+
+if (admins.includes(whatsapp)) {
+return res.send("Admin ya existente")
+}
+
+admins.push(whatsapp)
+
+fs.writeFileSync("admins.json", JSON.stringify(admins))
+
+res.send("👮 ADMIN AGREGADO")
+
+})
+
 app.get("/topkd", (req, res) => {
 
     const ranking = [...jugadores]
