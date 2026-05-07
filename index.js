@@ -323,14 +323,23 @@ jugador[tipo].puntos += Number(puntos || 0)
 
 jugador[tipo].partidas += 1
 
+jugador.mensual.kills += Number(kills)
+jugador.mensual.deaths += Number(deaths)
+jugador.mensual.assists += Number(assists || 0)
+jugador.mensual.puntos += Number(puntos || 0)
+jugador.mensual.partidas += 1
+
 if (victoria === "si") {
     jugador[tipo].victorias += 1
+    jugador.mensual.victorias += 1
 } else {
     jugador[tipo].derrotas += 1
+    jugador.mensual.derrotas += 1
 }
 
 if (mvp === "si") {
     jugador[tipo].mvps += 1
+    jugador.mensual.mvps += 1
 }
 
     fs.writeFileSync("jugadores.json", JSON.stringify(jugadores))
