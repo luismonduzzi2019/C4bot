@@ -315,6 +315,22 @@ app.get("/topkills", (req, res) => {
 
     res.send(respuesta)
 })
+app.get("/topkd", (req, res) => {
+
+    const ranking = [...jugadores]
+        .filter(j => j.deaths > 0)
+        .sort((a, b) => (b.kills / b.deaths) - (a.kills / a.deaths))
+        .slice(0, 10)
+
+    let respuesta = "⚖️ TOP KD C4<br><br>"
+
+    ranking.forEach((j, i) => {
+        const kd = (j.kills / j.deaths).toFixed(2)
+        respuesta += `${i + 1}. ${j.nombre} — KD ${kd}<br>`
+    })
+
+    res.send(respuesta)
+})
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
 })
