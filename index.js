@@ -299,23 +299,6 @@ const winrate =
 `)
 })
 
-AHÍ SÍ 😎🔥🔥🔥
-
-Perfecto.
-
-El bloque /stats termina exactamente acá:
-
-`)
-})
-
-👇👇👇
-
-Justo DEBAJO de eso, antes de:
-
-const {
-
-pegá TODO esto:
-
 app.post("/statsmes", (req, res) => {
 
 const { whatsapp } = req.body
@@ -353,8 +336,6 @@ res.send(`
 📊 Winrate: ${winrate}%
 `)
 })
-
-😎🔥
 
 const {
     whatsapp,
