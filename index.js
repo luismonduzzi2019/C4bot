@@ -10,6 +10,20 @@ let jugadores = []
 let mixAbierta = false
 let listaMix = []
 
+let votosMapa = {}
+let votacionActiva = false
+
+const mapas = [
+    "Dune",
+    "Rust",
+    "Sandstone",
+    "Hanami",
+    "Province",
+    "Prisión",
+    "Breeze",
+    "Azar 🎲"
+]
+
 if (fs.existsSync("jugadores.json")) {
     jugadores = JSON.parse(fs.readFileSync("jugadores.json"))
 }
@@ -126,6 +140,17 @@ fs.writeFileSync("mix.json", JSON.stringify(listaMix))
         resultado += j.nombre + "<br>"
     })
 
+votacionActiva = true
+votosMapa = {}
+
+resultado += "<br><br>🗺️ VOTACIÓN DE MAPA:<br><br>"
+
+mapas.forEach((m, i) => {
+    resultado += `${i + 1}. ${m}<br>`
+})
+
+resultado += "<br>📩 Voten usando /votar"
+
     return res.send(resultado)
 }
 
@@ -134,6 +159,51 @@ fs.writeFileSync("mix.json", JSON.stringify(listaMix))
 
 app.get("/lista", (req, res) => {
     res.json(listaMix)
+})
+
+app.post("/votar", (req, res) => {
+
+    const { whatsapp, mapa } = req.body
+
+    if (!votacionActiva) {
+        return res.send("⛔ No hay votación activa")
+    }
+
+    const jugador = listaMix.find(j => j.whatsapp === whatsapp)
+
+    if (!jugador) {
+        return res.send("⛔ No estás en la mix")
+    }
+
+    if (!mapas.includes(mapa)) {
+        return res.send("⛔ Mapa inválido")
+    }
+
+    votosMapa[whatsapp] = mapa
+
+    res.send(`🗳️ ${jugador.nombre} votó ${mapa}`)
+
+    if (Object.keys(votosMapa).length === 10) {
+
+        let conteo = {}
+
+        Object.values(votosMapa).forEach(v => {
+            conteo[v] = (conteo[v] || 0) + 1
+        })
+
+        let ganador = Object.keys(conteo).reduce((a, b) =>
+            conteo[a] > conteo[b] ? a : b
+        )
+
+        if (ganador === "Azar 🎲") {
+            const normales = mapas.filter(m => m !== "Azar 🎲")
+            ganador = normales[Math.floor(Math.random() * normales.length)]
+        }
+
+        votacionActiva = false
+
+        console.log(`🗺️ MAPA ELEGIDO: ${ganador}`)
+    }
 })
 
 app.listen(process.env.PORT || 3000, () => {
