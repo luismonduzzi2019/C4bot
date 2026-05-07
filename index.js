@@ -93,14 +93,17 @@ app.post("/abrir-mix", (req, res) => {
 })
 
 app.post("/entrar", (req, res) => {
-    const { nombre } = req.body
+    const { whatsapp } = req.body
 
     if (!mixAbierta) return res.send("⛔ No hay mix abierta")
-    if (!jugadores.includes(nombre)) return res.send("⛔ Jugador no registrado")
-    if (listaMix.includes(nombre)) return res.send("⚠️ Ya estás anotado")
+
+    const jugador = jugadores.find(j => j.whatsapp === whatsapp)
+
+    if (!jugador) return res.send("⛔ Jugador no registrado")
+    if (listaMix.find(j => j.whatsapp === whatsapp)) return res.send("⚠️ Ya estás anotado")
     if (listaMix.length >= 10) return res.send("⛔ Lista completa")
 
-    listaMix.push(nombre)
+    listaMix.push(jugador)
 fs.writeFileSync("mix.json", JSON.stringify(listaMix))
 
    if (listaMix.length === 10) {
@@ -115,18 +118,18 @@ fs.writeFileSync("mix.json", JSON.stringify(listaMix))
 
     resultado += "🔵 Equipo A:<br>"
     equipoA.forEach((j) => {
-        resultado += j + "<br>"
+        resultado += j.nombre + "<br>"
     })
 
     resultado += "<br>🔴 Equipo B:<br>"
     equipoB.forEach((j) => {
-        resultado += j + "<br>"
+        resultado += j.nombre + "<br>"
     })
 
     return res.send(resultado)
 }
 
-    res.send(`✅ ${nombre} entró (${listaMix.length}/10)`)
+    res.send(`✅ ${jugador.nombre} entró (${listaMix.length}/10)`)
 })
 
 app.get("/lista", (req, res) => {
