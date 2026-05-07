@@ -212,6 +212,57 @@ app.post("/votar", (req, res) => {
     }
 })
 
+app.post("/resultado", (req, res) => {
+
+    const {
+        whatsapp,
+        kills,
+        deaths,
+        victoria,
+        mvp
+    } = req.body
+
+    const jugador = jugadores.find(j => j.whatsapp === whatsapp)
+
+    if (!jugador) {
+        return res.send("Jugador no encontrado")
+    }
+
+    jugador.kills += Number(kills)
+    jugador.deaths += Number(deaths)
+
+    jugador.mixes += 1
+
+    if (victoria === "si") {
+        jugador.victorias += 1
+    } else {
+        jugador.derrotas += 1
+    }
+
+    if (mvp === "si") {
+        jugador.mvps += 1
+    }
+
+    fs.writeFileSync("jugadores.json", JSON.stringify(jugadores))
+
+    const kd = jugador.deaths > 0
+        ? (jugador.kills / jugador.deaths).toFixed(2)
+        : jugador.kills
+
+    res.send(`
+📊 RESULTADO GUARDADO
+
+👤 ${jugador.nombre}
+🎯 Kills: ${jugador.kills}
+💀 Deaths: ${jugador.deaths}
+⚖️ KD: ${kd}
+
+🏆 MVPs: ${jugador.mvps}
+✅ Victorias: ${jugador.victorias}
+❌ Derrotas: ${jugador.derrotas}
+🎮 Mixes: ${jugador.mixes}
+`)
+})
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
 })
