@@ -301,6 +301,20 @@ app.post("/stats", (req, res) => {
 🎮 Mixes: ${jugador.mixes}
 `)
 })
+app.get("/topkills", (req, res) => {
+
+    const ranking = [...jugadores]
+        .sort((a, b) => b.kills - a.kills)
+        .slice(0, 10)
+
+    let respuesta = "🏆 TOP KILLS C4<br><br>"
+
+    ranking.forEach((j, i) => {
+        respuesta += `${i + 1}. ${j.nombre} — ${j.kills} kills<br>`
+    })
+
+    res.send(respuesta)
+})
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
 })
