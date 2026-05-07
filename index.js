@@ -299,6 +299,63 @@ const winrate =
 `)
 })
 
+AHÍ SÍ 😎🔥🔥🔥
+
+Perfecto.
+
+El bloque /stats termina exactamente acá:
+
+`)
+})
+
+👇👇👇
+
+Justo DEBAJO de eso, antes de:
+
+const {
+
+pegá TODO esto:
+
+app.post("/statsmes", (req, res) => {
+
+const { whatsapp } = req.body
+
+const jugador = jugadores.find(j => j.whatsapp === whatsapp)
+
+if (!jugador) {
+return res.send("Jugador no encontrado")
+}
+
+const stats = jugador.mensual
+
+const kd = stats.deaths > 0
+? (stats.kills / stats.deaths).toFixed(2)
+: stats.kills
+
+const winrate =
+stats.partidas > 0
+? ((stats.victorias / stats.partidas) * 100).toFixed(0)
+: 0
+
+res.send(`
+📅 STATS MENSUALES C4
+
+👤 ${jugador.nombre}
+
+🎯 Kills: ${stats.kills}
+💀 Deaths: ${stats.deaths}
+⚖️ KD: ${kd}
+
+🏆 MVPs: ${stats.mvps}
+✅ Victorias: ${stats.victorias}
+❌ Derrotas: ${stats.derrotas}
+🎮 Partidas jugadas: ${stats.partidas}
+📊 Winrate: ${winrate}%
+`)
+})
+
+😎🔥
+
 const {
     whatsapp,
     kills,
