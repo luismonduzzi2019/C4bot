@@ -91,12 +91,27 @@ app.post("/registrar", (req, res) => {
         gameid,
         whatsapp,
 
-        kills: 0,
-        deaths: 0,
-        victorias: 0,
-        derrotas: 0,
-        mvps: 0,
-        mixes: 0
+ mix: {
+    kills: 0,
+    deaths: 0,
+    assists: 0,
+    puntos: 0,
+    victorias: 0,
+    derrotas: 0,
+    mvps: 0,
+    partidas: 0
+},
+
+torneo: {
+    kills: 0,
+    deaths: 0,
+    assists: 0,
+    puntos: 0,
+    victorias: 0,
+    derrotas: 0,
+    mvps: 0,
+    partidas: 0
+}
     }
 
     jugadores.push(nuevoJugador)
@@ -223,32 +238,31 @@ app.post("/stats", (req, res) => {
         return res.send("Jugador no encontrado")
     }
 
-    const kd = jugador.deaths > 0
-        ? (jugador.kills / jugador.deaths).toFixed(2)
-        : jugador.kills
+const tipo = req.body.tipo || "mix"
+const stats = jugador[tipo]
 
-    const winrate =
-        jugador.mixes > 0
-            ? ((jugador.victorias / jugador.mixes) * 100).toFixed(0)
-            : 0
+const kd = stats.deaths > 0
+    ? (stats.kills / stats.deaths).toFixed(2)
+    : stats.kills
+
+const winrate =
+    stats.partidas > 0
+        ? ((stats.victorias / stats.partidas) * 100).toFixed(0)
+        : 0
 
     res.send(`
 📈 STATS — ${jugador.nombre}
 
 🆔 Game ID: ${jugador.gameid}
 
-🎯 Kills: ${jugador.kills}
-💀 Deaths: ${jugador.deaths}
+🎯 Kills: ${stats.kills}
+💀 Deaths: ${stats.deaths}
 ⚖️ KD: ${kd}
 
-🏆 MVPs: ${jugador.mvps}
-
-✅ Victorias: ${jugador.victorias}
-❌ Derrotas: ${jugador.derrotas}
-
-📊 Winrate: ${winrate}%
-
-🎮 Mixes jugadas: ${jugador.mixes}
+🏆 MVPs: ${stats.mvps}
+✅ Victorias: ${stats.victorias}
+❌ Derrotas: ${stats.derrotas}
+🎮 Partidas jugadas: ${stats.partidas}
 `)
 })
 
@@ -266,20 +280,22 @@ app.post("/stats", (req, res) => {
         return res.send("Jugador no encontrado")
     }
 
-    jugador.kills += Number(kills)
-    jugador.deaths += Number(deaths)
+const tipo = req.body.tipo || "mix"
 
-    jugador.mixes += 1
+jugador[tipo].kills += Number(kills)
+jugador[tipo].deaths += Number(deaths)
 
-    if (victoria === "si") {
-        jugador.victorias += 1
-    } else {
-        jugador.derrotas += 1
-    }
+jugador[tipo].partidas += 1
 
-    if (mvp === "si") {
-        jugador.mvps += 1
-    }
+if (victoria === "si") {
+    jugador[tipo].victorias += 1
+} else {
+    jugador[tipo].derrotas += 1
+}
+
+if (mvp === "si") {
+    jugador[tipo].mvps += 1
+}
 
     fs.writeFileSync("jugadores.json", JSON.stringify(jugadores))
 
