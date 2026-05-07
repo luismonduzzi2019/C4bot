@@ -63,6 +63,30 @@ app.get("/", (req, res) => {
 </form>
         <a href="/lista">Ver lista</a>
 
+<h2>Cargar resultado</h2>
+
+<form action="/resultado" method="POST">
+<input name="nombre" placeholder="Jugador">
+
+<input name="kills" type="number" placeholder="Kills">
+
+<input name="deaths" type="number" placeholder="Deaths">
+
+<select name="resultado">
+<option value="win">Victoria</option>
+<option value="lose">Derrota</option>
+</select>
+
+<select name="tipo">
+<option value="mix">Mix</option>
+<option value="torneo">Torneo</option>
+</select>
+
+<button type="submit">Cargar resultado</button>
+</form>
+
+<br>
+
         <h2>Jugadores registrados</h2>
         <a href="/jugadores">Ver jugadores</a>
     `)
