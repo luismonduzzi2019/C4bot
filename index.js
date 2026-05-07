@@ -283,8 +283,6 @@ const {
         return res.send("Jugador no encontrado")
     }
 
-const tipo = req.body.tipo || "mix"
-
 jugador[tipo].kills += Number(kills)
 jugador[tipo].deaths += Number(deaths)
 jugador[tipo].assists += Number(assists || 0)
