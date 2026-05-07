@@ -136,6 +136,15 @@ torneo: {
     mvps: 0,
     partidas: 0
 }
+,
+mensual: {
+kills: 0,
+deaths: 0,
+victorias: 0,
+derrotas: 0,
+partidas: 0,
+mvp: 0
+}
     }
 
     jugadores.push(nuevoJugador)
