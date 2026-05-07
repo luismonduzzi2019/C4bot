@@ -24,9 +24,11 @@ app.get("/", (req, res) => {
 
         <h2>Registrar jugador</h2>
         <form action="/registrar" method="POST">
-            <input name="nombre" placeholder="Nombre del jugador" />
-            <button type="submit">Registrar</button>
-        </form>
+    <input name="nombre" placeholder="Nick in-game" />
+    <input name="gameid" placeholder="ID del juego" />
+    <input name="whatsapp" placeholder="Número de WhatsApp" />
+    <button type="submit">Registrar</button>
+</form>
 
         <h2>Mix</h2>
         <form action="/abrir-mix" method="POST">
