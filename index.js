@@ -827,6 +827,38 @@ if (mensaje.toLowerCase() === "!abrirmix") {
     )
   }
 }  
+
+if (mensaje.toLowerCase() === "!salir") {
+
+  if (!mixAbierto) {
+    await enviarMensaje(telefono, "❌ No hay ningún mix abierto.")
+    return
+  }
+
+  const indexJugador = jugadoresMix.findIndex(
+    j => j.telefono === telefono
+  )
+
+  if (indexJugador === -1) {
+    await enviarMensaje(telefono, "⚠️ No estás anotado en el mix.")
+    return
+  }
+
+  const jugador = jugadoresMix[indexJugador]
+
+  jugadoresMix.splice(indexJugador, 1)
+
+  let lista = ""
+
+  jugadoresMix.forEach((j, index) => {
+    lista += `${index + 1}. ${j.nick}\n`
+  })
+
+  await enviarMensaje(
+    telefono,
+    `🚪 ${jugador.nick} salió del mix.\n\n👥 Cupos: ${jugadoresMix.length}/10\n\n${lista || "Lista vacía."}`
+  )
+}
     
   res.status(200).json({
     status: true
