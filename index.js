@@ -698,7 +698,7 @@ const qrcode = require("qrcode-terminal")
 async function iniciarBot() {
 
   const { state, saveCreds } =
-    await useMultiFileAuthState("session")
+    await useMultiFileAuthState("./auth")
 
   const sock = makeWASocket({
     auth: state,
