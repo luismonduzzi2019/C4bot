@@ -749,11 +749,11 @@ Ejemplo:
   const nick = partes[1]
   const idGame = partes[2]
 
-  jugadoresRegistrados[telefono] = {
-    nick,
-    idGame,
-    telefono
-  }
+jugadoresRegistrados[idGame] = {
+  nick,
+  idGame,
+  telefono
+}
 
   await enviarMensaje(
   telefono,
