@@ -706,17 +706,19 @@ async function iniciarBot() {
     browser: ["C4 BOT", "Chrome", "1.0.0"]
 })
 
-if (!sock.authState.creds.registered) {
+sock.ev.on("creds.update", saveCreds)
 
-    const numero = "5493460584275"
+setTimeout(async () => {
+    if (!sock.authState.creds.registered) {
 
-    const code = await sock.requestPairingCode(numero)
+        const numero = "5493460584275"
 
-    console.log("📲 CÓDIGO DE VINCULACIÓN:")
-    console.log(code)
-}
+        const code = await sock.requestPairingCode(numero)
 
-  sock.ev.on("creds.update", saveCreds)
+        console.log("📲 CÓDIGO DE VINCULACIÓN:")
+        console.log(code)
+    }
+}, 5000)
 
   sock.ev.on("connection.update", async (update) => {
 
