@@ -697,10 +697,17 @@ async function enviarMensaje(telefone, mensagem) {
 
 }
 
-app.post("/webhook", (req, res) => {
+app.post("/webhook", async (req, res) => {
 
   console.log("📩 WEBHOOK RECIBIDO")
   console.log(req.body)
+
+  const mensaje = req.body?.text?.message || ""
+  const telefono = req.body?.phone
+
+  if (mensaje.toLowerCase() === "!ping") {
+    await enviarMensaje(telefono, "🏓 Pong! C4 Bot online")
+  }
 
   res.status(200).json({
     status: true
