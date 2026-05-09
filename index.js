@@ -702,7 +702,8 @@ async function iniciarBot() {
 
   const sock = makeWASocket({
     auth: state,
-    printQRInTerminal: false
+    printQRInTerminal: false,
+    browser: ["C4 BOT", "Chrome", "1.0.0"]
 })
 
 if (!sock.authState.creds.registered) {
