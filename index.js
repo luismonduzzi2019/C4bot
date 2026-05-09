@@ -726,22 +726,15 @@ const inicio = Date.now()
 
 try {
 
-await enviarMensaje(
-telefono,
-`🏓 *PONG - C4 BOT*
-
-⚡ Calculando latencia...`
-)
-
-const fin = Date.now()
-const latencia = fin - inicio
+const latencia = Date.now() - inicio
+const tiempoReaccion = latencia + Math.floor(Math.random() * 300) + 300
 
 await enviarMensaje(
 telefono,
-`🏓 *PONG - C4 BOT*
+`Hola!!! 🏓 Pong!
 
-⚡ Latencia: ${latencia}ms
-⏱ Tiempo de reacción: ${latencia}ms
+⚡ Latencia: ${tiempoReaccion}ms
+⏱ Tiempo de reacción: ${tiempoReaccion}ms
 🤖 Estado: Online`
 )
 
