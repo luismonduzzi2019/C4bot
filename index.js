@@ -4,6 +4,9 @@ const express = require("express")
 
 const jugadoresRegistrados = {}
 
+let mixAbierto = false
+let jugadoresMix = []
+
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -770,6 +773,24 @@ jugadoresRegistrados[idGame] = {
     status: true
   })
 })
+
+if (mensaje.toLowerCase() === "!abrirmix") {
+
+  mixAbierto = true
+  jugadoresMix = []
+
+  await enviarMensaje(
+    telefono,
+    `🔥 MIX ABIERTO
+
+👥 Cupos: 0/10
+
+Usá:
+!join
+
+para entrar al mix.`
+  )
+}
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
