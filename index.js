@@ -820,8 +820,8 @@ if (mensaje.toLowerCase() === "!abrirmix") {
   }
 
   const jugador = Object.values(jugadoresRegistrados).find(
-    j => j.telefono === telefono
-  )
+    j => telefono.includes(j.telefono)
+)
 
   if (!jugador) {
     await enviarMensaje(
