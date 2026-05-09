@@ -681,13 +681,16 @@ Partidas: ${jugador[modo].partidas}
     `)
 })
 
-
 app.post("/webhook", (req, res) => {
-  console.log("📩 WEBHOOK RECIBIDO:")
-  console.log(JSON.stringify(req.body, null, 2))
 
-  res.sendStatus(200)
+  console.log("📩 WEBHOOK RECIBIDO")
+  console.log(req.body)
+
+  res.status(200).json({
+    status: true
+  })
 })
+
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
 })
