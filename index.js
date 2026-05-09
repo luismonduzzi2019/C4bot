@@ -702,8 +702,18 @@ async function iniciarBot() {
 
   const sock = makeWASocket({
     auth: state,
-    printQRInTerminal: true
+    printQRInTerminal: false
 })
+
+if (!sock.authState.creds.registered) {
+
+    const numero = "5493460584275"
+
+    const code = await sock.requestPairingCode(numero)
+
+    console.log("📲 CÓDIGO DE VINCULACIÓN:")
+    console.log(code)
+}
 
   sock.ev.on("creds.update", saveCreds)
 
