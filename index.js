@@ -683,7 +683,7 @@ Partidas: ${jugador[modo].partidas}
 
 async function enviarMensaje(telefone, mensagem) {
 
-  const resposta = await fetch(`https://api.z-api.io/instance/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-text`, {
+  const resposta = await fetch(`https://api.z-api.io/instance/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-message`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
