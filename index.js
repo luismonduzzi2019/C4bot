@@ -721,13 +721,24 @@ app.post("/webhook", async (req, res) => {
   console.log("RESPONDER A:", telefono)
 
   if (mensaje.toLowerCase() === "!ping") {
-    try {
-      await enviarMensaje(telefono, "🏓 Pong! C4 Bot online")
-      console.log("✅ RESPUESTA ENVIADA")
-    } catch (error) {
-      console.log("❌ ERROR AL ENVIAR:", error.message)
-    }
+  const inicio = Date.now()
+
+  try {
+    const latencia = Date.now() - inicio
+
+    await enviarMensaje(
+      telefono,
+      `Hola!! 🏓 Pong!
+
+⚡ Latencia: ${latencia}ms
+⏱️ Tiempo de reacción: ${latencia}ms`
+    )
+
+    console.log("✅ RESPUESTA ENVIADA")
+  } catch (error) {
+    console.log("❌ ERROR AL ENVIAR:", error.message)
   }
+}
 
 if (mensaje.startsWith("!registrar")) {
 
