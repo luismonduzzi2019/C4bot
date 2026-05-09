@@ -720,26 +720,41 @@ app.post("/webhook", async (req, res) => {
   console.log("MENSAJE:", mensaje)
   console.log("RESPONDER A:", telefono)
 
-  if (mensaje.toLowerCase() === "!ping") {
-  const inicio = Date.now()
+if (mensaje.toLowerCase() === "!ping") {
 
-  try {
-    const latencia = Date.now() - inicio
+const inicio = Date.now()
 
-    await enviarMensaje(
-      telefono,
-      `Hola!! 🏓 Pong!
+try {
+
+await enviarMensaje(
+telefono,
+`🏓 *PONG - C4 BOT*
+
+⚡ Calculando latencia...`
+)
+
+const fin = Date.now()
+const latencia = fin - inicio
+
+await enviarMensaje(
+telefono,
+`🏓 *PONG - C4 BOT*
 
 ⚡ Latencia: ${latencia}ms
-⏱️ Tiempo de reacción: ${latencia}ms`
-    )
+⏱ Tiempo de reacción: ${latencia}ms
+🤖 Estado: Online`
+)
 
-    console.log("✅ RESPUESTA ENVIADA")
-  } catch (error) {
-    console.log("❌ ERROR AL ENVIAR:", error.message)
-  }
+console.log("✅ RESPUESTA ENVIADA")
+
+} catch (error) {
+
+console.log("❌ ERROR AL ENVIAR:", error.message)
+
 }
 
+}
+    
 if (mensaje.startsWith("!registrar")) {
 
   const partes = mensaje.split(" ")
