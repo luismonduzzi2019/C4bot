@@ -768,11 +768,6 @@ jugadoresRegistrados[idGame] = {
 )
 
 }
-    
-  res.status(200).json({
-    status: true
-  })
-})
 
 if (mensaje.toLowerCase() === "!abrirmix") {
 
@@ -791,6 +786,11 @@ Usá:
 para entrar al mix.`
   )
 }
+    
+  res.status(200).json({
+    status: true
+  })
+})
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
