@@ -770,21 +770,10 @@ jugadoresRegistrados[idGame] = {
 }
 
 if (mensaje.toLowerCase() === "!abrirmix") {
-
   mixAbierto = true
   jugadoresMix = []
 
-  await enviarMensaje(
-    telefono,
-    `🔥 MIX ABIERTO
-
-👥 Cupos: 0/10
-
-Usá:
-!join
-
-para entrar al mix.`
-  )
+  await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!join\n\npara entrar al mix.")
 }
     
   res.status(200).json({
