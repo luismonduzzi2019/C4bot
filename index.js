@@ -681,6 +681,21 @@ Partidas: ${jugador[modo].partidas}
     `)
 })
 
+async function enviarMensaje(telefone, mensagem) {
+
+  await fetch(`https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-text`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      phone: telefone,
+      message: mensagem
+    })
+  })
+
+}
+
 app.post("/webhook", (req, res) => {
 
   console.log("📩 WEBHOOK RECIBIDO")
