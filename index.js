@@ -1,8 +1,23 @@
 const fs = require("fs")
 
+const pathJugadores = "./jugadores.json"
+
+function cargarJugadores() {
+    try {
+        const data = fs.readFileSync(pathJugadores, "utf8")
+        return JSON.parse(data)
+    } catch (error) {
+        return {}
+    }
+}
+
+function guardarJugadores(jugadores) {
+    fs.writeFileSync(pathJugadores, JSON.stringify(jugadores, null, 2))
+}
+
 const express = require("express")
 
-const jugadoresRegistrados = {}
+const jugadoresRegistrados = cargarJugadores()
 
 let mixAbierto = false
 let jugadoresMix = []
@@ -776,6 +791,8 @@ jugadoresRegistrados[idGame] = {
   idGame,
   telefono
 }
+
+guardarJugadores(jugadoresRegistrados)
 
   await enviarMensaje(
   telefono,
