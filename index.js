@@ -2,6 +2,8 @@ const fs = require("fs")
 
 const express = require("express")
 
+const jugadoresRegistrados = {}
+
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -724,6 +726,46 @@ app.post("/webhook", async (req, res) => {
     }
   }
 
+if (mensaje.startsWith("!registrar")) {
+
+  const partes = mensaje.split(" ")
+
+  if (partes.length < 3) {
+
+    await enviarMensaje(
+      telefono,
+      `❌ Formato incorrecto
+
+Usá:
+!registrar NICK ID
+
+Ejemplo:
+!registrar Colt 123456`
+    )
+
+    return
+  }
+
+  const nick = partes[1]
+  const idGame = partes[2]
+
+  jugadoresRegistrados[telefono] = {
+    nick,
+    idGame,
+    telefono
+  }
+
+  await enviarMensaje(
+  telefono,
+  `✅ Jugador registrado
+
+🎮 Nick: ${nick}
+🆔 ID: ${idGame}
+📱 Número: ${telefono}`
+)
+
+}
+    
   res.status(200).json({
     status: true
   })
