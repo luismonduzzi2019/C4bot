@@ -775,6 +775,58 @@ if (mensaje.toLowerCase() === "!abrirmix") {
 
   await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!join\n\npara entrar al mix.")
 }
+
+  if (mensaje.toLowerCase() === "!join") {
+
+  if (!mixAbierto) {
+    await enviarMensaje(telefono, "❌ No hay ningún mix abierto.")
+    return
+  }
+
+  const jugador = Object.values(jugadoresRegistrados).find(
+    j => j.telefono === telefono
+  )
+
+  if (!jugador) {
+    await enviarMensaje(
+      telefono,
+      "❌ No estás registrado.\n\nUsá:\n!registrar NICK ID"
+    )
+    return
+  }
+
+  const yaEsta = jugadoresMix.find(
+    j => j.telefono === telefono
+  )
+
+  if (yaEsta) {
+    await enviarMensaje(telefono, "⚠️ Ya estás dentro del mix.")
+    return
+  }
+
+  jugadoresMix.push(jugador)
+
+  let lista = ""
+
+  jugadoresMix.forEach((j, index) => {
+    lista += `${index + 1}. ${j.nick}\n`
+  })
+
+  await enviarMensaje(
+    telefono,
+    `✅ ${jugador.nick} entró al mix.\n\n👥 Cupos: ${jugadoresMix.length}/10\n\n${lista}`
+  )
+
+  if (jugadoresMix.length >= 10) {
+
+    mixAbierto = false
+
+    await enviarMensaje(
+      telefono,
+      "🔥 MIX LLENO\n\n⏳ Preparando equipos..."
+    )
+  }
+}  
     
   res.status(200).json({
     status: true
