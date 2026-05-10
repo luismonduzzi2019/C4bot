@@ -741,7 +741,7 @@ global.ultimosMensajes[claveMensaje] = true
 
 setTimeout(() => {
   delete global.ultimosMensajes[claveMensaje]
-}, 5000)
+}, 120000)
 
     if (!mensaje) return res.sendStatus(200)
 
@@ -931,7 +931,8 @@ if (mensaje.toLowerCase() === "!salir") {
   "!join",
   "!salir",
   "!mapas",
-  "!votar"
+  "!votar",
+  "!comandos",   
 ]
 
 if (
