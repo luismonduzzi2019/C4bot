@@ -883,13 +883,27 @@ const jugador = Object.values(jugadoresRegistrados).find(j => {
 
   if (jugadoresMix.length >= 10) {
 
-    mixAbierto = false
+mixAbierto = false
 
-    await enviarMensaje(
-      telefono,
-      "🔥 MIX LLENO\n\n⏳ Preparando equipos..."
-    )
-  }
+const mezclados = [...jugadoresMix].sort(() => Math.random() - 0.5)
+const equipoA = mezclados.slice(0, 5)
+const equipoB = mezclados.slice(5, 10)
+
+const listaA = equipoA.map((j, i) => `${i + 1}. ${j.nick}`).join("\n")
+const listaB = equipoB.map((j, i) => `${i + 1}. ${j.nick}`).join("\n")
+
+await enviarMensaje(
+telefono,
+`🔥 MIX COMPLETO
+
+🔵 EQUIPO A
+${listaA}
+
+🔴 EQUIPO B
+${listaB}`
+)
+
+}
 }  
 
 if (mensaje.toLowerCase() === "!salir") {
