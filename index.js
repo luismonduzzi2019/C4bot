@@ -906,6 +906,26 @@ ${listaB}`
 }
 }  
 
+    if (mensaje.toLowerCase() === "!resetmix") {
+
+jugadoresMix = []
+mixAbierto = false
+
+await enviarMensaje(
+telefono,
+`♻️ MIX REINICIADO
+
+👥 Cupos: 0/10
+
+Usá:
+!abrirmix
+
+para abrir uno nuevo.`
+)
+
+return
+}
+
 if (mensaje.toLowerCase() === "!salir") {
 
   if (!mixAbierto) {
