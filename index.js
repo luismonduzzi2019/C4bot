@@ -917,7 +917,7 @@ const jugador = Object.values(jugadoresRegistrados).find(j => {
   await enviarMensaje(
     telefono,
     `✅ ${jugador.nick} entró al mix.\n\n👥 Cupos: ${jugadoresMix.length}/10\n\n${lista}`
-  )
+  ) 
 
   if (jugadoresMix.length >= 10) {
 
@@ -1055,6 +1055,7 @@ return
   "!abrirmix",
   "!cerrarmix",
   "!join",
+  "!entrar",   
   "!salir",
   "!mapas",
   "!votar",
