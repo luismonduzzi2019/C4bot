@@ -922,6 +922,27 @@ if (mensaje.toLowerCase() === "!salir") {
     `🚪 ${jugador.nick} salió del mix.\n\n👥 Cupos: ${jugadoresMix.length}/10\n\n${lista || "Lista vacía."}`
   )
 }
+
+    const comandosValidos = [
+  "!ping",
+  "!registrar",
+  "!abrirmix",
+  "!cerrarmix",
+  "!join",
+  "!salir",
+  "!mapas",
+  "!votar"
+]
+
+if (
+  mensaje.startsWith("!") &&
+  !comandosValidos.some(cmd => mensaje.toLowerCase().startsWith(cmd))
+) {
+  await enviarMensaje(
+    telefono,
+    "❌ Comando no reconocido.\n\nUsá !comandos para ver la lista."
+  )
+}
     
   res.status(200).json({
     status: true
