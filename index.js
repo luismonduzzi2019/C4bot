@@ -786,10 +786,12 @@ Ejemplo:
   const nick = partes[1]
   const idGame = partes[2]
 
+   const numeroLimpio = telefono.replace("@s.whatsapp.net", "")
+    
 jugadoresRegistrados[idGame] = {
   nick,
   idGame,
-  telefono
+  telefono: numeroLimpio
 }
 
 guardarJugadores(jugadoresRegistrados)
