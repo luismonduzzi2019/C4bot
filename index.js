@@ -865,7 +865,10 @@ if (mensaje.toLowerCase() === "!abrirmix") {
   await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!join\n\npara entrar al mix.")
 }
 
-  if (mensaje.toLowerCase() === "!join") {
+  if (
+    mensaje.toLowerCase() === "!join" ||
+    mensaje.toLowerCase() === "!entrar"
+) {
 
   if (!mixAbierto) {
     await enviarMensaje(telefono, "❌ No hay ningún mix abierto.")
