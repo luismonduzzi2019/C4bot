@@ -723,6 +723,20 @@ async function enviarMensaje(telefone, mensagem) {
 
 app.post("/webhook", async (req, res) => {
 
+const mensajeId = req.body?.messageId || req.body?.id
+
+global.mensajesProcesados = global.mensajesProcesados || new Set()
+
+if (mensajesProcesados.has(mensajeId)) {
+  return res.sendStatus(200)
+}
+
+mensajesProcesados.add(mensajeId)
+
+setTimeout(() => {
+  mensajesProcesados.delete(mensajeId)
+}, 10000)
+    
   console.log("📩 WEBHOOK RECIBIDO")
   console.log(req.body)
 
