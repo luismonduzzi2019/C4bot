@@ -736,6 +736,7 @@ async function enviarEncuesta(telefone) {
     poll: {
         name: "🗺️ PICK MAPA",
         selectableCount: 1,
+        multipleChoices: false,
         options: [
                     "Dune",
                     "Rust",
