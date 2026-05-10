@@ -978,6 +978,29 @@ telefono,
 return
 }
 
+if (mensaje.toLowerCase() === "!mapas") {
+
+await enviarMensaje(
+telefone,
+`🗺️ MAPAS DISPONIBLES
+
+🏜️ dune
+🪨 rust
+🏛️ sandstone
+🌸 sakura
+🏚️ province
+🏢 breeze
+
+Usá:
+!votar MAPA
+
+Ejemplo:
+!votar dune`
+)
+
+return
+}
+    
     const comandosValidos = [
   "!ping",
   "!registrar",
