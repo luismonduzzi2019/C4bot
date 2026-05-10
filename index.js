@@ -821,11 +821,18 @@ if (mensaje.toLowerCase() === "!abrirmix") {
     return
   }
 
-  const numeroActual = String(telefono).replace("@s.whatsapp.net", "").replace(/\D/g, "")
+  const numeroActual = String(telefono).replace(/\D/g, "")
 
 const jugador = Object.values(jugadoresRegistrados).find(j => {
-    const numeroGuardado = String(j.telefono).replace("@s.whatsapp.net", "").replace(/\D/g, "")
-    return numeroGuardado === numeroActual
+    const numeroGuardado = String(j.telefono).replace(/\D/g, "")
+
+    return (
+        numeroGuardado === numeroActual ||
+        numeroActual.includes(numeroGuardado) ||
+        numeroGuardado.includes(numeroActual) ||
+        numeroActual.endsWith(numeroGuardado.slice(-8)) ||
+        numeroGuardado.endsWith(numeroActual.slice(-8))
+    )
 })
 
   if (!jugador) {
