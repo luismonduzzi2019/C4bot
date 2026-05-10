@@ -721,6 +721,38 @@ async function enviarMensaje(telefone, mensagem) {
     console.log("RESPOSTA ZAPI:", texto)
 }
 
+async function enviarEncuesta(telefone) {
+
+    const resposta = await fetch(
+        `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-poll`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Client-Token": process.env.ZAPI_CLIENT_TOKEN
+            },
+            body: JSON.stringify({
+                phone: telefone,
+                message: "🗺️ PICK MAPA",
+                options: [
+                    "Dune",
+                    "Rust",
+                    "Sandstone",
+                    "Province",
+                    "Prisión",
+                    "Hanami",
+                    "Breeze"
+                ]
+            })
+        }
+    )
+
+    const texto = await resposta.text()
+
+    console.log("STATUS ENCUESTA:", resposta.status)
+    console.log("RESPUESTA ENCUESTA:", texto)
+}
+
 app.post("/webhook", async (req, res) => {
     
   console.log("📩 WEBHOOK RECIBIDO")
