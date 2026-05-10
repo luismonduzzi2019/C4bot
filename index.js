@@ -924,6 +924,26 @@ if (mensaje.toLowerCase() === "!salir") {
   )
 }
 
+    if (mensaje.toLowerCase() === "!comandos") {
+
+await enviarMensaje(
+telefono,
+`📋 COMANDOS DISPONIBLES
+
+🏓 !ping
+📥 !registrar NICK ID
+🔥 !abrirmix
+❌ !cerrarmix
+🎮 !join
+🚪 !salir
+
+🗺️ !mapas
+🗳️ !votar MAPA`
+)
+
+return
+}
+
     const comandosValidos = [
   "!ping",
   "!registrar",
