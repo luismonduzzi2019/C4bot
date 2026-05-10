@@ -729,7 +729,8 @@ app.post("/webhook", async (req, res) => {
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone
 
-    const claveMensaje = `${telefono}_${mensaje}`
+    const marcaMensaje = req.body?.messageTimestamp || req.body?.timestamp || req.body?.momment || Date.now()
+const claveMensaje = `${telefono}_${mensaje}_${marcaMensaje}`
 
 global.ultimosMensajes = global.ultimosMensajes || {}
 
