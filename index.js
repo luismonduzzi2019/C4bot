@@ -981,15 +981,16 @@ return
 if (mensaje.toLowerCase() === "!mapas") {
 
 await enviarMensaje(
-telefone,
+telefono,
 `🗺️ MAPAS DISPONIBLES
 
 🏜️ dune
 🪨 rust
 🏛️ sandstone
-🌸 sakura
 🏚️ province
+🌸 hanami
 🏢 breeze
+🔒 prison
 
 Usá:
 !votar MAPA
