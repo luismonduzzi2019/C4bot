@@ -862,7 +862,7 @@ if (mensaje.toLowerCase() === "!abrirmix") {
   mixAbierto = true
   jugadoresMix = []
 
-  await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!join\n\npara entrar al mix.")
+  await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!entrar\n\npara entrar al mix.")
 }
 
   if (
@@ -994,6 +994,8 @@ if (mensaje.toLowerCase() === "!salir") {
     telefono,
     `🚪 ${jugador.nick} salió del mix.\n\n👥 Cupos: ${jugadoresMix.length}/10\n\n${lista || "Lista vacía."}`
   )
+
+    return
 }
 
     if (mensaje.toLowerCase() === "!comandos") {
