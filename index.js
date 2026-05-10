@@ -732,9 +732,11 @@ async function enviarEncuesta(telefone) {
                 "Client-Token": process.env.ZAPI_CLIENT_TOKEN
             },
             body: JSON.stringify({
-                phone: telefone,
-                message: "🗺️ PICK MAPA",
-                options: [
+    phone: telefone,
+    poll: {
+        name: "🗺️ PICK MAPA",
+        selectableCount: 1,
+        options: [
                     "Dune",
                     "Rust",
                     "Sandstone",
@@ -743,6 +745,7 @@ async function enviarEncuesta(telefone) {
                     "Hanami",
                     "Breeze"
                 ]
+    }
             })
         }
     )
