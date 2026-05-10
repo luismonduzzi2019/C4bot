@@ -26,9 +26,6 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-let jugadores = []
-let mixAbierta = false
-let listaMix = []
 let admins = []
 
 let votosMapa = {}
