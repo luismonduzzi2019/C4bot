@@ -821,9 +821,12 @@ if (mensaje.toLowerCase() === "!abrirmix") {
     return
   }
 
-  const jugador = Object.values(jugadoresRegistrados).find(
-    j => telefono.includes(j.telefono)
-)
+  const numeroActual = String(telefono).replace("@s.whatsapp.net", "").replace(/\D/g, "")
+
+const jugador = Object.values(jugadoresRegistrados).find(j => {
+    const numeroGuardado = String(j.telefono).replace("@s.whatsapp.net", "").replace(/\D/g, "")
+    return numeroGuardado === numeroActual
+})
 
   if (!jugador) {
     await enviarMensaje(
