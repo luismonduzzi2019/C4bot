@@ -722,26 +722,26 @@ async function enviarMensaje(telefone, mensagem) {
 }
 
 app.post("/webhook", async (req, res) => {
-
-const mensajeId = req.body?.messageId || req.body?.id
-
-global.mensajesProcesados = global.mensajesProcesados || new Set()
-
-if (mensajesProcesados.has(mensajeId)) {
-  return res.sendStatus(200)
-}
-
-mensajesProcesados.add(mensajeId)
-
-setTimeout(() => {
-  mensajesProcesados.delete(mensajeId)
-}, 10000)
     
   console.log("📩 WEBHOOK RECIBIDO")
   console.log(req.body)
 
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone
+
+    const claveMensaje = `${telefono}_${mensaje}`
+
+global.ultimosMensajes = global.ultimosMensajes || {}
+
+if (global.ultimosMensajes[claveMensaje]) {
+  return res.sendStatus(200)
+}
+
+global.ultimosMensajes[claveMensaje] = true
+
+setTimeout(() => {
+  delete global.ultimosMensajes[claveMensaje]
+}, 5000)
 
     if (!mensaje) return res.sendStatus(200)
 
