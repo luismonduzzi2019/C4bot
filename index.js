@@ -1033,6 +1033,13 @@ Ejemplo:
 
 return
 }
+
+    if (mensaje.toLowerCase() === "!votarmapa") {
+
+await enviarEncuesta(telefono)
+
+return
+}
     
     const comandosValidos = [
   "!ping",
@@ -1043,6 +1050,7 @@ return
   "!salir",
   "!mapas",
   "!votar",
+  "!votarmapa",
   "!comandos",   
 ]
 
