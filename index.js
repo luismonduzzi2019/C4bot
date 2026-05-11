@@ -971,6 +971,8 @@ ${listaA}
 ${listaB}`
 )
 
+   await enviarEncuesta(telefono)   
+
 }
 }  
 
