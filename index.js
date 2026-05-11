@@ -758,7 +758,7 @@ poll: [
 app.post("/webhook", async (req, res) => {
     
   console.log("📩 WEBHOOK RECIBIDO")
-  console.log(req.body)
+  console.log(JSON.stringify(req.body, null, 2))
 
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone
