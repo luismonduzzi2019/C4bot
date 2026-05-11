@@ -770,6 +770,8 @@ app.post("/webhook", async (req, res) => {
     req.body?.from ||
     telefono
 
+    const esAdmin = req.body?.isAdmin || false
+
     const marcaMensaje = req.body?.messageTimestamp || req.body?.timestamp || req.body?.momment || Date.now()
 const claveMensaje = `${telefono}_${mensaje}_${marcaMensaje}`
 
