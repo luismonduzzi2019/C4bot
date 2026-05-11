@@ -845,6 +845,21 @@ Ejemplo:
   const idGame = partes[2]
 
    const numeroLimpio = String(telefonoJugador).replace(/\D/g, "")
+
+    const yaRegistrado = Object.values(jugadoresRegistrados).find(j =>
+    String(j.telefono).replace(/\D/g, "") === numeroLimpio
+)
+
+if (yaRegistrado) {
+    await enviarMensaje(
+        telefono,
+        `⚠️ Ya estás registrado.
+
+🎮 Nick: ${yaRegistrado.nick}
+🆔 ID: ${yaRegistrado.idGame}`
+    )
+    return
+}
     
 jugadoresRegistrados[idGame] = {
   nick,
