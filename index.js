@@ -916,7 +916,14 @@ const jugador = Object.values(jugadoresRegistrados).find(j => {
 
   await enviarMensaje(
     telefono,
-    `✅ ${jugador.nick} entró al mix.\n\n👥 Cupos: ${jugadoresMix.length}/10\n\n${lista}`
+    `✅ ${jugador.nick} entró al mix.
+
+🔥 MIX ACTUAL
+
+👥 Cupos: ${jugadoresMix.length}/10
+⏳ Faltan: ${10 - jugadoresMix.length}
+
+${lista || "Lista vacía."}`
   ) 
 
   if (jugadoresMix.length >= 10) {
@@ -992,7 +999,14 @@ if (mensaje.toLowerCase() === "!salir") {
 
   await enviarMensaje(
     telefono,
-    `🚪 ${jugador.nick} salió del mix.\n\n👥 Cupos: ${jugadoresMix.length}/10\n\n${lista || "Lista vacía."}`
+    `🚪 ${jugador.nick} salió del mix.
+
+🔥 MIX ACTUAL
+
+👥 Cupos: ${jugadoresMix.length}/10
+⏳ Faltan: ${10 - jugadoresMix.length}
+
+${lista || "Lista vacía."}`
   )
 
     return
