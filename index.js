@@ -22,11 +22,13 @@ const jugadoresRegistrados = cargarJugadores()
 let mixAbierto = false
 let jugadoresMix = []
 
+let organizadores = []
+
+const adminPrincipal = "5493412750806"
+
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
-let admins = []
 
 let votosMapa = {}
 let votacionActiva = false
@@ -907,6 +909,9 @@ return
 
   const numeroActual = String(telefonoJugador).replace(/\D/g, "")
 
+      const esAdminPrincipal = numeroActual === adminPrincipal
+const esOrganizador = organizadores.includes(numeroActual)
+
 const jugador = Object.values(jugadoresRegistrados).find(j => {
     const numeroGuardado = String(j.telefono).replace(/\D/g, "")
 
@@ -1194,6 +1199,37 @@ return
 await enviarEncuesta(telefono)
 
 return
+}
+
+    if (mensaje.toLowerCase().startsWith("!organizador")) {
+
+    if (!esAdminPrincipal) {
+        await enviarMensaje(telefono, "❌ Solo el admin principal puede agregar organizadores")
+        return
+    }
+
+    const partes = mensaje.split(" ")
+
+    if (partes.length < 2) {
+        await enviarMensaje(telefono, "❌ Usá: !organizador 549XXXXXXXXXX")
+        return
+    }
+
+    const numeroNuevo = partes[1].replace(/\D/g, "")
+
+    if (organizadores.includes(numeroNuevo)) {
+        await enviarMensaje(telefono, "⚠️ Ese usuario ya es organizador")
+        return
+    }
+
+    organizadores.push(numeroNuevo)
+
+    await enviarMensaje(
+        telefono,
+        `✅ Organizador agregado\n\n📱 ${numeroNuevo}`
+    )
+
+    return
 }
     
     const comandosValidos = [
