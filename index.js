@@ -996,6 +996,32 @@ para abrir uno nuevo.`
 return
 }
 
+  if (mensaje.toLowerCase() === "!fake10") {
+
+    jugadoresMix = [
+        { nick: "Alpha" },
+        { nick: "Bravo" },
+        { nick: "Charlie" },
+        { nick: "Delta" },
+        { nick: "Echo" },
+        { nick: "Foxtrot" },
+        { nick: "Ghost" },
+        { nick: "Hunter" },
+        { nick: "Iceman" },
+        { nick: "Joker" }
+    ]
+
+    mixAbierto = true
+
+    await enviarMensaje(
+        telefono,
+`🧪 MIX DE PRUEBA CARGADA
+
+👥 Cupos: 10/10`
+    )
+
+}  
+
 if (mensaje.toLowerCase() === "!salir") {
 
   if (!mixAbierto) {
