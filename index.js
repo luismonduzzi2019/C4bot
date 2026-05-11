@@ -860,7 +860,8 @@ guardarJugadores(jugadoresRegistrados)
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${telefono}`
+📱 Número: ${numeroLimpio}`
+      
 )
 
 }
