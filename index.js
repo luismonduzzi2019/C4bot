@@ -1048,6 +1048,8 @@ ${listaB}`
 
 await enviarEncuesta(telefono)
 
+      mixAbierto = false
+
 return  
 
 }  
