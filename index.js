@@ -1020,6 +1020,8 @@ return
 👥 Cupos: 10/10`
     )
 
+  return    
+
 }  
 
 if (mensaje.toLowerCase() === "!salir") {
