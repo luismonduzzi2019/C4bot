@@ -991,6 +991,11 @@ ${listaB}`
 
     if (mensaje.toLowerCase() === "!resetmix") {
 
+        if (!esAdminPrincipal && !esOrganizador) {
+    await enviarMensaje(telefono, "❌ Solo administradores pueden resetear mixes")
+    return
+}
+
 jugadoresMix = []
 mixAbierto = false
 
@@ -1010,6 +1015,11 @@ return
 }
 
 if (mensaje.toLowerCase() === "!cerrarmix") {
+
+    if (!esAdminPrincipal && !esOrganizador) {
+    await enviarMensaje(telefono, "❌ Solo administradores pueden cerrar mixes")
+    return
+}
 
     mixAbierto = false
     jugadoresMix = []
@@ -1031,6 +1041,11 @@ para abrir una nueva.`
 
 if (mensaje.toLowerCase() === "!reiniciarmix") {
 
+    if (!esAdminPrincipal && !esOrganizador) {
+    await enviarMensaje(telefono, "❌ Solo administradores pueden reiniciar mixes")
+    return
+}
+
     jugadoresMix = []
     mixAbierto = true
 
@@ -1051,6 +1066,11 @@ para anotarte nuevamente.`
     
   if (mensaje.toLowerCase() === "!fake10") {
 
+if (!esAdminPrincipal && !esOrganizador) {
+    await enviarMensaje(telefono, "❌ Solo administradores pueden usar fake10")
+    return
+}
+      
     jugadoresMix = [
         { nick: "Alpha" },
         { nick: "Bravo" },
@@ -1196,6 +1216,11 @@ return
 }
 
     if (mensaje.toLowerCase() === "!votarmapa") {
+
+        if (!esAdminPrincipal && !esOrganizador) {
+    await enviarMensaje(telefono, "❌ Solo administradores pueden iniciar votaciones")
+    return
+}
 
 await enviarEncuesta(telefono)
 
