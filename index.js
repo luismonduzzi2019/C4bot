@@ -764,6 +764,13 @@ app.post("/webhook", async (req, res) => {
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone
 
+    const telefonoJugador =
+    req.body?.participantPhone ||
+    req.body?.senderPhone ||
+    req.body?.author ||
+    req.body?.from ||
+    telefono
+
     const marcaMensaje = req.body?.messageTimestamp || req.body?.timestamp || req.body?.momment || Date.now()
 const claveMensaje = `${telefono}_${mensaje}_${marcaMensaje}`
 
@@ -837,7 +844,7 @@ Ejemplo:
   const nick = partes[1]
   const idGame = partes[2]
 
-   const numeroLimpio = telefono.replace("@s.whatsapp.net", "")
+   const numeroLimpio = String(telefonoJugador).replace(/\D/g, "")
     
 jugadoresRegistrados[idGame] = {
   nick,
@@ -875,7 +882,7 @@ if (mensaje.toLowerCase() === "!abrirmix") {
     return
   }
 
-  const numeroActual = String(telefono).replace(/\D/g, "")
+  const numeroActual = String(telefonoJugador).replace(/\D/g, "")
 
 const jugador = Object.values(jugadoresRegistrados).find(j => {
     const numeroGuardado = String(j.telefono).replace(/\D/g, "")
@@ -978,9 +985,11 @@ if (mensaje.toLowerCase() === "!salir") {
     return
   }
 
-  const indexJugador = jugadoresMix.findIndex(
-    j => j.telefono === telefono
-  )
+  const numeroActual = String(telefonoJugador).replace(/\D/g, "")
+
+const indexJugador = jugadoresMix.findIndex(
+    j => String(j.telefono).replace(/\D/g, "") === numeroActual
+)
 
   if (indexJugador === -1) {
     await enviarMensaje(telefono, "⚠️ No estás anotado en el mix.")
