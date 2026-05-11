@@ -735,6 +735,7 @@ async function enviarEncuesta(telefone) {
         body: JSON.stringify({
             phone: telefone,
             question: "🗺️ PICK MAPA",
+            selectableCount: 1,
             options: [
                 "Dune",
                 "Rust",
