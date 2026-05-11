@@ -1166,7 +1166,7 @@ telefono,
 🗳️ !votar MAPA
 
 👑 !organizador NUMERO
-🚫 !quitarorganizador NUMERO
+🚫 !quitarorganizador NUMERO`
 )
 
 return
