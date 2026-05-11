@@ -1014,6 +1014,26 @@ para abrir una nueva.`
 
     return
 }
+
+if (mensaje.toLowerCase() === "!reiniciarmix") {
+
+    jugadoresMix = []
+    mixAbierto = true
+
+    await enviarMensaje(
+        telefono,
+`♻️ MIX REINICIADO
+
+👥 Cupos: 0/10
+
+Usá:
+!entrar
+
+para anotarte nuevamente.`
+    )
+
+    return
+}
     
   if (mensaje.toLowerCase() === "!fake10") {
 
