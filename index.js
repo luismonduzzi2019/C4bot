@@ -1230,6 +1230,8 @@ return
     )
 
     return
+
+        }
 }
     
     const comandosValidos = [
