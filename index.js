@@ -772,6 +772,10 @@ app.post("/webhook", async (req, res) => {
     req.body?.from ||
     telefono
 
+    const numeroActual = String(telefonoJugador).replace(/\D/g, "")
+const esAdminPrincipal = numeroActual === adminPrincipal
+const esOrganizador = organizadores.includes(numeroActual)
+
     const esAdmin = req.body?.isAdmin || false
 
     const marcaMensaje = req.body?.messageTimestamp || req.body?.timestamp || req.body?.momment || Date.now()
@@ -886,7 +890,7 @@ guardarJugadores(jugadoresRegistrados)
 
 if (mensaje.toLowerCase() === "!abrirmix") {
 
-if (!esAdmin) {
+if (!esAdminPrincipal && !esOrganizador) {
 await enviarMensaje(telefono, "❌ Solo administradores pueden abrir mixes")
 return
 }
@@ -908,9 +912,6 @@ return
   }
 
   const numeroActual = String(telefonoJugador).replace(/\D/g, "")
-
-      const esAdminPrincipal = numeroActual === adminPrincipal
-const esOrganizador = organizadores.includes(numeroActual)
 
 const jugador = Object.values(jugadoresRegistrados).find(j => {
     const numeroGuardado = String(j.telefono).replace(/\D/g, "")
