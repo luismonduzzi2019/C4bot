@@ -724,31 +724,29 @@ async function enviarMensaje(telefone, mensagem) {
 async function enviarEncuesta(telefone) {
 
     const resposta = await fetch(
-        `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-poll`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Client-Token": process.env.ZAPI_CLIENT_TOKEN
-            },
-            body: JSON.stringify({
-    phone: telefone,
-    poll: {
-        name: "🗺️ PICK MAPA",
-        selectableCount: 1,
-        options: [
-                    "Dune",
-                    "Rust",
-                    "Sandstone",
-                    "Province",
-                    "Prisión",
-                    "Hanami",
-                    "Breeze"
-                ]
+    `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-poll`,
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Client-Token": process.env.ZAPI_CLIENT_TOKEN
+        },
+
+        body: JSON.stringify({
+            phone: telefone,
+            question: "🗺️ PICK MAPA",
+            options: [
+                "Dune",
+                "Rust",
+                "Sandstone",
+                "Province",
+                "Prisión",
+                "Hanami",
+                "Breeze"
+            ]
+        })
     }
-            })
-        }
-    )
+)
 
     const texto = await resposta.text()
 
