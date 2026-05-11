@@ -1020,7 +1020,36 @@ return
 👥 Cupos: 10/10`
     )
 
-  return    
+    const jugadoresMezclados = [...jugadoresMix].sort(() => Math.random() - 0.5)
+
+const equipoA = jugadoresMezclados.slice(0, 5)
+const equipoB = jugadoresMezclados.slice(5, 10)
+
+let listaA = ""
+let listaB = ""
+
+equipoA.forEach((j, i) => {
+    listaA += `${i + 1}. ${j.nick}\n`
+})
+
+equipoB.forEach((j, i) => {
+    listaB += `${i + 1}. ${j.nick}\n`
+})
+
+await enviarMensaje(
+    telefono,
+`🔥 MIX COMPLETO
+
+🔵 EQUIPO A
+${listaA}
+
+🔴 EQUIPO B
+${listaB}`
+)
+
+await enviarEncuesta(telefono)
+
+return  
 
 }  
 
