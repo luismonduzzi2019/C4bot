@@ -734,17 +734,17 @@ async function enviarEncuesta(telefone) {
 
         body: JSON.stringify({
             phone: telefone,
-            question: "🗺️ PICK MAPA",
-            selectableCount: 1,
-            options: [
-                "Dune",
-                "Rust",
-                "Sandstone",
-                "Province",
-                "Prisión",
-                "Hanami",
-                "Breeze"
-            ]
+message: "🗺️ PICK MAPA",
+pollMaxOptions: 1,
+poll: [
+    { name: "Dune" },
+    { name: "Rust" },
+    { name: "Sandstone" },
+    { name: "Province" },
+    { name: "Prisión" },
+    { name: "Hanami" },
+    { name: "Breeze" }
+]
         })
     }
 )
