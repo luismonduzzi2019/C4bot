@@ -989,31 +989,6 @@ ${listaB}`
 }
 }  
 
-    if (mensaje.toLowerCase() === "!resetmix") {
-
-        if (!esAdminPrincipal && !esOrganizador) {
-    await enviarMensaje(telefono, "❌ Solo administradores pueden resetear mixes")
-    return
-}
-
-jugadoresMix = []
-mixAbierto = false
-
-await enviarMensaje(
-telefono,
-`♻️ MIX REINICIADO
-
-👥 Cupos: 0/10
-
-Usá:
-!abrirmix
-
-para abrir uno nuevo.`
-)
-
-return
-}
-
 if (mensaje.toLowerCase() === "!cerrarmix") {
 
     if (!esAdminPrincipal && !esOrganizador) {
@@ -1177,15 +1152,21 @@ await enviarMensaje(
 telefono,
 `📋 COMANDOS DISPONIBLES
 
-🏓 !ping
+📌 !ping
 📥 !registrar NICK ID
+
 🔥 !abrirmix
+🔄 !reiniciarmix
 ❌ !cerrarmix
-🎮 !join
+
+🎮 !entrar
 🚪 !salir
 
 🗺️ !mapas
-🗳️ !votar MAPA`
+🗳️ !votar MAPA
+
+👑 !organizador NUMERO
+🚫 !quitarorganizador NUMERO
 )
 
 return
@@ -1264,7 +1245,7 @@ return
   "!registrar",
   "!abrirmix",
   "!cerrarmix",
-  "!join",
+  "!reiniciarmix",   
   "!entrar",   
   "!salir",
   "!mapas",
