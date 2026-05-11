@@ -883,6 +883,12 @@ guardarJugadores(jugadoresRegistrados)
 }
 
 if (mensaje.toLowerCase() === "!abrirmix") {
+
+if (!esAdmin) {
+await enviarMensaje(telefono, "❌ Solo administradores pueden abrir mixes")
+return
+}
+    
   mixAbierto = true
   jugadoresMix = []
 
