@@ -995,6 +995,26 @@ para abrir uno nuevo.`
 return
 }
 
+if (mensaje.toLowerCase() === "!cerrarmix") {
+
+    mixAbierto = false
+    jugadoresMix = []
+
+    await enviarMensaje(
+        telefono,
+`🔒 MIX CERRADA
+
+👥 Cupos: 0/10
+
+Usá:
+!abrirmix
+
+para abrir una nueva.`
+    )
+
+    return
+}
+    
   if (mensaje.toLowerCase() === "!fake10") {
 
     jugadoresMix = [
