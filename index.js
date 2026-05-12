@@ -38,7 +38,7 @@ logger: P({ level: "debug" })
     
 sock.ev.on("creds.update", saveCreds)
 
-sock.ev.on("connection.update", ({ connection, qr }) => {
+sock.ev.on("connection.update", async ({ connection, qr }) => {
 
 if (qr) {
 console.log("📱 ESCANEÁ EL QR")
