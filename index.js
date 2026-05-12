@@ -26,6 +26,8 @@ const P = require("pino")
 
 async function conectarWhatsApp() {
 
+console.log("🟢 Iniciando conexión Baileys...")
+
 const { state, saveCreds } = await useMultiFileAuthState("session")
 
 const sock = makeWASocket({
