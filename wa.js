@@ -30,3 +30,5 @@ async function conectarWhatsApp() {
 }
 
 conectarWhatsApp()
+
+setInterval(() => {}, 1000)
