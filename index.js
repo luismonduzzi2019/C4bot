@@ -35,6 +35,9 @@ auth: state,
 printQRInTerminal: true,
 logger: P({ level: "debug" })
 })
+
+const code = await sock.requestPairingCode("5493460584275")
+console.log("📱 CÓDIGO DE VINCULACIÓN:", code)
     
 sock.ev.on("creds.update", saveCreds)
 
