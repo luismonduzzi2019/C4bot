@@ -31,6 +31,9 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+const antiSpam = {}
+const usuariosMuteados = {}
+
 let votosMapa = {}
 let votacionActiva = false
 
@@ -1330,10 +1333,55 @@ if (
 }
 
 if (
-    !chatMixActivo &&
+    chatMixActivo &&
     !mensaje.startsWith("!") &&
-    mensaje.trim() !== ""
+    mensaje.toLowerCase() !== "!registrar" &&
+    mensaje.toLowerCase() !== "!entrar" &&
+    mensaje.toLowerCase() !== "!salir" &&
+    !esAdminPrincipal &&
+    !esOrganizador
 ) {
+
+    const ahora = Date.now()
+
+    if (usuariosMuteados[telefonoJugador]) {
+
+        if (ahora < usuariosMuteados[telefonoJugador]) {
+            return
+        }
+
+        delete usuariosMuteados[telefonoJugador]
+    }
+
+    if (!antiSpam[telefonoJugador]) {
+        antiSpam[telefonoJugador] = []
+    }
+
+    antiSpam[telefonoJugador].push(ahora)
+
+    antiSpam[telefonoJugador] =
+        antiSpam[telefonoJugador].filter(
+            t => ahora - t < 30000
+        )
+
+    if (antiSpam[telefonoJugador].length >= 4) {
+
+        usuariosMuteados[telefonoJugador] =
+            ahora + (30 * 60 * 1000)
+
+        await enviarMensaje(
+            telefono,
+            `🚫 Usuario silenciado 30 minutos por spam.\n\n📱 ${telefonoJugador}`
+        )
+
+        return
+    }
+
+    await enviarMensaje(
+        telefono,
+        "⛔ Chat bloqueado.\n\nSolo se permite:\n• !registrar\n• !entrar\n• !salir"
+    )
+
     return
 }
     
