@@ -1,3 +1,5 @@
+const express = require("express")
+
 const {
   default: makeWASocket,
   useMultiFileAuthState
@@ -29,12 +31,8 @@ async function conectarWhatsApp() {
 
 }
 
-conectarWhatsApp()
-
 setInterval(() => {}, 1000)
 
-
-const express = require("express")
 const app = express()
 
 app.get("/", (req, res) => {
@@ -42,3 +40,5 @@ app.get("/", (req, res) => {
 })
 
 app.listen(process.env.PORT || 3000)
+
+conectarWhatsApp()
