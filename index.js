@@ -20,6 +20,7 @@ const express = require("express")
 const jugadoresRegistrados = cargarJugadores()
 
 let mixAbierto = false
+let chatMixActivo = false
 let jugadoresMix = []
 
 let organizadores = []
@@ -896,6 +897,7 @@ return
 }
     
   mixAbierto = true
+  chatMixActivo = true
   jugadoresMix = []
 
   await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!entrar\n\npara entrar al mix.")
@@ -964,6 +966,7 @@ ${lista || "Lista vacía."}`
   if (jugadoresMix.length >= 10) {
 
 mixAbierto = false
+chatMixActivo = false
 
 const mezclados = [...jugadoresMix].sort(() => Math.random() - 0.5)
 const equipoA = mezclados.slice(0, 5)
@@ -1324,6 +1327,14 @@ if (
     telefono,
     "❌ Comando no reconocido.\n\nUsá !comandos para ver la lista."
   )
+}
+
+if (
+    !chatMixActivo &&
+    !mensaje.startsWith("!") &&
+    mensaje.trim() !== ""
+) {
+    return
 }
     
   res.status(200).json({
