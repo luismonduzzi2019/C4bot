@@ -35,9 +35,6 @@ auth: state,
 printQRInTerminal: true,
 logger: P({ level: "debug" })
 })
-
-const code = await sock.requestPairingCode("5493460584275")
-console.log("📱 CÓDIGO DE VINCULACIÓN:", code)
     
 sock.ev.on("creds.update", saveCreds)
 
@@ -46,6 +43,8 @@ sock.ev.on("connection.update", ({ connection, qr }) => {
 if (qr) {
 console.log("📱 ESCANEÁ EL QR")
 console.log(qr)
+ const code = await sock.requestPairingCode("5493460584275")
+console.log("📱 CÓDIGO DE VINCULACIÓN:", code)   
 }
 
 if (connection === "open") {
