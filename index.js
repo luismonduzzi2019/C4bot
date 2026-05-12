@@ -32,9 +32,10 @@ const { state, saveCreds } = await useMultiFileAuthState("session")
 
 const sock = makeWASocket({
 auth: state,
-logger: P({ level: "silent" })
+printQRInTerminal: true,
+logger: P({ level: "debug" })
 })
-
+    
 sock.ev.on("creds.update", saveCreds)
 
 sock.ev.on("connection.update", ({ connection, qr }) => {
