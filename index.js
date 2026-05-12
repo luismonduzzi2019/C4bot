@@ -1238,6 +1238,37 @@ return
 
     return
 
+ }
+
+if (mensaje.toLowerCase().startsWith("!quitarorganizador")) {
+
+    if (!esAdminPrincipal) {
+        await enviarMensaje(telefono, "❌ Solo el admin principal puede quitar organizadores")
+        return
+    }
+
+    const partes = mensaje.split(" ")
+
+    if (partes.length < 2) {
+        await enviarMensaje(telefono, "❌ Usá: !quitarorganizador 549XXXXXXXXXX")
+        return
+    }
+
+    const numeroQuitar = partes[1].replace(/\D/g, "")
+
+    if (!organizadores.includes(numeroQuitar)) {
+        await enviarMensaje(telefono, "⚠️ Ese número no es organizador")
+        return
+    }
+
+    organizadores = organizadores.filter(n => n !== numeroQuitar)
+
+    await enviarMensaje(
+        telefono,
+        `✅ Organizador quitado\n\n📱 ${numeroQuitar}`
+    )
+
+    return
 }
     
     const comandosValidos = [
@@ -1245,7 +1276,9 @@ return
   "!registrar",
   "!abrirmix",
   "!cerrarmix",
-  "!reiniciarmix",   
+  "!reiniciarmix",
+  "!organizador",
+  "!quitarorganizador",
   "!entrar",   
   "!salir",
   "!mapas",
