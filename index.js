@@ -1165,7 +1165,8 @@ telefono,
 🗳️ !votar MAPA
 
 👑 !organizador NUMERO
-🚫 !quitarorganizador NUMERO`
+🚫 !quitarorganizador NUMERO
+👑 !organizadores`
 )
 
 return
@@ -1269,6 +1270,34 @@ if (mensaje.toLowerCase().startsWith("!quitarorganizador")) {
 
     return
 }
+
+    if (mensaje.toLowerCase() === "!organizadores") {
+
+    if (!esAdminPrincipal && !esOrganizador) {
+        await enviarMensaje(telefono,
+            "❌ Solo administradores pueden usar este comando."
+        )
+        return
+    }
+
+    if (organizadores.length === 0) {
+        await enviarMensaje(telefono,
+            "📭 No hay organizadores registrados."
+        )
+        return
+    }
+
+    const lista = organizadores
+        .map((numero, i) => `${i + 1}. ${numero}`)
+        .join("\n")
+
+    await enviarMensaje(
+        telefono,
+        `👑 ORGANIZADORES\n\n${lista}`
+    )
+
+    return
+}
     
     const comandosValidos = [
   "!ping",
@@ -1278,6 +1307,7 @@ if (mensaje.toLowerCase().startsWith("!quitarorganizador")) {
   "!reiniciarmix",
   "!organizador",
   "!quitarorganizador",
+  "!organizadores",
   "!entrar",   
   "!salir",
   "!mapas",
