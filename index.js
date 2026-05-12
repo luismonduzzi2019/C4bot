@@ -40,13 +40,14 @@ sock.ev.on("creds.update", saveCreds)
 
 sock.ev.on("connection.update", async ({ connection, qr }) => {
 
-if (qr) {
+if (!qr) return
+
 console.log("📱 ESCANEÁ EL QR")
 console.log(qr)
- const code = await sock.requestPairingCode("5493460584275")
-console.log("📱 CÓDIGO DE VINCULACIÓN:", code)   
-}
 
+const code = await sock.requestPairingCode("5493460584275")
+console.log("📲 CÓDIGO DE VINCULACIÓN:", code)
+    
 if (connection === "open") {
 console.log("✅ BOT CONECTADO")
 }
