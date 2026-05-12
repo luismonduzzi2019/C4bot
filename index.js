@@ -902,7 +902,6 @@ return
 }
 
   if (
-    mensaje.toLowerCase() === "!join" ||
     mensaje.toLowerCase() === "!entrar"
 ) {
 
