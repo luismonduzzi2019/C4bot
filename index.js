@@ -17,6 +17,45 @@ function guardarJugadores(jugadores) {
 
 const express = require("express")
 
+const {
+default: makeWASocket,
+useMultiFileAuthState
+} = require("@whiskeysockets/baileys")
+
+const P = require("pino")
+
+async function conectarWhatsApp() {
+
+const { state, saveCreds } = await useMultiFileAuthState("session")
+
+const sock = makeWASocket({
+auth: state,
+logger: P({ level: "silent" })
+})
+
+sock.ev.on("creds.update", saveCreds)
+
+sock.ev.on("connection.update", ({ connection, qr }) => {
+
+if (qr) {
+console.log("📱 ESCANEÁ EL QR")
+console.log(qr)
+}
+
+if (connection === "open") {
+console.log("✅ BOT CONECTADO")
+}
+
+if (connection === "close") {
+console.log("❌ CONEXIÓN CERRADA")
+}
+
+})
+
+}
+
+conectarWhatsApp()
+
 const jugadoresRegistrados = cargarJugadores()
 
 let mixAbierto = false
