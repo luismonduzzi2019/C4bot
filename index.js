@@ -237,6 +237,18 @@ mvp: 0
 
     jugadores.push(nuevoJugador)
 
+  await supabase
+  .from("Jugadores")
+  .insert([
+    {
+      nombre,
+      numero: whatsapp,
+      kills: 0,
+      muertes: 0,
+      victorias: 0
+    }
+  ])
+
     fs.writeFileSync("jugadores.json", JSON.stringify(jugadores))
 
     res.send(`✅ ${nombre} registrado correctamente`)
