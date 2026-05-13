@@ -871,7 +871,7 @@ setTimeout(() => {
 
     if (!mensaje) return res.sendStatus(200)
 
-if (req.body?.fromMe) return res.sendStatus(200)
+// if (req.body?.fromMe) return res.sendStatus(200)
 
   console.log("MENSAJE:", mensaje)
   console.log("RESPONDER A:", telefono)
