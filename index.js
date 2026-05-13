@@ -188,6 +188,16 @@ app.post("/registrar", (req, res) => {
         return res.send("Jugador ya registrado")
     }
 
+  const { data: jugadorExistente } = await supabase
+  .from("Jugadores")
+  .select("*")
+  .eq("numero", whatsapp)
+  .single()
+
+if (jugadorExistente) {
+  return res.send("Jugador ya registrado")
+}
+
     const nuevoJugador = {
         nombre,
         gameid,
