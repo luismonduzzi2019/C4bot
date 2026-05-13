@@ -952,7 +952,7 @@ jugadoresRegistrados[idGame] = {
 
 guardarJugadores(jugadoresRegistrados)
 
-  await supabase
+  const { data, error } = await supabase
 .from("Jugadores")
 .insert([
 {
@@ -966,6 +966,10 @@ puntos: 0,
 rol: "jugador"
 }
 ])
+.select()
+
+console.log("SUPABASE INSERT DATA:", data)
+console.log("SUPABASE INSERT ERROR:", error)
 
   await enviarMensaje(
   telefono,
