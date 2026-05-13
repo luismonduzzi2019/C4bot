@@ -952,6 +952,21 @@ jugadoresRegistrados[idGame] = {
 
 guardarJugadores(jugadoresRegistrados)
 
+  await supabase
+.from("Jugadores")
+.insert([
+{
+nombre: nick,
+numero: numeroLimpio,
+kills: 0,
+muertes: 0,
+victorias: 0,
+derrotas: 0,
+puntos: 0,
+rol: "jugador"
+}
+])
+
   await enviarMensaje(
   telefono,
   `✅ Jugador registrado
