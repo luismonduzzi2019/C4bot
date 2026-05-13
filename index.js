@@ -838,8 +838,6 @@ setTimeout(() => {
 
     if (!mensaje) return res.sendStatus(200)
 
-if (req.body?.fromMe) return res.sendStatus(200)
-
   console.log("MENSAJE:", mensaje)
   console.log("RESPONDER A:", telefono)
 
@@ -918,6 +916,23 @@ jugadoresRegistrados[idGame] = {
 }
 
 guardarJugadores(jugadoresRegistrados)
+
+    const { error } = await supabase
+.from("Jugadores")
+.insert([
+{
+nombre: nick,
+numero: numeroLimpio,
+kills: 0,
+muertes: 0,
+victorias: 0,
+derrotas: 0,
+puntos: 0,
+rol: "jugador"
+}
+])
+
+console.log("SUPABASE ERROR:", error)
 
   await enviarMensaje(
   telefono,
