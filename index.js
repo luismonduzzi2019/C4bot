@@ -950,6 +950,8 @@ jugadoresRegistrados[idGame] = {
   telefono: numeroLimpio
 }
 
+console.log("REGISTRO WHATSAPP PASO POR ACA")
+  
 guardarJugadores(jugadoresRegistrados)
 
   const { data, error } = await supabase
