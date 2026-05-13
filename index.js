@@ -874,7 +874,7 @@ setTimeout(() => {
 // if (req.body?.fromMe) return res.sendStatus(200)
 
   console.log("MENSAJE:", mensaje)
-  console.log("VERSION DEBUG SUPABASE 1")
+  console.log("VERSION DEBUG SUPABASE 2")
   console.log("RESPONDER A:", telefono)
 
 if (mensaje.toLowerCase() === "!ping") {
