@@ -950,7 +950,7 @@ jugadoresRegistrados[idGame] = {
   telefono: numeroLimpio
 }
 
-console.log("REGISTRO WHATSAPP PASO POR ACA")
+console.log("REGISTRO WHATSAPP PASO POR ACA.")
   
 guardarJugadores(jugadoresRegistrados)
 
