@@ -813,6 +813,56 @@ poll: [
     console.log("RESPUESTA ENCUESTA:", texto)
 }
 
+async function cerrarChatGrupo(groupId) {
+
+const respuesta = await fetch(
+`https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/update-group-settings`,
+{
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"Client-Token": process.env.ZAPI_CLIENT_TOKEN
+},
+body: JSON.stringify({
+groupId: groupId,
+action: "announcement"
+})
+}
+)
+
+const texto = await respuesta.text()
+
+console.log("STATUS CERRAR CHAT:", respuesta.status)
+console.log("RESPUESTA CERRAR CHAT:", texto)
+
+}
+
+
+
+async function abrirChatGrupo(groupId) {
+
+const respuesta = await fetch(
+`https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/update-group-settings`,
+{
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"Client-Token": process.env.ZAPI_CLIENT_TOKEN
+},
+body: JSON.stringify({
+groupId: groupId,
+action: "not_announcement"
+})
+}
+)
+
+const texto = await respuesta.text()
+
+console.log("STATUS ABRIR CHAT:", respuesta.status)
+console.log("RESPUESTA ABRIR CHAT:", texto)
+
+}
+
 app.post("/webhook", async (req, res) => {
     
   console.log("📩 WEBHOOK RECIBIDO")
@@ -996,10 +1046,7 @@ if (mensaje.toLowerCase() === "!cerrarchat") {
 
         const groupId = telefono
 
-        await global.sockGlobal.groupSettingUpdate(
-            groupId,
-            "announcement"
-        )
+        await cerrarChatGrupo(groupId)
 
         await enviarMensaje(
             telefono,
@@ -1034,10 +1081,7 @@ console.log("❌ sockGlobal user:", sockGlobal?.user)
 
         const groupId = telefono
 
-        await global.sockGlobal.groupSettingUpdate(
-            groupId,
-            "not_announcement"
-        )
+        await abrirChatGrupo(groupId)
 
         await enviarMensaje(
             telefono,
