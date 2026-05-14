@@ -43,6 +43,8 @@ auth: state,
 logger: P({ level: "silent" })
 })
 
+    global.sockGlobal = sock
+
     sockGlobal = sock
 
 sock.ev.on("creds.update", saveCreds)
@@ -994,7 +996,7 @@ if (mensaje.toLowerCase() === "!cerrarchat") {
 
         const groupId = telefono
 
-        await sockGlobal.groupSettingUpdate(
+        await global.sockGlobal.groupSettingUpdate(
             groupId,
             "announcement"
         )
@@ -1032,7 +1034,7 @@ console.log("❌ sockGlobal user:", sockGlobal?.user)
 
         const groupId = telefono
 
-        await sockGlobal.groupSettingUpdate(
+        await global.sockGlobal.groupSettingUpdate(
             groupId,
             "not_announcement"
         )
