@@ -32,6 +32,8 @@ function guardarJugadores(jugadores) {
 
 const express = require("express")
 
+let sockGlobal = null
+
 async function conectarWhatsApp() {
 
 const { state, saveCreds } = await useMultiFileAuthState("session")
@@ -40,6 +42,8 @@ const sock = makeWASocket({
 auth: state,
 logger: P({ level: "silent" })
 })
+
+    sockGlobal = sock
 
 sock.ev.on("creds.update", saveCreds)
 
@@ -962,6 +966,7 @@ console.log("SUPABASE ERROR:", error)
 
 }
 
+    
 if (mensaje.toLowerCase() === "!abrirmix") {
 
 if (!esAdminPrincipal && !esOrganizador) {
@@ -976,6 +981,41 @@ return
   await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!entrar\n\npara entrar al mix.")
 }
 
+if (mensaje.toLowerCase() === "!cerrarchat") {
+
+    if (!esAdminPrincipal && !esOrganizador) {
+        return enviarMensaje(
+            telefono,
+            "❌ No tienes permisos para usar este comando."
+        )
+    }
+
+    try {
+
+        const groupId = telefono
+
+        await sockGlobal.groupSettingUpdate(
+            groupId,
+            "announcement"
+        )
+
+        await enviarMensaje(
+            telefono,
+            "🔒 Chat cerrado. Solo administradores pueden enviar mensajes."
+        )
+
+    } catch (error) {
+
+        console.log("❌ ERROR CERRANDO CHAT:", error?.message)
+
+        await enviarMensaje(
+            telefono,
+            "❌ Error al cerrar el chat."
+        )
+    }
+}
+    
+    
     if (mensaje.toLowerCase() === "!abrirchat") {
 
     if (!esAdminPrincipal && !esOrganizador) {
@@ -989,9 +1029,9 @@ return
 
         const groupId = telefono
 
-        await sock.groupSettingUpdate(
+        await sockGlobal.groupSettingUpdate(
             groupId,
-            "unlocked"
+            "not_announcement"
         )
 
         await enviarMensaje(
