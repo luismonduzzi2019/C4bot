@@ -1001,7 +1001,8 @@ return
 
     } catch (error) {
 
-        console.log("❌ ERROR ABRIENDO CHAT:", error)
+        console.log("❌ ERROR ABRIENDO CHAT:", error?.message)
+console.log("❌ ERROR COMPLETO ABRIR CHAT:", JSON.stringify(error, null, 2))
 
         await enviarMensaje(
             telefono,
