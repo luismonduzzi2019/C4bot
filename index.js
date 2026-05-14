@@ -871,6 +871,8 @@ console.log("❌ ERROR AL ENVIAR:", error.message)
     
 if (mensaje.startsWith("!registrar")) {
 
+    console.log("ENTRO A REGISTRAR")
+
   const partes = mensaje.split(" ")
 
   if (partes.length < 3) {
