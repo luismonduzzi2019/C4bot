@@ -826,9 +826,10 @@ headers: {
 body: JSON.stringify({
 phone: groupId,
 adminOnlyMessage: true,
-adminOnlySettings: false,
-requireAdminApproval: false,
-adminOnlyAddMember: false
+adminOnlySettings: true,
+requireAdminApproval: true,
+adminOnlyAddMember: true
+})
 })
 }
 )
@@ -855,9 +856,9 @@ headers: {
 body: JSON.stringify({
 phone: groupId,
 adminOnlyMessage: false,
-adminOnlySettings: false,
-requireAdminApproval: false,
-adminOnlyAddMember: false
+adminOnlySettings: true,
+requireAdminApproval: true,
+adminOnlyAddMember: true
 })
 }
 )
