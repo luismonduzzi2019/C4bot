@@ -976,23 +976,38 @@ return
   await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!entrar\n\npara entrar al mix.")
 }
 
-    if (mensaje.toLowerCase() === "!cerrarchat") {
+    if (mensaje.toLowerCase() === "!abrirchat") {
 
-if (!esAdminPrincipal && !esOrganizador) {
-await enviarMensaje(telefono, "❌ Solo administradores pueden cerrar el chat")
-return
-}
+    if (!esAdminPrincipal && !esOrganizador) {
+        return enviarMensaje(
+            telefono,
+            "❌ No tienes permisos para usar este comando."
+        )
+    }
 
-await sock.groupSettingUpdate(
-telefono,
-"announcement"
-)
+    try {
 
-await enviarMensaje(
-telefono,
-"🔒 Chat cerrado\n\nSolo administradores pueden enviar mensajes."
-)
+        const groupId = telefono
 
+        await sock.groupSettingUpdate(
+            groupId,
+            "not_announcement"
+        )
+
+        await enviarMensaje(
+            telefono,
+            "🔓 Chat abierto para todos."
+        )
+
+    } catch (error) {
+
+        console.log("❌ ERROR ABRIENDO CHAT:", error)
+
+        await enviarMensaje(
+            telefono,
+            "❌ Error al abrir el chat."
+        )
+    }
 }
 
   if (
@@ -1253,6 +1268,9 @@ telefono,
 🔄 !reiniciarmix
 ❌ !cerrarmix
 
+🔒 !cerrarchat
+🔓 !abrirchat
+
 🎮 !entrar
 🚪 !salir
 
@@ -1408,7 +1426,9 @@ if (mensaje.toLowerCase().startsWith("!quitarorganizador")) {
   "!mapas",
   "!votar",
   "!votarmapa",
-  "!comandos",   
+  "!comandos", 
+  "!cerrarchat",
+  "!abrirchat",
 ]
 
 if (
