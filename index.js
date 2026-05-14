@@ -848,6 +848,13 @@ setTimeout(() => {
   console.log("MENSAJE:", mensaje)
   console.log("RESPONDER A:", telefono)
 
+    console.log("📩 BODY COMPLETO:", JSON.stringify(req.body, null, 2))
+console.log("📌 telefono:", telefono)
+console.log("📌 mensaje:", mensaje)
+console.log("📌 from:", req.body?.from)
+console.log("📌 chatId:", req.body?.chatId)
+console.log("📌 groupId:", req.body?.groupId)
+
 if (mensaje.toLowerCase() === "!ping") {
 
 const inicio = Date.now()
