@@ -824,8 +824,11 @@ headers: {
 "Client-Token": process.env.ZAPI_CLIENT_TOKEN
 },
 body: JSON.stringify({
-groupId: groupId,
-action: "announcement"
+phone: groupId,
+adminOnlyMessage: true,
+adminOnlySettings: false,
+requireAdminApproval: false,
+adminOnlyAddMember: false
 })
 }
 )
@@ -850,8 +853,11 @@ headers: {
 "Client-Token": process.env.ZAPI_CLIENT_TOKEN
 },
 body: JSON.stringify({
-groupId: groupId,
-action: "not_announcement"
+phone: groupId,
+adminOnlyMessage: false,
+adminOnlySettings: false,
+requireAdminApproval: false,
+adminOnlyAddMember: false
 })
 }
 )
