@@ -991,7 +991,7 @@ return
 
         await sock.groupSettingUpdate(
             groupId,
-            "not_announcement"
+            "unlocked"
         )
 
         await enviarMensaje(
