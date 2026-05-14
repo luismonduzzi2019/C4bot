@@ -1006,7 +1006,10 @@ if (mensaje.toLowerCase() === "!cerrarchat") {
 
     } catch (error) {
 
-        console.log("❌ ERROR CERRANDO CHAT:", error?.message)
+        console.log("❌ ERROR CERRANDO CHAT MESSAGE:", error?.message)
+console.log("❌ ERROR CERRANDO CHAT STACK:", error?.stack)
+console.log("❌ sockGlobal existe?:", !!sockGlobal)
+console.log("❌ sockGlobal user:", sockGlobal?.user)
 
         await enviarMensaje(
             telefono,
@@ -1041,8 +1044,10 @@ if (mensaje.toLowerCase() === "!cerrarchat") {
 
     } catch (error) {
 
-        console.log("❌ ERROR ABRIENDO CHAT:", error?.message)
-console.log("❌ ERROR COMPLETO ABRIR CHAT:", JSON.stringify(error, null, 2))
+        console.log("❌ ERROR ABRIENDO CHAT MESSAGE:", error?.message)
+console.log("❌ ERROR ABRIENDO CHAT STACK:", error?.stack)
+console.log("❌ sockGlobal existe?:", !!sockGlobal)
+console.log("❌ sockGlobal user:", sockGlobal?.user)
 
         await enviarMensaje(
             telefono,
