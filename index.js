@@ -779,6 +779,36 @@ async function enviarMensaje(telefone, mensagem) {
     console.log("RESPOSTA ZAPI:", texto)
 }
 
+async function reaccionarMensaje(telefono, messageId, reaction) {
+try {
+if (!messageId) return
+
+const resposta = await fetch(
+`https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-reaction`,
+{
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"Client-Token": process.env.ZAPI_CLIENT_TOKEN
+},
+body: JSON.stringify({
+phone: telefono,
+reaction: reaction,
+messageId: messageId
+})
+}
+)
+
+const texto = await resposta.text()
+
+console.log("STATUS REACTION:", resposta.status)
+console.log("RESPUESTA REACTION:", texto)
+
+} catch (error) {
+console.log("ERROR REACTION:", error?.message)
+}
+}
+
 async function enviarEncuesta(telefone) {
 
     const resposta = await fetch(
@@ -1708,6 +1738,9 @@ if (
   mensaje.startsWith("!") &&
   !comandosValidos.some(cmd => mensaje.toLowerCase().startsWith(cmd))
 ) {
+
+await reaccionarMensaje(telefono, req.body?.messageId, "❌")
+    
   await enviarMensaje(
     telefono,
     "❌ Comando no reconocido.\n\nUsá !comandos para ver la lista."
