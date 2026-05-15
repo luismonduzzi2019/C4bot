@@ -1045,6 +1045,23 @@ let error = null
 
 if (jugadorExistente) {
 
+    if (
+jugadorExistente.nombre === nick &&
+jugadorExistente.numero === numeroLimpio &&
+jugadorExistente.idgame === idGame
+) {
+await enviarMensaje(
+telefono,
+`⚠️ Ya estás registrado.
+
+🎮 Nick: ${nick}
+🆔 ID: ${idGame}
+📱 Número: ${numeroLimpio}`
+)
+
+return
+}
+
 const resultado = await supabase
 .from("Jugadores")
 .update({
