@@ -1683,7 +1683,7 @@ if (
 
     await enviarMensaje(
         telefono,
-        "⛔ Chat bloqueado.\n\nSolo se permite:\n• !registrar\n• !entrar\n• !salir"
+        "❌ Solo se permiten comandos en este grupo.\n\nUsá !comandos para ver la lista disponible."
     )
 
     return
