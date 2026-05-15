@@ -1663,20 +1663,32 @@ if (!mensaje.startsWith("!") && !req.body?.fromApi) {
     if (antiSpam[telefonoJugador].length >= 4) {
 
         usuariosMuteados[telefonoJugador] =
-            ahora + (30 * 60 * 1000)
+            ahora + (12 * 60 * 60 * 1000)
 
         await enviarMensaje(
-            telefono,
-            `🚫 Usuario silenciado 30 minutos por spam.\n\n📱 ${telefonoJugador}`
-        )
+telefono,
+`⛔ Usuario silenciado 12 horas por spam.
+
+📱 ${telefonoJugador}
+
+⚠️ Motivo:
+Enviar demasiados mensajes no permitidos en el grupo mix.`
+)
 
         return
     }
 
-    await enviarMensaje(
-        telefono,
-        "❌ Solo se permiten comandos en este grupo.\n\nUsá !comandos para ver la lista disponible."
-    )
+ await enviarMensaje(
+telefono,
+`❌ Solo se permiten comandos en este grupo.
+
+⚠️ Advertencia:
+Si enviás 4 mensajes que no sean comandos, serás bloqueado por 30 minutos.
+
+📊 Mensajes no permitidos: ${antiSpam[telefonoJugador].length}/4
+
+Usá !comandos para ver la lista disponible.`
+)
 
     return
 }
