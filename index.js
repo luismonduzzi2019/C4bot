@@ -907,6 +907,38 @@ app.post("/webhook", async (req, res) => {
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone
 
+if (req.body?.notification === "GROUP_PARTICIPANT_ADD") {
+
+await enviarMensaje(
+telefono,
+`👋 Bienvenido al grupo Mix C4 🇦🇷
+
+📋 REGLAS IMPORTANTES
+
+• Registrate con tu NICK REAL e ID REAL.
+• Respetá MAYÚSCULAS y minúsculas EXACTAS.
+• No uses espacios raros.
+• El nombre debe coincidir con estadísticas y capturas.
+• 4 mensajes no permitidos = mute por 12 horas.
+
+📝 REGISTRO
+
+!registrar NICK ID
+
+Ejemplo:
+!registrar Colt 139527319
+
+🎮 COMANDOS
+
+!registrar
+!entrar
+!salir
+!comandos`
+)
+
+return
+}
+    
 const esGrupo = req.body?.isGroup || String(telefono).includes("-group")
     
     const telefonoJugador =
