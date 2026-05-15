@@ -1231,6 +1231,8 @@ return
   chatMixActivo = true
   jugadoresMix = []
 
+await abrirChatGrupo()
+    
   await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!entrar\n\npara entrar al mix.")
 }
 
