@@ -1040,7 +1040,7 @@ Ejemplo:
 if (yaRegistrado) {
 
     if (
-yaRegistrado.nick.toLowerCase() === nick.toLowerCase()
+yaRegistrado.nick.toLowerCase() === nick.toLowerCase() &&
 yaRegistrado.idGame === idGame &&
 String(yaRegistrado.telefono).replace(/\D/g, "") === numeroLimpio
 ) {
