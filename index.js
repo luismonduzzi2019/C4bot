@@ -1057,7 +1057,7 @@ if (mensaje.startsWith("!registrar")) {
 
     console.log("ENTRO A REGISTRAR")
 
-  const partes = mensaje.split(" ")
+  const partes = mensaje.trim().replace(/\s+/g, " ").split(" ")
 
   if (partes.length < 3) {
 
@@ -1076,7 +1076,30 @@ Ejemplo:
   }
 
   const nick = partes[1]
-  const idGame = partes[2]
+  const idGame = String(partes[2]).replace(/\D/g, "")
+
+    if (!nick || nick.trim().length < 2 || /\s/.test(nick)) {
+await reaccionarMensaje(telefono, req.body?.messageId, "❌")
+
+await enviarMensaje(
+telefono,
+`❌ Nick inválido.
+
+Usá tu nick EXACTO del juego, sin espacios.
+
+✅ Permitido:
+N1ty
+N1ty77
+メKTH
+ØColt
+乂N1ty77乂
+
+❌ No permitido:
+Nity xd`
+)
+
+return
+}
 
     if (!/^\d+$/.test(idGame)) {
 await reaccionarMensaje(telefono, req.body?.messageId, "❌")
