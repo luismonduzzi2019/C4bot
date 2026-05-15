@@ -830,7 +830,6 @@ adminOnlySettings: true,
 requireAdminApproval: true,
 adminOnlyAddMember: true
 })
-})
 }
 )
 
