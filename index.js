@@ -970,6 +970,17 @@ const horas = Math.floor(restante / (1000 * 60 * 60))
 const minutos = Math.ceil((restante % (1000 * 60 * 60)) / (1000 * 60))
 
 await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
+
+global.ultimosAvisosMute = global.ultimosAvisosMute || {}
+
+if (
+global.ultimosAvisosMute[telefonoJugador] &&
+Date.now() - global.ultimosAvisosMute[telefonoJugador] < 30000
+) {
+return
+}
+
+global.ultimosAvisosMute[telefonoJugador] = Date.now()
         
 await enviarMensaje(
 telefono,
