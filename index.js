@@ -1039,6 +1039,25 @@ Ejemplo:
 
 if (yaRegistrado) {
 
+    if (
+yaRegistrado.nick === nick &&
+yaRegistrado.idGame === idGame &&
+String(yaRegistrado.telefono).replace(/\D/g, "") === numeroLimpio
+) {
+await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
+
+await enviarMensaje(
+telefono,
+`⚠️ Ya estás registrado.
+
+🎮 Nick: ${nick}
+🆔 ID: ${idGame}
+📱 Número: ${numeroLimpio}`
+)
+
+return
+}
+
 jugadoresRegistrados[telefonoJugador] = {
 nick,
 idGame,
