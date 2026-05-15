@@ -1011,6 +1011,7 @@ guardarJugadores(jugadoresRegistrados)
 {
 nombre: nick,
 numero: numeroLimpio,
+idgame: idGame,
 kills: 0,
 muertes: 0,
 victorias: 0,
