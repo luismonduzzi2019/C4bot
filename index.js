@@ -919,6 +919,10 @@ console.log("📌 groupId:", req.body?.groupId)
 
 if (mensaje.toLowerCase() === "!ping") {
 
+    if (!esAdminPrincipal && !esOrganizador) {
+return
+    }
+
 const inicio = Date.now()
 
 try {
