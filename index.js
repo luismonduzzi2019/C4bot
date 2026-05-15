@@ -1040,7 +1040,7 @@ Ejemplo:
 if (yaRegistrado) {
 
     if (
-yaRegistrado.nick === nick &&
+yaRegistrado.nick.toLowerCase() === nick.toLowerCase()
 yaRegistrado.idGame === idGame &&
 String(yaRegistrado.telefono).replace(/\D/g, "") === numeroLimpio
 ) {
@@ -1099,7 +1099,7 @@ let error = null
 if (jugadorExistente) {
 
     if (
-jugadorExistente.nombre === nick &&
+jugadorExistente.nombre.toLowerCase() === nick.toLowerCase()
 jugadorExistente.numero === numeroLimpio &&
 jugadorExistente.idgame === idGame
 ) {
