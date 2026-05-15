@@ -1370,6 +1370,16 @@ ${lista || "Lista vacía."}`
 mixAbierto = false
 chatMixActivo = false
 
+      await cerrarChatGrupo()
+
+await enviarMensaje(
+telefono,
+`🔒 Chat cerrado automáticamente.
+
+🎮 Mix completa.
+📋 Generando equipos...`
+)
+
 const mezclados = [...jugadoresMix].sort(() => Math.random() - 0.5)
 const equipoA = mezclados.slice(0, 5)
 const equipoB = mezclados.slice(5, 10)
