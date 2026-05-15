@@ -1035,6 +1035,69 @@ console.log("SUPABASE ERROR:", error)
 
 }
 
+    if (mensaje.startsWith("!editregistro")) {
+
+const partes = mensaje.split(" ")
+
+if (partes.length < 3) {
+await enviarMensaje(
+telefono,
+`✏️ Formato incorrecto
+
+Usá:
+!editregistro NICK ID
+
+Ejemplo:
+!editregistro Colt 123456`
+)
+return
+}
+
+const nick = partes[1]
+const idGame = partes[2]
+
+const numeroLimpio = String(telefonoJugador).replace(/\D/g, "")
+
+const { data: jugadores } = await supabase
+.from("Jugadores")
+.select("*")
+
+const jugadorExistente = jugadores.find(j =>
+j.numero === numeroLimpio ||
+j.nombre === nick ||
+j.idgame === idGame
+)
+
+if (!jugadorExistente) {
+await enviarMensaje(
+telefono,
+"❌ No se encontró un perfil para actualizar."
+)
+return
+}
+
+const { error } = await supabase
+.from("Jugadores")
+.update({
+nombre: nick,
+numero: numeroLimpio,
+idgame: idGame
+})
+.eq("id", jugadorExistente.id)
+
+console.log("EDIT REGISTRO ERROR:", error)
+
+await enviarMensaje(
+telefono,
+`♻️ Registro actualizado
+
+🎮 Nick: ${nick}
+🆔 ID: ${idGame}
+📱 Número: ${numeroLimpio}`
+)
+
+return
+}
     
 if (mensaje.toLowerCase() === "!abrirmix") {
 
