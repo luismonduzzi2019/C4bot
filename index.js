@@ -1413,6 +1413,7 @@ if (mensaje.toLowerCase() === "!cerrarmix") {
 }
 
     mixAbierto = false
+    chatMixActivo = false
     jugadoresMix = []
 
     await enviarMensaje(
