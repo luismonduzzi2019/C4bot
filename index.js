@@ -1636,15 +1636,7 @@ if (
   )
 }
 
-if (
-    chatMixActivo &&
-    !mensaje.startsWith("!") &&
-    mensaje.toLowerCase() !== "!registrar" &&
-    mensaje.toLowerCase() !== "!entrar" &&
-    mensaje.toLowerCase() !== "!salir" &&
-    !esAdminPrincipal &&
-    !esOrganizador
-) {
+if (!mensaje.startsWith("!")) {
 
     const ahora = Date.now()
 
