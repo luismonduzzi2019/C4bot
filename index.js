@@ -1336,6 +1336,8 @@ const jugador = Object.values(jugadoresRegistrados).find(j => {
 
   jugadoresMix.push(jugador)
 
+      await reaccionarMensaje(telefono, req.body?.messageId, "✅")
+
   let lista = ""
 
   jugadoresMix.forEach((j, index) => {
@@ -1524,6 +1526,8 @@ const indexJugador = jugadoresMix.findIndex(
     lista += `${index + 1}. ${j.nick}\n`
   })
 
+await reaccionarMensaje(telefono, req.body?.messageId, "🚪")
+    
   await enviarMensaje(
     telefono,
     `🚪 ${jugador.nick} salió del mix.
