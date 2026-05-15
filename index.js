@@ -1045,6 +1045,8 @@ telefono: numeroLimpio
 
 guardarJugadores(jugadoresRegistrados)
 
+await reaccionarMensaje(telefono, req.body?.messageId, "♻️")
+    
 await enviarMensaje(
 telefono,
 `♻️ Registro actualizado.
@@ -1080,6 +1082,9 @@ jugadorExistente.nombre === nick &&
 jugadorExistente.numero === numeroLimpio &&
 jugadorExistente.idgame === idGame
 ) {
+
+        await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
+        
 await enviarMensaje(
 telefono,
 `⚠️ Ya estás registrado.
@@ -1131,6 +1136,8 @@ rol: "jugador"
 ])
 
 error = resultado.error
+
+    await reaccionarMensaje(telefono, req.body?.messageId, "📝")
 
 await enviarMensaje(
 telefono,
