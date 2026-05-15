@@ -909,6 +909,10 @@ app.post("/webhook", async (req, res) => {
 
 if (req.body?.notification === "GROUP_PARTICIPANT_ADD") {
 
+if (!req.body?.notificationParameters?.length) {
+return
+}
+    
 await enviarMensaje(
 telefono,
 `👋 Bienvenido al grupo Mix C4 🇦🇷
