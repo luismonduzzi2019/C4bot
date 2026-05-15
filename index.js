@@ -1021,7 +1021,8 @@ guardarJugadores(jugadoresRegistrados)
 .from("Jugadores")
 .select("*")
 .or(`numero.eq.${numeroLimpio},idgame.eq.${idGame}`)
-.single()
+.limit(1)
+.maybeSingle()
 
 let error = null
 
