@@ -1636,7 +1636,7 @@ if (
   )
 }
 
-if (!mensaje.startsWith("!")) {
+if (!mensaje.startsWith("!") && !req.body?.fromApi) {
 
     const ahora = Date.now()
 
