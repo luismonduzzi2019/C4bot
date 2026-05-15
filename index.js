@@ -977,14 +977,24 @@ Ejemplo:
 )
 
 if (yaRegistrado) {
-    await enviarMensaje(
-        telefono,
-        `⚠️ Ya estás registrado.
 
-🎮 Nick: ${yaRegistrado.nick}
-🆔 ID: ${yaRegistrado.idGame}`
-    )
-    return
+jugadoresRegistrados[telefonoJugador] = {
+nick,
+idGame,
+telefono: numeroLimpio
+}
+
+guardarJugadores(jugadoresRegistrados)
+
+await enviarMensaje(
+telefono,
+`♻️ Registro actualizado.
+
+🎮 Nick: ${nick}
+🆔 ID: ${idGame}`
+)
+
+return
 }
     
 jugadoresRegistrados[idGame] = {
