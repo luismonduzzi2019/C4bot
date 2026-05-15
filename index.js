@@ -1017,7 +1017,39 @@ jugadoresRegistrados[idGame] = {
 
 guardarJugadores(jugadoresRegistrados)
 
-    const { error } = await supabase
+    const { data: jugadorExistente } = await supabase
+.from("Jugadores")
+.select("*")
+.or(`numero.eq.${numeroLimpio},idgame.eq.${idGame}`)
+.single()
+
+let error = null
+
+if (jugadorExistente) {
+
+const resultado = await supabase
+.from("Jugadores")
+.update({
+nombre: nick,
+numero: numeroLimpio,
+idgame: idGame
+})
+.eq("id", jugadorExistente.id)
+
+error = resultado.error
+
+await enviarMensaje(
+telefono,
+`♻️ Registro actualizado
+
+🎮 Nick: ${nick}
+🆔 ID: ${idGame}
+📱 Número: ${numeroLimpio}`
+)
+
+} else {
+
+const resultado = await supabase
 .from("Jugadores")
 .insert([
 {
@@ -1033,17 +1065,20 @@ rol: "jugador"
 }
 ])
 
-console.log("SUPABASE ERROR:", error)
+error = resultado.error
 
-  await enviarMensaje(
-  telefono,
-  `✅ Jugador registrado
+await enviarMensaje(
+telefono,
+`✅ Jugador registrado
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
 📱 Número: ${numeroLimpio}`
-      
 )
+
+}
+
+console.log("SUPABASE ERROR:", error)
 
 }
 
