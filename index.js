@@ -1801,8 +1801,6 @@ return
 }
 
 if (antiSpam[telefonoJugador].length >= 4) {
-    
-    if (antiSpam[telefonoJugador].length >= 4) {
 
         usuariosMuteados[telefonoJugador] =
             ahora + (12 * 60 * 60 * 1000)
