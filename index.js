@@ -1355,9 +1355,10 @@ const jugador = Object.values(jugadoresRegistrados).find(j => {
     return
   }
 
-  const yaEsta = jugadoresMix.find(
-    j => j.telefono === telefono
-  )
+   const yaEsta = jugadoresMix.find(j =>
+String(j.telefono).replace(/\D/g, "") === numeroActual ||
+String(j.idGame || j.idgame).replace(/\D/g, "") === String(jugador.idGame || jugador.idgame).replace(/\D/g, "")
+)
 
   if (yaEsta) {
     await enviarMensaje(telefono, "⚠️ Ya estás dentro del mix.")
