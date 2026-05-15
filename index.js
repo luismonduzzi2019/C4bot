@@ -1437,8 +1437,11 @@ if (mensaje.toLowerCase() === "!reiniciarmix") {
     return
 }
 
+await abrirChatGrupo()
+    
     jugadoresMix = []
     mixAbierto = true
+    chatMixActivo = true
 
     await enviarMensaje(
         telefono,
