@@ -1429,33 +1429,52 @@ ${lista || "Lista vacía."}`
 
     if (mensaje.toLowerCase() === "!comandos") {
 
+if (esAdminPrincipal || esOrganizador) {
+
 await enviarMensaje(
 telefono,
-`📋 COMANDOS DISPONIBLES
+`📋 COMANDOS ORGANIZADOR
 
-📌 !ping
-📥 !registrar NICK ID
+🏓 !ping
 
 🔥 !abrirmix
-🔄 !reiniciarmix
 ❌ !cerrarmix
+🔁 !reiniciarmix
 
 🔒 !cerrarchat
 🔓 !abrirchat
 
-🎮 !entrar
-🚪 !salir
-
-🗺️ !mapas
-🗳️ !votar MAPA
-
 👑 !organizador NUMERO
 🚫 !quitarorganizador NUMERO
-👑 !organizadores`
+👑 !organizadores
+
+🧪 !fake10
+
+👥 COMANDOS JUGADOR
+
+📌 !registrar NICK ID
+✏️ !editregistro NICK ID
+
+🎮 !entrar
+🚪 !salir`
 )
 
 return
 }
+
+await enviarMensaje(
+telefono,
+`📋 COMANDOS JUGADOR
+
+📌 !registrar NICK ID
+✏️ !editregistro NICK ID
+
+🎮 !entrar
+🚪 !salir`
+)
+
+return
+    }
 
 if (mensaje.toLowerCase() === "!mapas") {
 
