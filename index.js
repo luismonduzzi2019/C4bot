@@ -933,6 +933,8 @@ const restante = usuariosMuteados[telefonoJugador] - Date.now()
 const horas = Math.floor(restante / (1000 * 60 * 60))
 const minutos = Math.ceil((restante % (1000 * 60 * 60)) / (1000 * 60))
 
+await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
+        
 await enviarMensaje(
 telefono,
 `⛔ Estás bloqueado temporalmente.
@@ -1782,13 +1784,34 @@ if (!mensaje.startsWith("!") && !req.body?.fromApi) {
             t => ahora - t < 30000
         )
 
+   if (antiSpam[telefonoJugador].length === 3) {
+
+await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
+
+await enviarMensaje(
+telefono,
+`⚠️ Advertencia por spam.
+
+📱 ${telefonoJugador}
+
+Si seguís enviando mensajes no permitidos serás silenciado temporalmente.`
+)
+
+return
+}
+
+if (antiSpam[telefonoJugador].length >= 4) {
+    
     if (antiSpam[telefonoJugador].length >= 4) {
 
         usuariosMuteados[telefonoJugador] =
             ahora + (12 * 60 * 60 * 1000)
 
+await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
+        
         await enviarMensaje(
 telefono,
+            
 `⛔ Usuario silenciado 12 horas por spam.
 
 📱 ${telefonoJugador}
