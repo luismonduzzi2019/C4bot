@@ -1099,7 +1099,7 @@ let error = null
 if (jugadorExistente) {
 
     if (
-jugadorExistente.nombre.toLowerCase() === nick.toLowerCase()
+jugadorExistente.nombre.toLowerCase() === nick.toLowerCase() &&
 jugadorExistente.numero === numeroLimpio &&
 jugadorExistente.idgame === idGame
 ) {
