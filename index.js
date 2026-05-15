@@ -1683,7 +1683,7 @@ telefono,
 `❌ Solo se permiten comandos en este grupo.
 
 ⚠️ Advertencia:
-Si enviás 4 mensajes que no sean comandos, serás bloqueado por 30 minutos.
+Si enviás 4 mensajes que no sean comandos, serás bloqueado por 12 horas.
 
 📊 Mensajes no permitidos: ${antiSpam[telefonoJugador].length}/4
 
