@@ -877,6 +877,8 @@ app.post("/webhook", async (req, res) => {
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone
 
+const esGrupo = req.body?.isGroup || String(telefono).includes("-group")
+    
     const telefonoJugador =
     req.body?.participantPhone ||
     req.body?.senderPhone ||
@@ -887,6 +889,12 @@ app.post("/webhook", async (req, res) => {
     const numeroActual = String(telefonoJugador).replace(/\D/g, "")
 const esAdminPrincipal = numeroActual === adminPrincipal
 const esOrganizador = organizadores.includes(numeroActual)
+
+    if (!esGrupo && !esAdminPrincipal) {
+    return res.status(200).json({
+        status: true
+    })
+    }
 
     const esAdmin = req.body?.isAdmin || false
 
