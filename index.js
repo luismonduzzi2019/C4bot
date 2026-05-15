@@ -896,6 +896,23 @@ const esOrganizador = organizadores.includes(numeroActual)
     })
     }
 
+    if (usuariosMuteados[telefonoJugador] && usuariosMuteados[telefonoJugador] > Date.now()) {
+
+const restante = usuariosMuteados[telefonoJugador] - Date.now()
+
+const horas = Math.floor(restante / (1000 * 60 * 60))
+const minutos = Math.ceil((restante % (1000 * 60 * 60)) / (1000 * 60))
+
+await enviarMensaje(
+telefono,
+`⛔ Estás bloqueado temporalmente.
+
+⏳ Tiempo restante: ${horas}h ${minutos}m`
+)
+
+return
+}
+    
     const esAdmin = req.body?.isAdmin || false
 
     const marcaMensaje = req.body?.messageTimestamp || req.body?.timestamp || req.body?.momment || Date.now()
