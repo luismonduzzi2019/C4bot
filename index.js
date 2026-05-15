@@ -1067,6 +1067,25 @@ Ejemplo:
   const nick = partes[1]
   const idGame = partes[2]
 
+    if (!/^\d+$/.test(idGame)) {
+await reaccionarMensaje(telefono, req.body?.messageId, "❌")
+
+await enviarMensaje(
+telefono,
+`❌ Formato incorrecto.
+
+Usá:
+!registrar NICK ID
+
+Ejemplo:
+!registrar Colt 139527319
+
+⚠️ El ID debe ser numérico y real.`
+)
+
+return
+}
+
    const numeroLimpio = String(telefonoJugador).replace(/\D/g, "")
 
     const yaRegistrado = Object.values(jugadoresRegistrados).find(j =>
