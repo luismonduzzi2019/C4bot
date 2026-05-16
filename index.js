@@ -809,7 +809,7 @@ console.log("ERROR REACTION:", error?.message)
 }
 }
 
-async function enviarEncuesta(telefone) {
+async function enviarEncuesta(groupId) {
 
     const resposta = await fetch(
     `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-poll`,
@@ -821,7 +821,7 @@ async function enviarEncuesta(telefone) {
         },
 
         body: JSON.stringify({
-            phone: telefone,
+            phone: groupId,
 message: "🗺️ PICK MAPA",
 pollMaxOptions: 1,
 poll: [
@@ -842,10 +842,10 @@ poll: [
     console.log("STATUS ENCUESTA:", resposta.status)
     console.log("RESPUESTA ENCUESTA:", texto)
 
-console.log("🔒 INTENTANDO CERRAR CHAT:", telefono)
-    console.log("TELEFONO PARA CERRAR:", telefono)
+console.log("🔒 INTENTANDO CERRAR CHAT:", groupId)
+console.log("TELEFONO PARA CERRAR:", groupId)
 
-    await cerrarChatGrupo(telefono)
+await cerrarChatGrupo(groupId)
 
 chatMixActivo = false
 
