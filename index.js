@@ -919,12 +919,33 @@ console.log("TELEFONO:", telefono)
 const captionImagen = req.body?.image?.caption || ""
 const imageUrl = req.body?.image?.imageUrl || ""
 
-const comandoResultado = captionImagen.trim().toLowerCase()
+const comandoResultado = captionImagen.trim().toLowerCase().replace(/\s+/g, "")
 
     if (
 imageUrl &&
 ["!resultadomix", "!resultadocw"].includes(comandoResultado)
 ) {
+
+global.resultadosProcesados = global.resultadosProcesados || {}
+
+const marcaResultado =
+req.body?.messageId ||
+req.body?.momment ||
+req.body?.timestamp ||
+imageUrl
+
+const claveResultado = `${telefono}_${marcaResultado}_${comandoResultado}`
+
+if (global.resultadosProcesados[claveResultado]) {
+return res.sendStatus(200)
+}
+
+global.resultadosProcesados[claveResultado] = true
+
+setTimeout(() => {
+delete global.resultadosProcesados[claveResultado]
+}, 5 * 60 * 1000)
+        
 const modo =
 comandoResultado === "!resultadocw" ? "cw" :
 "mix"
@@ -1074,7 +1095,6 @@ const comandosMix = [
 "!registrar",
 "!entrar",
 "!salir",
-"!ping",
 "!cerrarchat",
 "!abrirchat",
 "!comandos",
