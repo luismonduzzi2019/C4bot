@@ -2061,7 +2061,7 @@ if (!mensaje.startsWith("!") && !req.body?.fromApi) {
    if (antiSpam[numeroActual].length === 3) {
 
 await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
-
+       
 await enviarMensaje(
 telefono,
 `⚠️ Advertencia por spam.
