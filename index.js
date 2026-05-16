@@ -1983,7 +1983,7 @@ if (!mensaje.startsWith("!") && !req.body?.fromApi) {
 
     antiSpam[telefonoJugador] =
         antiSpam[telefonoJugador].filter(
-            t => ahora - t < 30000
+            t => ahora - t < 12 * 60 * 60 * 1000
         )
 
    if (antiSpam[numeroActual].length === 3) {
