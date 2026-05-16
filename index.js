@@ -871,7 +871,7 @@ async function cerrarChatGrupo(groupId) {
   )
 
   const texto = await respuesta.text()
-
+    
   console.log("STATUS CERRAR CHAT:", respuesta.status)
   console.log("RESPUESTA CERRAR CHAT:", texto)
 }
