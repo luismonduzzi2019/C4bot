@@ -912,6 +912,19 @@ if (req.body?.notification === "GROUP_PARTICIPANT_ADD") {
 if (!req.body?.notificationParameters?.length) {
 return
 }
+
+    const numeroNuevo = req.body.notificationParameters?.[0]
+
+global.ultimasBienvenidas = global.ultimasBienvenidas || {}
+
+if (
+global.ultimasBienvenidas[numeroNuevo] &&
+Date.now() - global.ultimasBienvenidas[numeroNuevo] < 60000
+) {
+return
+}
+
+global.ultimasBienvenidas[numeroNuevo] = Date.now()
     
 await enviarMensaje(
 telefono,
@@ -921,8 +934,8 @@ telefono,
 
 • Registrate con tu NICK REAL e ID REAL.
 • Respetá MAYÚSCULAS y minúsculas EXACTAS.
-• No uses espacios raros.
-• El nombre debe coincidir con estadísticas y capturas.
+• Podés usar espacios si tu nick real los tiene.
+• El nombre debe coincidir exactamente con capturas de resultados.
 • 4 mensajes no permitidos = mute por 12 horas.
 
 📝 REGISTRO
