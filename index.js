@@ -844,7 +844,7 @@ poll: [
 
 console.log("🔒 INTENTANDO CERRAR CHAT:", telefono)
 
-await cerrarChatGrupo(telefono)
+await cerrarChatGrupo(req.body?.chatId)
 
 chatMixActivo = false
 
