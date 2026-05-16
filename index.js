@@ -950,6 +950,12 @@ const modo =
 comandoResultado === "!resultadocw" ? "cw" :
 "mix"
 
+        await reaccionarMensaje(
+telefono,
+req.body?.messageId,
+"✅"
+)
+        
 await enviarMensaje(
 telefono,
 `📸 Captura recibida.
