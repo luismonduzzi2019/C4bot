@@ -923,12 +923,11 @@ const comandoResultado = captionImagen.trim().toLowerCase()
 
     if (
 imageUrl &&
-["!resultadomix", "!resultadocw", "!resultadotorneo"].includes(comandoResultado)
+["!resultadomix", "!resultadocw"].includes(comandoResultado)
 ) {
 const modo =
-comandoResultado === "!resultadomix" ? "mix" :
 comandoResultado === "!resultadocw" ? "cw" :
-"torneo"
+"mix"
 
 await enviarMensaje(
 telefono,
@@ -1079,6 +1078,9 @@ const comandosMix = [
 "!cerrarchat",
 "!abrirchat",
 "!comandos"
+"!abrirmix",
+"!cerrarmix",
+"!fake10"
 ]
 
 const comandosStats = [
@@ -1480,7 +1482,6 @@ console.log("❌ sockGlobal user:", sockGlobal?.user)
         )
     }
 }
-    
     
     if (mensaje.toLowerCase() === "!abrirchat") {
 
