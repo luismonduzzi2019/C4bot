@@ -1077,7 +1077,7 @@ const comandosMix = [
 "!ping",
 "!cerrarchat",
 "!abrirchat",
-"!comandos"
+"!comandos",
 "!abrirmix",
 "!cerrarmix",
 "!fake10"
