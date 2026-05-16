@@ -1066,7 +1066,7 @@ console.log("❌ ERROR AL ENVIAR:", error.message)
 
 }
     
-if (mensaje.startsWith("!registrar")) {
+if (mensaje.trim().toLowerCase().startsWith("!registrar")) {
 
     console.log("ENTRO A REGISTRAR")
 
