@@ -867,10 +867,7 @@ headers: {
 },
 body: JSON.stringify({
 phone: groupId,
-adminOnlyMessage: true,
-adminOnlySettings: true,
-requireAdminApproval: true,
-adminOnlyAddMember: true
+action: "announcement"
 })
 }
 )
