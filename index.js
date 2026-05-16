@@ -854,51 +854,11 @@ console.log("🔒 CHAT CERRADO AUTOMÁTICAMENTE")
 }
 
 async function cerrarChatGrupo(groupId) {
-
-const respuesta = await fetch(
-`https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/groups`,
-{
-method: "POST",
-headers: {
-"Content-Type": "application/json",
-"Client-Token": process.env.ZAPI_CLIENT_TOKEN
-},
-body: JSON.stringify({
-phone: groupId,
-adminOnlyMessage: true
-})
-}
-)
-
-const texto = await respuesta.text()
-
-console.log("STATUS CERRAR CHAT:", respuesta.status)
-console.log("RESPUESTA CERRAR CHAT:", texto)
-
+  await sockGlobal.groupSettingUpdate(groupId, "announcement")
 }
 
 async function abrirChatGrupo(groupId) {
-
-const respuesta = await fetch(
-`https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/groups`,
-{
-method: "POST",
-headers: {
-"Content-Type": "application/json",
-"Client-Token": process.env.ZAPI_CLIENT_TOKEN
-},
-body: JSON.stringify({
-phone: groupId,
-adminOnlyMessage: false
-})
-}
-)
-
-const texto = await respuesta.text()
-
-console.log("STATUS ABRIR CHAT:", respuesta.status)
-console.log("RESPUESTA ABRIR CHAT:", texto)
-
+  await sockGlobal.groupSettingUpdate(groupId, "not_announcement")
 }
 
 app.post("/webhook", async (req, res) => {
