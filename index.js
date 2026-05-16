@@ -1059,6 +1059,13 @@ if (mensaje.startsWith("!registrar")) {
 
   const partes = mensaje.trim().replace(/\s+/g, " ").split(" ")
 
+const idGame = String(partes[partes.length - 1]).replace(/\D/g, "")
+
+const nick = partes
+.slice(1, partes.length - 1)
+.join(" ")
+.trim()
+    
   if (partes.length < 3) {
 
     await enviarMensaje(
@@ -1075,24 +1082,28 @@ Ejemplo:
     return
   }
 
-  const nick = partes[1]
-  const idGame = String(partes[2]).replace(/\D/g, "")
-
-    if (!nick || nick.trim().length < 2 || /\s/.test(nick)) {
+if (!nick || nick.trim().length < 2) {
+    
 await reaccionarMensaje(telefono, req.body?.messageId, "❌")
 
 await enviarMensaje(
 telefono,
 `❌ Nick inválido.
 
-Usá tu nick EXACTO del juego, sin espacios.
+Usá tu nick EXACTO del juego, igual que aparece en las capturas y estadísticas.
 
 ✅ Permitido:
 N1ty
 N1ty77
-メKTH
+乂KTH
 ØColt
+kth peek
+C o l t
 乂N1ty77乂
+
+❌ No permitido:
+Nick falso
+Otro jugador
 
 ❌ No permitido:
 Nity xd`
