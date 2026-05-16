@@ -1476,7 +1476,7 @@ console.log("❌ sockGlobal user:", sockGlobal?.user)
 
   const numeroActual = String(telefonoJugador).replace(/\D/g, "")
 
-const jugador = Object.values(jugadoresRegistrados).find(j => {
+let jugador = Object.values(jugadoresRegistrados).find(j => {
     const numeroGuardado = String(j.telefono).replace(/\D/g, "")
 
     return (
@@ -1488,6 +1488,25 @@ const jugador = Object.values(jugadoresRegistrados).find(j => {
     )
 })
 
+ if (!jugador) {
+  const { data: jugadorSupabase } = await supabase
+    .from("Jugadores")
+    .select("*")
+    .eq("numero", numeroActual)
+    .maybeSingle()
+
+  if (jugadorSupabase) {
+    jugador = {
+      nick: jugadorSupabase.nombre,
+      idGame: jugadorSupabase.idgame,
+      telefono: jugadorSupabase.numero
+    }
+
+    jugadoresRegistrados[jugador.idGame] = jugador
+    guardarJugadores(jugadoresRegistrados)
+  }
+}   
+      
   if (!jugador) {
     await enviarMensaje(
       telefono,
