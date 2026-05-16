@@ -864,9 +864,10 @@ async function cerrarChatGrupo(groupId) {
         "Client-Token": process.env.ZAPI_CLIENT_TOKEN
       },
       body: JSON.stringify({
-        phone: groupId,
-        adminOnlyMessage: true
-      })
+    phone: groupId,
+    adminOnlyMessage: true,
+    approveNewParticipants: true
+})
     }
   )
 
@@ -887,9 +888,10 @@ async function abrirChatGrupo(groupId) {
         "Client-Token": process.env.ZAPI_CLIENT_TOKEN
       },
       body: JSON.stringify({
-        phone: groupId,
-        adminOnlyMessage: false
-      })
+    phone: groupId,
+    adminOnlyMessage: false,
+    approveNewParticipants: true
+})
     }
   )
 
