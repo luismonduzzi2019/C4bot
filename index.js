@@ -841,6 +841,10 @@ poll: [
 
     console.log("STATUS ENCUESTA:", resposta.status)
     console.log("RESPUESTA ENCUESTA:", texto)
+
+await cerrarChatGrupo(telefono)
+console.log("🔒 CHAT CERRADO AUTOMÁTICAMENTE")
+    
 }
 
 async function cerrarChatGrupo(groupId) {
