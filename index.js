@@ -856,7 +856,7 @@ console.log("🔒 CHAT CERRADO AUTOMÁTICAMENTE")
 async function cerrarChatGrupo(groupId) {
 
   const respuesta = await fetch(
-    `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/groups`,
+    `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/update-group-settings`,
     {
       method: "POST",
       headers: {
@@ -879,7 +879,7 @@ async function cerrarChatGrupo(groupId) {
 async function abrirChatGrupo(groupId) {
 
   const respuesta = await fetch(
-    `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/groups`,
+    `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/update-group-settings`,
     {
       method: "POST",
       headers: {
