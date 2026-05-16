@@ -1068,6 +1068,51 @@ console.log("📌 from:", req.body?.from)
 console.log("📌 chatId:", req.body?.chatId)
 console.log("📌 groupId:", req.body?.groupId)
 
+    const GRUPO_MIX = "120363425089190805-group"
+const GRUPO_STATS = "120363407953964467-group"
+
+const comandosMix = [
+"!registrar",
+"!entrar",
+"!salir",
+"!ping",
+"!cerrarchat",
+"!abrirchat",
+"!comandos"
+]
+
+const comandosStats = [
+"!resultadomix",
+"!stats",
+"!topkills",
+"!topmvp",
+"!rank"
+]
+
+const comando = mensaje.toLowerCase().split(" ")[0]
+
+if (
+comandosMix.includes(comando) &&
+telefono !== GRUPO_MIX
+) {
+await enviarMensaje(
+telefono,
+"❌ Los comandos MIX solo pueden usarse en el grupo Mix C4."
+)
+return
+}
+
+if (
+comandosStats.includes(comando) &&
+telefono !== GRUPO_STATS
+) {
+await enviarMensaje(
+telefono,
+"❌ Los comandos STATS solo pueden usarse en el grupo Estadísticas."
+)
+return
+}
+
 if (mensaje.toLowerCase() === "!ping") {
 
     if (!esAdminPrincipal && !esOrganizador) {
