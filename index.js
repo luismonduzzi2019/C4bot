@@ -842,7 +842,12 @@ poll: [
     console.log("STATUS ENCUESTA:", resposta.status)
     console.log("RESPUESTA ENCUESTA:", texto)
 
+console.log("🔒 INTENTANDO CERRAR CHAT:", telefono)
+
 await cerrarChatGrupo(telefono)
+
+chatMixActivo = false
+
 console.log("🔒 CHAT CERRADO AUTOMÁTICAMENTE")
     
 }
