@@ -866,7 +866,9 @@ async function cerrarChatGrupo(groupId) {
       body: JSON.stringify({
     phone: groupId,
     adminOnlyMessage: true,
-    approveNewParticipants: true
+    requireAdminApproval: true,
+adminOnlySettings: true,
+adminOnlyAddMember: true
 })
     }
   )
@@ -890,7 +892,9 @@ async function abrirChatGrupo(groupId) {
       body: JSON.stringify({
     phone: groupId,
     adminOnlyMessage: false,
-    approveNewParticipants: true
+    requireAdminApproval: true,
+adminOnlySettings: true,
+adminOnlyAddMember: true
 })
     }
   )
