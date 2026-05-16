@@ -907,6 +907,9 @@ app.post("/webhook", async (req, res) => {
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone
 
+    console.log("MENSAJE:", mensaje)
+console.log("TELEFONO:", telefono)
+
 if (req.body?.notification === "GROUP_PARTICIPANT_ADD") {
 
 if (!req.body?.notificationParameters?.length) {
