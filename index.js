@@ -901,14 +901,39 @@ console.log("RESPUESTA ABRIR CHAT:", texto)
 
 app.post("/webhook", async (req, res) => {
     
-  console.log("📩 WEBHOOK RECIBIDO")
+console.log("📩 WEBHOOK RECIBIDO")
   console.log(JSON.stringify(req.body, null, 2))
-
+    
   const mensaje = req.body?.text?.message || ""
-  const telefono = req.body?.phone
+  const telefono = req.body?.phone    
 
     console.log("MENSAJE:", mensaje)
 console.log("TELEFONO:", telefono)
+
+const captionImagen = req.body?.image?.caption || ""
+const imageUrl = req.body?.image?.imageUrl || ""
+
+const comandoResultado = captionImagen.trim().toLowerCase()
+
+    if (
+imageUrl &&
+["!resultadomix", "!resultadocw", "!resultadotorneo"].includes(comandoResultado)
+) {
+const modo =
+comandoResultado === "!resultadomix" ? "mix" :
+comandoResultado === "!resultadocw" ? "cw" :
+"torneo"
+
+await enviarMensaje(
+telefono,
+`📸 Captura recibida.
+
+🎮 Modo: ${modo.toUpperCase()}
+⏳ Procesando resultado...`
+)
+
+return
+    }    
 
 if (req.body?.notification === "GROUP_PARTICIPANT_ADD") {
 
