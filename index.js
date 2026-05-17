@@ -1307,6 +1307,57 @@ Winrate: ${wrCW}%`
 
 return
 }
+
+    if (mensaje.toLowerCase() === "!top") {
+
+const { data: jugadores, error } = await supabase
+.from("Jugadores")
+.select("nombre,idgame,puntos_totales")
+.order("puntos_totales", { ascending: false })
+
+if (error || !jugadores) {
+await enviarMensaje(
+telefono,
+"❌ Error al cargar el ranking."
+)
+return
+}
+
+const jugadoresConPuntos = jugadores.filter(j => (j.puntos_totales || 0) > 0)
+
+if (jugadoresConPuntos.length === 0) {
+await enviarMensaje(
+telefono,
+"📊 Todavía no hay jugadores con puntos en el ranking."
+)
+return
+}
+
+const tier1 = jugadoresConPuntos.slice(0, 6)
+const tier2 = jugadoresConPuntos.slice(6, 16)
+const tier3 = jugadoresConPuntos.slice(16)
+
+const formato = (lista, inicio) =>
+lista.map((j, i) =>
+`${inicio + i}° - ${j.nombre} | ID: ${j.idgame || "Sin ID"} | ${j.puntos_totales || 0} pts`
+).join("\n")
+
+await enviarMensaje(
+telefono,
+`🏆 TOP GLOBAL C4
+
+🥇 TIER 1
+${tier1.length ? formato(tier1, 1) : "Sin jugadores"}
+
+🥈 TIER 2
+${tier2.length ? formato(tier2, 7) : "Sin jugadores"}
+
+🥉 TIER 3
+${tier3.length ? formato(tier3, 17) : "Sin jugadores"}`
+)
+
+return
+}
     
 if (mensaje.trim().toLowerCase().startsWith("!registrar")) {
 
