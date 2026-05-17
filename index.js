@@ -1,6 +1,7 @@
 const sharp = require("sharp")
 const fs = require("fs")
 const Tesseract = require("tesseract.js")
+const axios = require("axios")
 
 const { createClient } = require("@supabase/supabase-js")
 
