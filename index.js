@@ -1128,11 +1128,12 @@ const nombre = (primerNumero >= 0 ? linea.slice(0, primerNumero) : linea)
   .trim()
 
   return {
-    nombre,
-    bajas,
-    asistencias,
-    muertes,
-    puntos
+  lineaOriginal: linea,
+  nombre,
+  bajas,
+  asistencias,
+  muertes,
+  puntos
   }
 })
 .filter(Boolean)
@@ -1144,10 +1145,12 @@ telefono,
 ${jugadoresDetectados.map(j => {
   const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
 
-  return `${match ? match.nombre : j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}${match ? ` ✅ ${match.score}%` : " ⚠️ sin registro"}`
-}).join("\n")}`
-)
+  return `📄 OCR: ${j.lineaOriginal}
 
+📊 Interpretado:
+${match ? match.nombre : j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+)
+    
 return
     }    
 
