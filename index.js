@@ -1062,7 +1062,7 @@ const prepararColumna = async (leftPct, widthPct) => {
   return sharp(bufferImagen.data)
     .extract({
       left: Math.round(metadata.width * leftPct),
-      top: Math.round(metadata.height * 0.14),
+      top: Math.round(metadata.height * 0.10),
       width: Math.round(metadata.width * widthPct),
       height: Math.round(metadata.height * 0.68)
     })
