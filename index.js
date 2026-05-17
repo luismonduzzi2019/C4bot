@@ -2022,16 +2022,25 @@ if (mensaje.toLowerCase().startsWith("!quitarorganizador")) {
 ]
 
 if (
-  mensaje.startsWith("!") &&
-  !comandosValidos.some(cmd => mensaje.toLowerCase().startsWith(cmd))
+(
+mensaje.startsWith("!") &&
+!comandosValidos.some(cmd => mensaje.toLowerCase().startsWith(cmd))
+)
+||
+(
+captionImagen.startsWith("!") &&
+!["!resultadomix", "!resultadocw"].includes(comandoResultado)
+)
 ) {
 
 await reaccionarMensaje(telefono, req.body?.messageId, "❌")
-    
-  await enviarMensaje(
-    telefono,
-    "❌ Comando no reconocido.\n\nUsá !comandos para ver la lista."
-  )
+
+await enviarMensaje(
+telefono,
+"❌ Comando no reconocido.\n\nUsá !comandos para ver la lista."
+)
+
+return
 }
 
 if (!mensaje.startsWith("!") && !req.body?.fromApi) {
