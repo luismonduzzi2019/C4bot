@@ -1088,9 +1088,9 @@ const prepararColumna = async (leftPct, widthPct) => {
     const fila = await sharp(imagenBuffer)
       .extract({
         left: 0,
-        top: Math.round((metadata.height * 0.68 / 5) * i),
-        width: Math.round(metadata.width * 0.47),
-        height: Math.round(metadata.height * 0.68 / 5)
+        top: Math.round((metadata.height * 0.68 / 5) * i - metadata.height * 0.015),
+width: Math.round(metadata.width * 0.47),
+height: Math.round(metadata.height * 0.68 / 5 + metadata.height * 0.03)
       })
       .resize({ width: 1600 })
       .grayscale()
