@@ -1007,11 +1007,13 @@ const jugadoresDetectados = lineasUtiles
 
   if (numeros.length < 5) return null
 
-  const [bajas, asistencias, muertes, puntos] = numeros.slice(0, 4)
+  const stats = numeros.slice(-5)
+const [bajas, asistencias, muertes, puntos] = stats.slice(0, 4)
 
   const nombre = linea
     .replace(/\d+/g, "")
     .replace(/\[[^\]]+\]/g, "")
+    .replace(/ffva/gi, "")
     .replace(/[^\wÁÉÍÓÚáéíóúÑñ\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
