@@ -979,6 +979,22 @@ telefono,
 ⏳ Procesando resultado...`
 )
 
+        const resultadoOCR = await Tesseract.recognize(
+imageUrl,
+"eng"
+)
+
+const textoLeido = resultadoOCR.data.text
+
+console.log("📸 TEXTO OCR:", textoLeido)
+
+await enviarMensaje(
+telefono,
+`🧠 Texto leído por OCR:
+
+${textoLeido.slice(0, 3000)}`
+)
+
 return
     }    
 
