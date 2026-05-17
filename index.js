@@ -1057,34 +1057,44 @@ const bufferImagen = await axios.get(imageUrl, {
 
         const metadata = await sharp(bufferImagen.data).metadata()
 
-const imagenRecortada = await sharp(bufferImagen.data)
-  .extract({
-    left: Math.round(metadata.width * 0.02),
-    top: Math.round(metadata.height * 0.10),
-    width: Math.round(metadata.width * 0.96),
-    height: Math.round(metadata.height * 0.68)
-  })
-  .resize({ width: 2600 })
-  .grayscale()
-  .normalize()
-  .modulate({
-    brightness: 1.15,
-    saturation: 0
-  })
-  .sharpen({
-    sigma: 1.5
-  })
-  .threshold(130)
-  .png()
-  .toBuffer()
-        
-        const resultadoOCR = await Tesseract.recognize(
-imagenRecortada,
-"eng"
+const prepararColumna = async (leftPct, widthPct) => {
+  return sharp(bufferImagen.data)
+    .extract({
+      left: Math.round(metadata.width * leftPct),
+      top: Math.round(metadata.height * 0.10),
+      width: Math.round(metadata.width * widthPct),
+      height: Math.round(metadata.height * 0.68)
+    })
+    .resize({ width: 1600 })
+    .grayscale()
+    .normalize()
+    .modulate({
+      brightness: 1.15,
+      saturation: 0
+    })
+    .sharpen({
+      sigma: 1.5
+    })
+    .threshold(130)
+    .png()
+    .toBuffer()
+}
+
+const imagenIzquierda = await prepararColumna(0.02, 0.47)
+const imagenDerecha = await prepararColumna(0.51, 0.47)
+
+const resultadoIzquierda = await Tesseract.recognize(
+  imagenIzquierda,
+  "eng"
 )
 
-const textoLeido = resultadoOCR.data.text
+const resultadoDerecha = await Tesseract.recognize(
+  imagenDerecha,
+  "eng"
+)
 
+const textoLeido = `${resultadoIzquierda.data.text}\n${resultadoDerecha.data.text}`
+        
 console.log("📸 TEXTO OCR:", textoLeido)
 
 const lineasUtiles = textoLeido
