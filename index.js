@@ -1001,11 +1001,38 @@ numeros.length >= 4
 )
 })
 
+const jugadoresDetectados = lineasUtiles
+.map(linea => {
+  const numeros = linea.match(/\d+/g) || []
+
+  if (numeros.length < 5) return null
+
+  const [bajas, asistencias, muertes, puntos] = numeros.slice(0, 4)
+
+  const nombre = linea
+    .replace(/\d+/g, "")
+    .replace(/\[[^\]]+\]/g, "")
+    .replace(/[^\wÁÉÍÓÚáéíóúÑñ\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+
+  return {
+    nombre,
+    bajas,
+    asistencias,
+    muertes,
+    puntos
+  }
+})
+.filter(Boolean)
+        
 await enviarMensaje(
 telefono,
-`🧠 OCR limpio:
+`📊 Jugadores detectados:
 
-${lineasUtiles.slice(0, 20).join("\n")}`
+${jugadoresDetectados.map(j =>
+`${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+).join("\n")}`
 )
 
 return
