@@ -1138,16 +1138,17 @@ const nombre = (primerNumero >= 0 ? linea.slice(0, primerNumero) : linea)
 })
 .filter(Boolean)
         
+const resumenJugadores = jugadoresDetectados.map(j => {
+  const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
+  const nombreFinal = match ? match.nombre : j.nombre
+
+  return `📄 OCR: ${j.lineaOriginal}\n📊 Interpretado: ${nombreFinal} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+}).join("\n\n")
+
 await enviarMensaje(
-telefono,
-`📊 Jugadores detectados:
-
-${jugadoresDetectados.map(j => {
-const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
-const nombreFinal = match ? match.nombre : j.nombre
-
-return `📄 OCR: ${j.lineaOriginal}\n📊 Interpretado: ${nombreFinal} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
-}).join("\n\n")}
+  telefono,
+  `📊 Jugadores detectados:\n\n${resumenJugadores}`
+)
     
 return
     }    
