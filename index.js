@@ -1081,25 +1081,51 @@ const prepararColumna = async (leftPct, widthPct) => {
     .toBuffer()
 }
 
+        const leerFilas = async (imagenBuffer) => {
+  const filas = []
+
+  for (let i = 0; i < 5; i++) {
+    const fila = await sharp(imagenBuffer)
+      .extract({
+        left: 0,
+        top: Math.round((metadata.height * 0.68 / 5) * i),
+        width: Math.round(metadata.width * 0.47),
+        height: Math.round(metadata.height * 0.68 / 5)
+      })
+      .resize({ width: 1600 })
+      .grayscale()
+      .normalize()
+      .modulate({
+        brightness: 1.15,
+        saturation: 0
+      })
+      .sharpen({
+        sigma: 1.5
+      })
+      .threshold(130)
+      .png()
+      .toBuffer()
+
+    const resultado = await Tesseract.recognize(
+      fila,
+      "eng"
+    )
+
+    filas.push(resultado.data.text)
+  }
+
+  return filas.join("\n")
+        }
+
 const imagenIzquierda = await prepararColumna(0.02, 0.47)
 const imagenDerecha = await prepararColumna(0.51, 0.47)
 
-const resultadoIzquierda = await Tesseract.recognize(
-  imagenIzquierda,
-  "eng"
-)
-
-const resultadoDerecha = await Tesseract.recognize(
-  imagenDerecha,
-  "eng"
-)
+const textoIzquierda = await leerFilas(imagenIzquierda)
+const textoDerecha = await leerFilas(imagenDerecha)
 
 const normalizarTexto = (txt) => String(txt || "")
   .toLowerCase()
   .replace(/[^a-z0-9]/g, "")
-
-const textoIzquierda = resultadoIzquierda.data.text
-const textoDerecha = resultadoDerecha.data.text
 
 const izquierdaEsPropia =
   normalizarTexto(textoIzquierda).includes("ffva") ||
