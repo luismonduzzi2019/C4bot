@@ -1058,13 +1058,17 @@ const bufferImagen = await axios.get(imageUrl, {
 
 const imagenRecortada = await sharp(bufferImagen.data)
   .extract({
-    left: Math.round(metadata.width * 0.02),
-    top: Math.round(metadata.height * 0.15),
-    width: Math.round(metadata.width * 0.96),
-    height: Math.round(metadata.height * 0.55)
+    left: Math.round(metadata.width * 0.03),
+    top: Math.round(metadata.height * 0.12),
+    width: Math.round(metadata.width * 0.94),
+    height: Math.round(metadata.height * 0.60)
   })
-  .resize({ width: 1000 })
-  .jpeg({ quality: 70 })
+  .resize({ width: 1800 })
+  .grayscale()
+  .normalize()
+  .sharpen()
+  .threshold(150)
+  .png()
   .toBuffer()
         
         const resultadoOCR = await Tesseract.recognize(
