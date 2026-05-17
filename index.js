@@ -1127,9 +1127,9 @@ const jugadoresDetectados = lineasUtiles
 
   if (numerosFiltrados.length < 4) return null
 
-const stats = numerosFiltrados.slice(-5)
+const stats = numerosFiltrados.slice(-4)
 
-const [bajas, asistencias, muertes, puntos, latencia] = stats
+const [bajas, asistencias, muertes, puntos] = stats
 
   const primerNumero = linea.search(/\d/)
 const nombre = (primerNumero >= 0 ? linea.slice(0, primerNumero) : linea)
