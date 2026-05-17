@@ -1,6 +1,7 @@
 const sharp = require("sharp")
 const fs = require("fs")
 const Tesseract = require("tesseract.js")
+const stringSimilarity = require("string-similarity")
 const axios = require("axios")
 
 const { createClient } = require("@supabase/supabase-js")
@@ -68,23 +69,36 @@ function buscarJugadorRegistrado(nombreOCR, jugadores) {
   let mejor = null
   let mejorScore = 0
 
+  const nombreLimpioOCR = limpiarNombreOCR(nombreOCR)
+
   for (const telefono in jugadores) {
     const jugador = jugadores[telefono]
-    const nombreRegistrado = jugador.nick || jugador.nombre || jugador.name || ""
 
-    const score = similitudNombre(nombreOCR, nombreRegistrado)
+    const posiblesNombres = [
+      jugador.nick,
+      jugador.nombre,
+      jugador.id,
+      ...(jugador.alias || [])
+    ]
+      .filter(Boolean)
+      .map(n => limpiarNombreOCR(n))
 
-    if (score > mejorScore) {
-      mejorScore = score
-      mejor = {
-        telefono,
-        nombre: nombreRegistrado,
-        score
+    for (const nombreRegistrado of posiblesNombres) {
+      const score = similitudNombre(nombreLimpioOCR, nombreRegistrado)
+
+      if (score > mejorScore) {
+        mejorScore = score
+
+        mejor = {
+          telefono,
+          nombre: jugador.nick || jugador.nombre || jugador.id,
+          score
+        }
       }
     }
   }
 
-  return mejorScore >= 55 ? mejor : null
+  return mejorScore >= 45 ? mejor : null
 }
 
 const express = require("express")
