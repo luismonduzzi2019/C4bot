@@ -1418,6 +1418,12 @@ telefono,
 return
 }
 
+resultadoPendiente = {
+modo: "manual",
+textoCorregido: texto,
+fecha: new Date().toISOString()
+}
+        
 await enviarMensaje(
 telefono,
 `✅ Resultado corregido manualmente recibido:\n\n${texto}`
@@ -1426,6 +1432,28 @@ telefono,
 return
     }
 
+if (mensaje.startsWith("!confirmarresultado")) {
+
+if (!resultadoPendiente) {
+await enviarMensaje(
+telefono,
+"⚠️ No hay ningún resultado pendiente para confirmar."
+)
+return
+}
+
+await enviarMensaje(
+telefono,
+`✅ Resultado pendiente confirmado.
+
+📌 Próximo paso: guardar en Supabase.
+
+Modo: ${resultadoPendiente.modo}`
+)
+
+return
+}
+    
     if (mensaje.toLowerCase().startsWith("!stats")) {
 
 const partes = mensaje.split(" ")
