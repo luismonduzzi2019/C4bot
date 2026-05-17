@@ -31,6 +31,60 @@ function guardarJugadores(jugadores) {
     fs.writeFileSync(pathJugadores, JSON.stringify(jugadores, null, 2))
 }
 
+function limpiarNombreOCR(nombre) {
+  return String(nombre || "")
+    .toLowerCase()
+    .replace(/\[[^\]]+\]/g, "")
+    .replace(/ffva/gi, "")
+    .replace(/pva/gi, "")
+    .replace(/c4ar/gi, "")
+    .replace(/c4ac/gi, "")
+    .replace(/[^a-z0-9áéíóúñ\s]/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
+function similitudNombre(a, b) {
+  a = limpiarNombreOCR(a)
+  b = limpiarNombreOCR(b)
+
+  if (!a || !b) return 0
+  if (a.includes(b) || b.includes(a)) return 100
+
+  let iguales = 0
+  const corto = a.length < b.length ? a : b
+  const largo = a.length >= b.length ? a : b
+
+  for (let i = 0; i < corto.length; i++) {
+    if (corto[i] === largo[i]) iguales++
+  }
+
+  return Math.round((iguales / largo.length) * 100)
+}
+
+function buscarJugadorRegistrado(nombreOCR, jugadores) {
+  let mejor = null
+  let mejorScore = 0
+
+  for (const telefono in jugadores) {
+    const jugador = jugadores[telefono]
+    const nombreRegistrado = jugador.nick || jugador.nombre || jugador.name || ""
+
+    const score = similitudNombre(nombreOCR, nombreRegistrado)
+
+    if (score > mejorScore) {
+      mejorScore = score
+      mejor = {
+        telefono,
+        nombre: nombreRegistrado,
+        score
+      }
+    }
+  }
+
+  return mejorScore >= 55 ? mejor : null
+}
+
 const express = require("express")
 
 let sockGlobal = null
