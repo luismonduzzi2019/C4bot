@@ -1098,10 +1098,10 @@ const jugadoresDetectados = lineasUtiles
 .map(linea => {
   const numeros = linea.match(/\d+/g) || []
 
-  if (numeros.length < 5) return null
+  if (numeros.length < 6) return null
 
-  const stats = numeros.slice(-5)
-const [bajas, asistencias, muertes, puntos] = stats.slice(0, 4)
+  const stats = numeros.slice(-6)
+const [dinero, bajas, asistencias, muertes, puntos] = stats
 
   const nombre = linea
   .replace(/\d+/g, "")
