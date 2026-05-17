@@ -1040,9 +1040,8 @@ const bufferImagen = await axios.get(imageUrl, {
 })
 
         const imagenRecortada = await sharp(bufferImagen.data)
-  .resize({ width: 1400 })
+  .resize({ width: 900 })
   .grayscale()
-  .normalize()
   .png()
   .toBuffer()
 
