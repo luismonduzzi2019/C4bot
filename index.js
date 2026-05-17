@@ -1107,9 +1107,11 @@ await enviarMensaje(
 telefono,
 `📊 Jugadores detectados:
 
-${jugadoresDetectados.map(j =>
-`${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
-).join("\n")}`
+${jugadoresDetectados.map(j => {
+  const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
+
+  return `${match ? match.nombre : j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}${match ? ` ✅ ${match.score}%` : " ⚠️ sin registro"}`
+}).join("\n")}`
 )
 
 return
