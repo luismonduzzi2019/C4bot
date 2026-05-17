@@ -1096,10 +1096,11 @@ numeros.length >= 4
 const jugadoresDetectados = lineasUtiles
 .map(linea => {
   const numeros = linea.match(/\d+/g) || []
+    const numerosFiltrados = numeros.filter(n => Number(n) <= 200)
 
-  if (numeros.length < 4) return null
+  if (numerosFiltrados.length < 4) return null
 
-const stats = numeros.slice(-5)
+const stats = numerosFiltrados.slice(-5)
 
 const [bajas, asistencias, muertes, puntos, latencia] = stats
 
