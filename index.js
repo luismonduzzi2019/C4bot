@@ -1179,14 +1179,20 @@ const resumenJugadores = jugadoresDetectados.map(j => {
 const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
 const nombreFinal = match ? match.nombre : j.nombre
 
-return `📄 OCR: ${j.lineaOriginal}
-
-🎯 Interpretado: ${nombreFinal} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+return `• ${nombreFinal} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 }).join("\n\n")
 
 await enviarMensaje(
 telefono,
-`📊 Jugadores detectados:\n\n${resumenJugadores}`
+`📊 Resultado pendiente ${modo.toUpperCase()}
+
+${resumenJugadores}
+
+✅ Si está correcto:
+!confirmarresultado
+
+✏️ Si hay errores:
+!editresultado`
 )
     
 return
