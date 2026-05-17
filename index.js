@@ -145,6 +145,8 @@ const jugadoresRegistrados = cargarJugadores()
 let mixAbierto = false
 let chatMixActivo = false
 let jugadoresMix = []
+let equiposMixActual = null
+
 
 let organizadores = []
 
@@ -1990,6 +1992,11 @@ telefono,
 const mezclados = [...jugadoresMix].sort(() => Math.random() - 0.5)
 const equipoA = mezclados.slice(0, 5)
 const equipoB = mezclados.slice(5, 10)
+
+      equiposMixActual = {
+  equipoA,
+  equipoB
+      }
 
 const listaA = equipoA.map((j, i) => `${i + 1}. ${j.nick}`).join("\n")
 const listaB = equipoB.map((j, i) => `${i + 1}. ${j.nick}`).join("\n")
