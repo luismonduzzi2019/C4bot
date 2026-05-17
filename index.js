@@ -1039,10 +1039,11 @@ const bufferImagen = await axios.get(imageUrl, {
   responseType: "arraybuffer"
 })
 
-const imagenRecortada = await sharp(bufferImagen.data)
+        const imagenRecortada = await sharp(bufferImagen.data)
+  .resize({ width: 1400 })
   .grayscale()
   .normalize()
-  .sharpen()
+  .png()
   .toBuffer()
 
         const resultadoOCR = await Tesseract.recognize(
