@@ -992,10 +992,22 @@ console.log("📸 TEXTO OCR:", textoLeido)
 const lineasUtiles = textoLeido
 .split("\n")
 .map(l => l.trim())
-.filter(l =>
-l.length > 5 &&
-(/\d/.test(l) || l.toLowerCase().includes("nombre"))
+.filter(l => {
+const texto = l.toLowerCase()
+
+return (
+l.length > 8 &&
+/\d/.test(l) &&
+(
+texto.includes("ffva") ||
+texto.includes("pva") ||
+texto.includes("colt") ||
+texto.includes("kev") ||
+texto.includes("nick") ||
+texto.includes("bandido")
 )
+)
+})
 
 await enviarMensaje(
 telefono,
