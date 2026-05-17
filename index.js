@@ -1,3 +1,4 @@
+const sharp = require("sharp")
 const fs = require("fs")
 const Tesseract = require("tesseract.js")
 
@@ -1034,8 +1035,18 @@ telefono,
 ⏳ Procesando resultado...`
 )
 
+const bufferImagen = await axios.get(imageUrl, {
+  responseType: "arraybuffer"
+})
+
+const imagenRecortada = await sharp(bufferImagen.data)
+  .grayscale()
+  .normalize()
+  .sharpen()
+  .toBuffer()
+
         const resultadoOCR = await Tesseract.recognize(
-imageUrl,
+imagenRecortada,
 "eng"
 )
 
