@@ -1,4 +1,5 @@
 const fs = require("fs")
+const Tesseract = require("tesseract.js")
 
 const { createClient } = require("@supabase/supabase-js")
 
