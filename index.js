@@ -1059,16 +1059,22 @@ const bufferImagen = await axios.get(imageUrl, {
 
 const imagenRecortada = await sharp(bufferImagen.data)
   .extract({
-    left: Math.round(metadata.width * 0.03),
-    top: Math.round(metadata.height * 0.12),
-    width: Math.round(metadata.width * 0.94),
-    height: Math.round(metadata.height * 0.60)
+    left: Math.round(metadata.width * 0.02),
+    top: Math.round(metadata.height * 0.10),
+    width: Math.round(metadata.width * 0.96),
+    height: Math.round(metadata.height * 0.68)
   })
-  .resize({ width: 1800 })
+  .resize({ width: 2600 })
   .grayscale()
   .normalize()
-  .sharpen()
-  .threshold(150)
+  .modulate({
+    brightness: 1.15,
+    saturation: 0
+  })
+  .sharpen({
+    sigma: 1.5
+  })
+  .threshold(130)
   .png()
   .toBuffer()
         
