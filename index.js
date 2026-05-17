@@ -1102,21 +1102,9 @@ const jugadoresDetectados = lineasUtiles
   const stats = numeros.slice(-6)
 const [dinero, bajas, asistencias, muertes, puntos] = stats
 
-  const nombre = linea
-  .replace(/\d+/g, "")
-  .replace(/\[[^\]]+\]/g, "")
-  .replace(/ffva/gi, "")
-  .replace(/pva/gi, "")
-  .replace(/c4ar/gi, "")
-  .replace(/c4ac/gi, "")
-  .replace(/dinero/gi, "")
-  .replace(/late/gi, "")
-  .replace(/puntua/gi, "")
-  .replace(/ganador/gi, "")
-  .replace(/derrota/gi, "")
-  .replace(/defensa/gi, "")
-  .replace(/ataque/gi, "")
-  .replace(/[^\p{L}\s]/gu, " ")
+  const primerNumero = linea.search(/\d/)
+const nombre = (primerNumero >= 0 ? linea.slice(0, primerNumero) : linea)
+  .replace(/[^\p{L}\d'\[\]\s]/gu, " ")
   .replace(/\s+/g, " ")
   .trim()
 
