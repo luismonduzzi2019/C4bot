@@ -1064,7 +1064,7 @@ const prepararColumna = async (leftPct, widthPct) => {
       left: Math.round(metadata.width * leftPct),
       top: Math.round(metadata.height * 0.14),
       width: Math.round(metadata.width * widthPct),
-      height: Math.round(metadata.height * 0.55)
+      height: Math.round(metadata.height * 0.68)
     })
     .resize({ width: 1600 })
     .grayscale()
