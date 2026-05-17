@@ -989,11 +989,19 @@ const textoLeido = resultadoOCR.data.text
 
 console.log("📸 TEXTO OCR:", textoLeido)
 
+const lineasUtiles = textoLeido
+.split("\n")
+.map(l => l.trim())
+.filter(l =>
+l.length > 5 &&
+(/\d/.test(l) || l.toLowerCase().includes("nombre"))
+)
+
 await enviarMensaje(
 telefono,
-`🧠 Texto leído por OCR:
+`🧠 OCR limpio:
 
-${textoLeido.slice(0, 3000)}`
+${lineasUtiles.slice(0, 20).join("\n")}`
 )
 
 return
