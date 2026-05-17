@@ -1093,7 +1093,29 @@ const resultadoDerecha = await Tesseract.recognize(
   "eng"
 )
 
-const textoLeido = `${resultadoIzquierda.data.text}\n${resultadoDerecha.data.text}`
+const normalizarTexto = (txt) => String(txt || "")
+  .toLowerCase()
+  .replace(/[^a-z0-9]/g, "")
+
+const textoIzquierda = resultadoIzquierda.data.text
+const textoDerecha = resultadoDerecha.data.text
+
+const izquierdaEsPropia =
+  normalizarTexto(textoIzquierda).includes("ffva") ||
+  normalizarTexto(textoIzquierda).includes("c4ar") ||
+  normalizarTexto(textoIzquierda).includes("c4ac")
+
+const derechaEsPropia =
+  normalizarTexto(textoDerecha).includes("ffva") ||
+  normalizarTexto(textoDerecha).includes("c4ar") ||
+  normalizarTexto(textoDerecha).includes("c4ac")
+
+const textoLeido = modo === "cw"
+  ? [
+      izquierdaEsPropia ? textoIzquierda : "",
+      derechaEsPropia ? textoDerecha : ""
+    ].join("\n")
+  : `${textoIzquierda}\n${textoDerecha}`
         
 console.log("📸 TEXTO OCR:", textoLeido)
 
@@ -1111,8 +1133,6 @@ const esClanPropio =
   lineaNormalizada.includes("ffva") ||
   lineaNormalizada.includes("c4ar") ||
   lineaNormalizada.includes("c4ac")
-
-if (modo === "cw" && !esClanPropio) return false
 
 return (
 l.length > 8 &&
