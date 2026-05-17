@@ -145,6 +145,7 @@ let mixAbierto = false
 let chatMixActivo = false
 let jugadoresMix = []
 let equiposMixActual = null
+let resultadoPendiente = null
 
 
 let organizadores = []
@@ -1168,6 +1169,12 @@ const nombre = (primerNumero >= 0 ? linea.slice(0, primerNumero) : linea)
 })
 .filter(Boolean)
         
+resultadoPendiente = {
+  modo,
+  jugadores: jugadoresDetectados,
+  fecha: new Date().toISOString()
+}
+        
 const resumenJugadores = jugadoresDetectados.map(j => {
 const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
 const nombreFinal = match ? match.nombre : j.nombre
@@ -1390,6 +1397,28 @@ console.log("❌ ERROR AL ENVIAR:", error.message)
 }
 
 }
+
+    if (mensaje.startsWith("!editresultado")) {
+
+const texto = mensaje
+.replace("!editresultado", "")
+.trim()
+
+if (!texto) {
+await enviarMensaje(
+telefono,
+"⚠️ Debes pegar las estadísticas corregidas debajo del comando."
+)
+return
+}
+
+await enviarMensaje(
+telefono,
+`✅ Resultado corregido manualmente recibido:\n\n${texto}`
+)
+
+return
+    }
 
     if (mensaje.toLowerCase().startsWith("!stats")) {
 
