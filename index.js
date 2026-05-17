@@ -1092,6 +1092,17 @@ const lineasUtiles = textoLeido
 .map(l => l.trim())
 .filter(l => {
 const numeros = l.match(/\d+/g) || []
+    
+    const lineaNormalizada = l
+  .toLowerCase()
+  .replace(/[^a-z0-9]/g, "")
+
+const esClanPropio =
+  lineaNormalizada.includes("ffva") ||
+  lineaNormalizada.includes("c4ar") ||
+  lineaNormalizada.includes("c4ac")
+
+if (modo === "cw" && !esClanPropio) return false
 
 return (
 l.length > 8 &&
