@@ -993,19 +993,11 @@ const lineasUtiles = textoLeido
 .split("\n")
 .map(l => l.trim())
 .filter(l => {
-const texto = l.toLowerCase()
+const numeros = l.match(/\d+/g) || []
 
 return (
 l.length > 8 &&
-/\d/.test(l) &&
-(
-texto.includes("ffva") ||
-texto.includes("pva") ||
-texto.includes("colt") ||
-texto.includes("kev") ||
-texto.includes("nick") ||
-texto.includes("bandido")
-)
+numeros.length >= 4
 )
 })
 
