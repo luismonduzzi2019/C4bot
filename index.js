@@ -1143,13 +1143,13 @@ telefono,
 `📊 Jugadores detectados:
 
 ${jugadoresDetectados.map(j => {
-  const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
+const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
 
-  return `📄 OCR: ${j.lineaOriginal}
+return `📄 OCR: ${j.lineaOriginal}
 
 📊 Interpretado:
 ${match ? match.nombre : j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
-)
+}).join("\n\n")}
     
 return
     }    
