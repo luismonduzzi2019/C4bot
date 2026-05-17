@@ -921,6 +921,21 @@ const imageUrl = req.body?.image?.imageUrl || ""
 
 const comandoResultado = captionImagen.trim().toLowerCase().replace(/\s+/g, "")
 
+if (
+imageUrl &&
+captionImagen.startsWith("!") &&
+!["!resultadomix", "!resultadocw"].includes(comandoResultado)
+) {
+await reaccionarMensaje(telefono, req.body?.messageId, "❌")
+
+await enviarMensaje(
+telefono,
+"❌ Comando de resultado no reconocido.\n\nUsá una captura con:\n!resultadomix\n!resultadocw"
+)
+
+return res.sendStatus(200)
+}
+    
     if (
 imageUrl &&
 ["!resultadomix", "!resultadocw"].includes(comandoResultado)
