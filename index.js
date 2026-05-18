@@ -2481,6 +2481,8 @@ telefono,
 
 🎮 !entrar
 🚪 !salir`
+
+👥 !organizadores — Ante cualquier duda, contactate por privado con alguno de ellos.
 )
 
 return
@@ -2523,7 +2525,6 @@ return
 }
 
     if (mensaje.toLowerCase() === "!organizadores") {
-  if (!esAdminPrincipal && !esOrganizador) return
 
        const { data: jugadoresSupabase } = await supabase
   .from("Jugadores")
