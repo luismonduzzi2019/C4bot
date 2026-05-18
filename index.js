@@ -1232,15 +1232,25 @@ for (const jugador of jugadoresSupabase || []) {
   }
 }
         
-const resumenJugadores = jugadoresDetectados.map(j => {
-const match = buscarJugadorRegistrado(j.nombre, jugadoresParaMatching)
+const confirmados = []
+const dudosos = []
 
-const nombreFinal = match
-  ? match.nombre
-  : `⚠️ ${j.nombre}`
+for (const j of jugadoresDetectados) {
+  const match = buscarJugadorRegistrado(j.nombre, jugadoresParaMatching)
 
-return `• ${nombreFinal} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
-}).join("\n\n")
+  const linea = `• ${match ? match.nombre : j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+
+  if (match && match.score >= 45) {
+    confirmados.push(linea)
+  } else {
+    dudosos.push(`• ⚠️ ${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`)
+  }
+}
+
+const resumenJugadores = [
+  confirmados.length ? `✅ Detectados:\n${confirmados.join("\n")}` : "",
+  dudosos.length ? `⚠️ Dudosos:\n${dudosos.join("\n")}` : ""
+].filter(Boolean).join("\n\n")
 
 await enviarMensaje(
 telefono,
