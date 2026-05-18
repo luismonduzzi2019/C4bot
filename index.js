@@ -999,8 +999,7 @@ if (
 imageUrl &&
 captionImagen.startsWith("!") &&
 !["!resultadomix", "!resultadocw"].includes(comandoResultado)
-)
-) {
+){
 
 if (comandoResultado === "!resultadocw" && nombresCW.length !== 5) {
   await enviarMensaje(
