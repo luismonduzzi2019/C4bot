@@ -2522,6 +2522,25 @@ await enviarEncuesta(telefono)
 return
 }
 
+    if (mensaje.toLowerCase() === "!organizadores") {
+  if (!esAdminPrincipal && !esOrganizador) return
+
+  const lista = organizadores.map(numero => {
+    const jugador = jugadoresRegistrados[numero]
+    const nombre = jugador?.nick || jugador?.nombre || "Sin registro"
+    return `• Organizador ${nombre} — ${numero}`
+  }).join("\n")
+
+  await enviarMensaje(
+    telefono,
+    lista
+      ? `👥 Organizadores:\n\n${lista}`
+      : "⚠️ No hay organizadores cargados."
+  )
+
+  return
+}
+
     if (mensaje.toLowerCase().startsWith("!organizador")) {
 
     if (!esAdminPrincipal) {
