@@ -2525,8 +2525,15 @@ return
     if (mensaje.toLowerCase() === "!organizadores") {
   if (!esAdminPrincipal && !esOrganizador) return
 
+       const { data: jugadoresSupabase } = await supabase
+  .from("Jugadores")
+  .select("*") 
   const lista = organizadores.map(numero => {
-    const jugador = jugadoresRegistrados[numero]
+    const numeroLimpio = numero.replace(/\D/g, "")
+
+const jugador = jugadoresSupabase.find(j =>
+  j.numero?.replace(/\D/g, "") === numeroLimpio
+)
     const nombre = jugador?.nick || jugador?.nombre || "Sin registro"
     return `• Organizador ${nombre} — ${numero}`
   }).join("\n")
