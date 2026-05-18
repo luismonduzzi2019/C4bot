@@ -1141,11 +1141,17 @@ const lineaSinDinero = linea
   .replace(/\b\d{4,6}\b/g, " ")
 
 const numeros = lineaSinDinero.match(/\d+/g) || []
-const numerosFiltrados = numeros.filter(n => Number(n) <= 200)
 
-if (numerosFiltrados.length < 4) return null
+if (numeros.length < 4) return null
 
-const stats = numerosFiltrados.slice(-4)
+let stats
+
+if (numeros.length >= 5) {
+  // B A M Pts Late
+  stats = numeros.slice(-5, -1)
+} else {
+  stats = numeros.slice(-4)
+}
 
 const [bajas, asistencias, muertes, puntos] = stats
 
