@@ -37,10 +37,11 @@ function guardarJugadores(jugadores) {
 function limpiarNombreOCR(nombre) {
   return String(nombre || "")
     .toLowerCase()
-    .replace(/\[[^\]]+\]/g, "")
-    .replace(/\[ffva\]/gi, " ffva ")
-    .replace(/\[c4ar\]/gi, " c4ar ")
-    .replace(/\[c4ac\]/gi, " c4ac ")
+    .replace(/\[[^\]]+\]/g, " ")
+    .replace(/ffva|fpva|fva|ffvai/g, " ")
+    .replace(/c4ar|caar|c4a/g, " ")
+    .replace(/c4ac|c4c/g, " ")
+    .replace(/\b\d+\b/g, " ")
     .replace(/[^a-z0-9áéíóúñ\s]/gi, " ")
     .replace(/\s+/g, " ")
     .trim()
@@ -51,17 +52,14 @@ function similitudNombre(a, b) {
   b = limpiarNombreOCR(b)
 
   if (!a || !b) return 0
-  if (a.includes(b) || b.includes(a)) return 100
 
-  let iguales = 0
-  const corto = a.length < b.length ? a : b
-  const largo = a.length >= b.length ? a : b
-
-  for (let i = 0; i < corto.length; i++) {
-    if (corto[i] === largo[i]) iguales++
+  if (a.includes(b) || b.includes(a)) {
+    return 100
   }
 
-  return Math.round((iguales / largo.length) * 100)
+  const similitud = stringSimilarity.compareTwoStrings(a, b)
+
+  return Math.round(similitud * 100)
 }
 
 function buscarJugadorRegistrado(nombreOCR, jugadores) {
