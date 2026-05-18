@@ -2092,10 +2092,9 @@ return
 }
     
   mixAbierto = true
+  await abrirChatGrupo(telefono)
   chatMixActivo = true
   jugadoresMix = []
-
-await abrirChatGrupo()
     
   await enviarMensaje(telefono, "🔥 MIX ABIERTO\n\n👥 Cupos: 0/10\n\nUsá:\n!entrar\n\npara entrar al mix.")
 }
@@ -2301,6 +2300,7 @@ if (mensaje.toLowerCase() === "!cerrarmix") {
 }
 
     mixAbierto = false
+    await cerrarChatGrupo(telefono)
     chatMixActivo = false
     jugadoresMix = []
 
