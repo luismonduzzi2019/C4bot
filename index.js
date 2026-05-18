@@ -2712,65 +2712,77 @@ await supabase
     return
 }
 
-  if (mensaje.toLowerCase() === "!confirmar") {
-
-if (!resultadoPendiente) {
-await enviarMensaje(telefono, "⚠️ No hay resultado pendiente para confirmar.")
-return
-}
-
-const { modo, estado, nombresCW, jugadores } = resultadoPendiente
-
-for (const jugador of jugadores) {
-
-const nombreFinal =
-modo === "cw"
-? nombresCW[jugadores.indexOf(jugador)]
-: jugador.nombre
-
-const registro = buscarJugadorRegistrado(
-nombreFinal,
-jugadoresParaMatching
-)
-
-if (!registro) continue
-
-const nuevosKills = (registro.kills || 0) + jugador.bajas
-const nuevasMuertes = (registro.muertes || 0) + jugador.muertes
-const nuevosPuntos = (registro.puntos || 0) + jugador.puntos
-
-const nuevasVictorias =
-estado === "victoria"
-? (registro.victorias || 0) + 1
-: (registro.victorias || 0)
-
-const nuevasDerrotas =
-estado === "derrota"
-? (registro.derrotas || 0) + 1
-: (registro.derrotas || 0)
-
-await supabase
-.from("Jugadores")
-.update({
-kills: nuevosKills,
-muertes: nuevasMuertes,
-puntos: nuevosPuntos,
-victorias: nuevasVictorias,
-derrotas: nuevasDerrotas
-})
-.eq("numero", registro.numero)
-
-}
-
-await enviarMensaje(
-telefono,
-`✅ Resultado guardado correctamente en Supabase.`
-)
-
-resultadoPendiente = null
-
-return
+if (mensaje.toLowerCase() === "!confirmar") {
+  if (!resultadoPendiente) {
+    await enviarMensaje(telefono, "⚠️ No hay resultado pendiente para confirmar.")
+    return
   }
+
+  const { data: jugadoresSupabase, error } = await supabase
+    .from("Jugadores")
+    .select("*")
+
+  if (error) {
+    await enviarMensaje(telefono, "❌ Error cargando jugadores desde Supabase.")
+    return
+  }
+
+  const jugadoresParaMatching = {}
+
+  for (const jugador of jugadoresSupabase || []) {
+    jugadoresParaMatching[jugador.numero || jugador.id] = {
+      nick: jugador.nombre,
+      nombre: jugador.nombre,
+      id: jugador.id,
+      numero: jugador.numero,
+      kills: jugador.kills,
+      muertes: jugador.muertes,
+      puntos: jugador.puntos,
+      victorias: jugador.victorias,
+      derrotas: jugador.derrotas,
+      alias: []
+    }
+  }
+
+  let guardados = 0
+
+  for (let i = 0; i < resultadoPendiente.jugadores.length; i++) {
+    const stat = resultadoPendiente.jugadores[i]
+
+    const nombreFinal =
+      resultadoPendiente.modo === "cw"
+        ? resultadoPendiente.nombresCW[i]
+        : stat.nombre
+
+    const registro = buscarJugadorRegistrado(nombreFinal, jugadoresParaMatching)
+
+    if (!registro) continue
+
+    await supabase
+      .from("Jugadores")
+      .update({
+        kills: Number(registro.kills || 0) + Number(stat.bajas || 0),
+        muertes: Number(registro.muertes || 0) + Number(stat.muertes || 0),
+        puntos: Number(registro.puntos || 0) + Number(stat.puntos || 0),
+        victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
+        derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
+      })
+      .eq("numero", registro.numero)
+
+    guardados++
+  }
+
+  resultadoPendiente = null
+
+  await enviarMensaje(
+    telefono,
+    `✅ Resultado guardado en Supabase.
+
+📊 Jugadores actualizados: ${guardados}`
+  )
+
+  return
+}
 
 if (mensaje.toLowerCase().startsWith("!editar")) {
   if (!resultadoPendiente) {
