@@ -2767,7 +2767,7 @@ if (mensaje.toLowerCase() === "!confirmar") {
         victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
         derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
       })
-      .eq("numero", registro.numero)
+      .eq("id", registro.id)
 
     guardados++
   }
