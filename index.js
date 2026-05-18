@@ -1275,10 +1275,10 @@ telefono,
 ${resumenJugadores}
 
 ✅ Si está correcto:
-!confirmarresultado
+!confirmar
 
 ✏️ Si hay errores:
-!editresultado`
+!editar
 )
     
 return
@@ -1429,11 +1429,19 @@ const comandosMix = [
 "!comandos",
 "!abrirmix",
 "!cerrarmix",
-"!fake10"
+"!reiniciarmix",
+"!fake10",
+"!organizadores",
+"!organizador",
+"!quitarorganizador",
+"!mapas",
 ]
 
 const comandosStats = [
+"!resultadocw",
 "!resultadomix",
+"!confirmar",
+"!editar",
 "!stats",
 "!topkills",
 "!topmvp",
@@ -2690,12 +2698,17 @@ await supabase
   "!organizadores",
   "!entrar",   
   "!salir",
-  "!mapas",
-  "!votar",
-  "!votarmapa",
   "!comandos", 
   "!cerrarchat",
   "!abrirchat",
+  "!resultadocw",
+  "!resultadomix",
+  "!confirmar",
+  "!editar",
+  "!stats",
+  "!topkills",
+  "!topmvp",
+  "!rank"
 ]
 
 if (
