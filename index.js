@@ -1352,7 +1352,13 @@ const esGrupo = req.body?.isGroup || String(telefono).includes("-group")
 
     const numeroActual = String(telefonoJugador).replace(/\D/g, "")
 const esAdminPrincipal = numeroActual === adminPrincipal
-const esOrganizador = organizadores.includes(numeroActual)
+const { data: organizadoresDB } = await supabase
+  .from("Organizadores")
+  .select("*")
+
+const esOrganizador = (organizadoresDB || []).some(org =>
+  org.numero?.replace(/\D/g, "") === numeroActual
+)
 
     if (!esGrupo && !esAdminPrincipal) {
     return res.status(200).json({
