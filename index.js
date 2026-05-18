@@ -1136,16 +1136,18 @@ const esClanPropio =
 
 const jugadoresDetectados = lineasUtiles
 .map(linea => {
-  const numeros = linea.match(/\d+/g) || []
-    const numerosFiltrados = numeros.filter(n => Number(n) <= 200)
+const lineaSinDinero = linea
+  .replace(/\d+\s*\$/g, " ")
+  .replace(/\b\d{4,6}\b/g, " ")
 
-  if (numerosFiltrados.length < 4) return null
+const numeros = lineaSinDinero.match(/\d+/g) || []
+const numerosFiltrados = numeros.filter(n => Number(n) <= 200)
+
+if (numerosFiltrados.length < 4) return null
 
 const stats = numerosFiltrados.slice(-4)
 
 const [bajas, asistencias, muertes, puntos] = stats
-
-  const lineaSinDinero = linea.replace(/\d+\$/g, " ")
 
 const statsMatch = lineaSinDinero.match(/(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/)
 
