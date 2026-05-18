@@ -1791,6 +1791,21 @@ const nick = partes
 .slice(1, partes.length - 1)
 .join(" ")
 .trim()
+
+    if (!/^\d{5,}$/.test(idGame)) {
+
+  await reaccionarMensaje(telefono, req.body?.messageId, "❌")
+
+  await enviarMensaje(
+    telefono,
+    `❌ El ID debe tener 5 o más números.
+
+Ejemplo:
+!registrar Colt 16735294`
+  )
+
+  return
+    }
     
   if (partes.length < 3) {
 
@@ -2480,7 +2495,7 @@ telefono,
 ✏️ !editregistro NICK ID
 
 🎮 !entrar
-🚪 !salir`
+🚪 !salir
 
 👥 !organizadores — Ante cualquier duda, contactate por privado con alguno de ellos.`
 )
