@@ -1081,47 +1081,14 @@ const prepararColumna = async (leftPct, widthPct) => {
     .toBuffer()
 }
 
-        const leerFilas = async (imagenBuffer) => {
-  const filas = []
-
-  for (let i = 0; i < 5; i++) {
-    const fila = await sharp(imagenBuffer)
-      .extract({
-        left: 0,
-        top: Math.round((metadata.height * 0.68 / 5) * i - metadata.height * 0.015),
-width: Math.round(metadata.width * 0.47),
-height: Math.round(metadata.height * 0.68 / 5 + metadata.height * 0.03)
-      })
-      .resize({ width: 1600 })
-      .grayscale()
-      .normalize()
-      .modulate({
-        brightness: 1.15,
-        saturation: 0
-      })
-      .sharpen({
-        sigma: 1.5
-      })
-      .threshold(130)
-      .png()
-      .toBuffer()
-
-    const resultado = await Tesseract.recognize(
-      fila,
-      "eng"
-    )
-
-    filas.push(resultado.data.text)
-  }
-
-  return filas.join("\n")
-        }
-
 const imagenIzquierda = await prepararColumna(0.02, 0.47)
 const imagenDerecha = await prepararColumna(0.51, 0.47)
 
-const textoIzquierda = await leerFilas(imagenIzquierda)
-const textoDerecha = await leerFilas(imagenDerecha)
+const ocrIzquierda = await Tesseract.recognize(imagenIzquierda, "eng")
+const ocrDerecha = await Tesseract.recognize(imagenDerecha, "eng")
+
+const textoIzquierda = ocrIzquierda.data.text
+const textoDerecha = ocrDerecha.data.text
 
 const normalizarTexto = (txt) => String(txt || "")
   .toLowerCase()
@@ -1161,9 +1128,10 @@ const esClanPropio =
   lineaNormalizada.includes("c4ar") ||
   lineaNormalizada.includes("c4ac")
 
-return (
-l.length > 8 &&
-numeros.length >= 4
+    return (
+  l.length > 8 &&
+  numeros.length >= 4 &&
+  (modo === "mix" || esClanPropio)
 )
 })
 
@@ -1178,11 +1146,20 @@ const stats = numerosFiltrados.slice(-4)
 
 const [bajas, asistencias, muertes, puntos] = stats
 
-  const primerNumero = linea.search(/\d/)
-const nombre = (primerNumero >= 0 ? linea.slice(0, primerNumero) : linea)
-  .replace(/[^\p{L}\d'\[\]\s]/gu, " ")
-  .replace(/\s+/g, " ")
-  .trim()
+  const lineaSinDinero = linea.replace(/\d+\$/g, " ")
+
+const statsMatch = lineaSinDinero.match(/(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/)
+
+let nombre = lineaSinDinero
+
+if (statsMatch) {
+  nombre = lineaSinDinero.slice(0, statsMatch.index)
+}
+
+nombre = nombre
+.replace(/[^\p{L}\d'\[\]\s]/gu, " ")
+.replace(/\s+/g, " ")
+.trim()
 
   return {
   lineaOriginal: linea,
