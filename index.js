@@ -1783,17 +1783,31 @@ if (mensaje.trim().toLowerCase().startsWith("!registrar")) {
 
     console.log("ENTRO A REGISTRAR")
 
-  const partes = mensaje.trim().replace(/\s+/g, " ").split(" ")
+  const partes = mensaje.trim().split(/\s+/)
+
+if (partes.length < 3) {
+  await enviarMensaje(
+    telefono,
+    `❌ Formato incorrecto
+
+Usá:
+!registrar NICK ID
+
+Ejemplo:
+!registrar Colt 16735294`
+  )
+
+  return
+}
 
 const idGame = String(partes[partes.length - 1]).replace(/\D/g, "")
 
 const nick = partes
-.slice(1, partes.length - 1)
-.join(" ")
-.trim()
+  .slice(1, -1)
+  .join(" ")
+  .trim()
 
-    if (!/^\d{5,}$/.test(idGame)) {
-
+if (!/^\d{5,}$/.test(idGame)) {
   await reaccionarMensaje(telefono, req.body?.messageId, "❌")
 
   await enviarMensaje(
@@ -1805,23 +1819,7 @@ Ejemplo:
   )
 
   return
-    }
-    
-  if (partes.length < 3) {
-
-    await enviarMensaje(
-      telefono,
-      `❌ Formato incorrecto
-
-Usá:
-!registrar NICK ID
-
-Ejemplo:
-!registrar Colt 123456`
-    )
-
-    return
-  }
+}
 
 if (!nick || nick.trim().length < 2) {
     
@@ -2481,7 +2479,9 @@ telefono,
 ✏️ !editregistro NICK ID
 
 🎮 !entrar
-🚪 !salir`
+🚪 !salir
+
+👥 !organizadores — Ante cualquier duda, contactate por privado con alguno de ellos.`
 )
 
 return
@@ -2544,10 +2544,15 @@ return
        const { data: jugadoresSupabase } = await supabase
   .from("Jugadores")
   .select("*") 
-  const lista = organizadores.map(numero => {
+  const { data: organizadoresDB } = await supabase
+  .from("Organizadores")
+  .select("*")
+
+const lista = (organizadoresDB || []).map(org => {
+  const numero = org.numero
     const numeroLimpio = numero.replace(/\D/g, "")
 
-const jugador = jugadoresSupabase.find(j =>
+const jugador = (jugadoresSupabase || []).find(j =>
   j.numero?.replace(/\D/g, "") === numeroLimpio
 )
     const nombre = jugador?.nick || jugador?.nombre || "Sin registro"
