@@ -1094,6 +1094,23 @@ const normalizarTexto = (txt) => String(txt || "")
   .toLowerCase()
   .replace(/[^a-z0-9]/g, "")
 
+        const detectarTagDominante = (texto) => {
+  const limpio = normalizarTexto(texto)
+
+  const conteos = {
+    FFVA: (limpio.match(/ffva|fpva|fva|ffvai/g) || []).length,
+    C4AR: (limpio.match(/c4ar|caar|c4a/g) || []).length,
+    C4AC: (limpio.match(/c4ac|c4c/g) || []).length
+  }
+
+  const ordenado = Object.entries(conteos)
+    .sort((a, b) => b[1] - a[1])
+
+  return ordenado[0]?.[1] > 0
+    ? ordenado[0][0]
+    : null
+        }
+
 const izquierdaEsPropia =
   normalizarTexto(textoIzquierda).includes("ffva") ||
   normalizarTexto(textoIzquierda).includes("c4ar") ||
@@ -1158,6 +1175,7 @@ const [bajas, asistencias, muertes, puntos] = stats
 const statsMatch = lineaSinDinero.match(/(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/)
 
 let nombre = lineaSinDinero
+const tagDominante = detectarTagDominante(textoLeido)
 
 if (statsMatch) {
   nombre = lineaSinDinero.slice(0, statsMatch.index)
@@ -1167,6 +1185,17 @@ nombre = nombre
 .replace(/[^\p{L}\d'\[\]\s]/gu, " ")
 .replace(/\s+/g, " ")
 .trim()
+
+const nombreNormalizado = normalizarTexto(nombre)
+
+const tieneTagClaro =
+  nombreNormalizado.includes("ffva") ||
+  nombreNormalizado.includes("c4ar") ||
+  nombreNormalizado.includes("c4ac")
+
+if (modo === "cw" && tagDominante && !tieneTagClaro) {
+  nombre = `[${tagDominante}] ${nombre}`
+}
 
   return {
   lineaOriginal: linea,
