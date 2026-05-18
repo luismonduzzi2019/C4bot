@@ -144,6 +144,7 @@ let chatMixActivo = false
 let jugadoresMix = []
 let equiposMixActual = null
 let resultadoPendiente = null
+let cwActual = []
 
 
 let organizadores = []
@@ -1231,14 +1232,31 @@ for (const jugador of jugadoresSupabase || []) {
     alias: []
   }
 }
+
+if (modo === "cw" && cwActual.length !== 5) {
+  await enviarMensaje(
+    telefono,
+    "❌ Primero cargá los 5 jugadores con:\n!cw jugador1 jugador2 jugador3 jugador4 jugador5"
+  )
+  return
+        }
         
 const confirmados = []
 const dudosos = []
 
-for (const j of jugadoresDetectados) {
-  const match = buscarJugadorRegistrado(j.nombre, jugadoresParaMatching)
+for (let i = 0; i < jugadoresDetectados.length; i++) {
+  const j = jugadoresDetectados[i]
 
-  const linea = `• ${match ? match.nombre : j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+  const nombreCW = modo === "cw"
+    ? cwActual[i]
+    : j.nombre
+
+  const match = buscarJugadorRegistrado(
+    nombreCW,
+    jugadoresParaMatching
+  )
+
+  const linea = `• ${match ? match.nombre : nombreCW} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 
   if (match && match.score >= 45) {
     confirmados.push(linea)
@@ -1442,6 +1460,66 @@ telefono,
 return
 }
 
+if (mensaje.toLowerCase().startsWith("!cw ")) {
+  if (!esAdminPrincipal && !esOrganizador) return
+
+  const nombresPedidos = mensaje
+    .slice(4)
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+
+  if (nombresPedidos.length !== 5) {
+    await enviarMensaje(
+      telefono,
+      "❌ Tenés que poner exactamente 5 jugadores.\n\nEjemplo:\n!cw lauty colt ikea valu kth"
+    )
+    return
+  }
+
+  const { data: jugadoresSupabase, error } = await supabase
+    .from("Jugadores")
+    .select("*")
+
+  if (error) {
+    await enviarMensaje(telefono, "❌ Error buscando jugadores en Supabase.")
+    return
+  }
+
+  const jugadoresParaMatching = {}
+
+  for (const jugador of jugadoresSupabase || []) {
+    jugadoresParaMatching[jugador.numero || jugador.id] = {
+      nick: jugador.nombre,
+      nombre: jugador.nombre,
+      id: jugador.id,
+      numero: jugador.numero,
+      alias: []
+    }
+  }
+
+  const encontrados = nombresPedidos.map(nombre => {
+    return buscarJugadorRegistrado(nombre, jugadoresParaMatching)
+  })
+
+  if (encontrados.some(j => !j)) {
+    await enviarMensaje(
+      telefono,
+      "❌ No pude reconocer uno o más jugadores.\n\nProbá escribir el nick un poco más claro."
+    )
+    return
+  }
+
+  cwActual = encontrados.map(j => j.nombre)
+
+  await enviarMensaje(
+    telefono,
+    `✅ CW cargada:\n\n${cwActual.map((n, i) => `${i + 1}. ${n}`).join("\n")}\n\nAhora enviá la captura con:\n!resultadocw`
+  )
+
+  return
+}
+    
 if (mensaje.toLowerCase() === "!ping") {
 
     if (!esAdminPrincipal && !esOrganizador) {
