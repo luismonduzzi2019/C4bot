@@ -2686,6 +2686,38 @@ await supabase
 
     return
 }
+
+    if (mensaje.toLowerCase() === "!confirmar") {
+  if (!resultadoPendiente) {
+    await enviarMensaje(telefono, "⚠️ No hay resultado pendiente para confirmar.")
+    return
+  }
+
+  await enviarMensaje(
+    telefono,
+    `✅ Resultado confirmado.
+
+📌 Próximo paso: guardar en Supabase.
+
+Modo: ${resultadoPendiente.modo}`
+  )
+
+  return
+}
+
+if (mensaje.toLowerCase().startsWith("!editar")) {
+  if (!resultadoPendiente) {
+    await enviarMensaje(telefono, "⚠️ No hay resultado pendiente para editar.")
+    return
+  }
+
+  await enviarMensaje(
+    telefono,
+    `✏️ Edición manual pendiente. Por ahora reenviá la captura con los nombres corregidos.`
+  )
+
+  return
+}
     
     const comandosValidos = [
   "!ping",
