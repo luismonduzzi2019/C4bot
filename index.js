@@ -992,8 +992,18 @@ const captionImagen = req.body?.image?.caption || ""
 const imageUrl = req.body?.image?.imageUrl || ""
 
 const partesResultado = captionImagen.trim().split(/\s+/)
+
 const comandoResultado = partesResultado[0]?.toLowerCase()
-const nombresCW = partesResultado.slice(1)
+
+const estadoCW =
+  comandoResultado === "!resultadocw"
+    ? partesResultado[1]?.toLowerCase()
+    : null
+
+const nombresCW =
+  comandoResultado === "!resultadocw"
+    ? partesResultado.slice(2)
+    : []
 
 if (
 imageUrl &&
@@ -1001,11 +1011,24 @@ captionImagen.startsWith("!") &&
 !["!resultadomix", "!resultadocw"].includes(comandoResultado)
 ){
 
-if (comandoResultado === "!resultadocw" && nombresCW.length !== 5) {
+if (
+  comandoResultado === "!resultadocw" &&
+  (
+    !["victoria", "derrota"].includes(estadoCW) ||
+    nombresCW.length !== 5
+  )
+) {
   await enviarMensaje(
     telefono,
-    "❌ Para CW usá:\n!resultadocw jugador1 jugador2 jugador3 jugador4 jugador5\n\nEjemplo:\n!resultadocw lauty colt ikea valu kth"
+    `❌ Formato incorrecto
+
+Usá:
+!resultadocw victoria jugador1 jugador2 jugador3 jugador4 jugador5
+
+Ejemplo:
+!resultadocw victoria lauty colt kea valu kth`
   )
+
   return res.sendStatus(200)
 }
     
