@@ -1278,7 +1278,7 @@ ${resumenJugadores}
 !confirmar
 
 ✏️ Si hay errores:
-!editar
+!editar`
 )
     
 return
