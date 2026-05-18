@@ -2482,7 +2482,7 @@ telefono,
 🎮 !entrar
 🚪 !salir`
 
-👥 !organizadores — Ante cualquier duda, contactate por privado con alguno de ellos.
+👥 !organizadores — Ante cualquier duda, contactate por privado con alguno de ellos.`
 )
 
 return
