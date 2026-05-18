@@ -1211,10 +1211,33 @@ resultadoPendiente = {
   jugadores: jugadoresDetectados,
   fecha: new Date().toISOString()
 }
+
+const { data: jugadoresSupabase, error: errorJugadores } = await supabase
+  .from("Jugadores")
+  .select("*")
+
+if (errorJugadores) {
+  console.log("❌ Error cargando jugadores Supabase:", errorJugadores)
+}
+
+const jugadoresParaMatching = {}
+
+for (const jugador of jugadoresSupabase || []) {
+  jugadoresParaMatching[jugador.numero || jugador.id] = {
+    nick: jugador.nombre,
+    nombre: jugador.nombre,
+    id: jugador.id,
+    numero: jugador.numero,
+    alias: []
+  }
+}
         
 const resumenJugadores = jugadoresDetectados.map(j => {
-const match = buscarJugadorRegistrado(j.nombre, jugadoresRegistrados)
-const nombreFinal = match ? match.nombre : j.nombre
+const match = buscarJugadorRegistrado(j.nombre, jugadoresParaMatching)
+
+const nombreFinal = match
+  ? match.nombre
+  : `⚠️ ${j.nombre}`
 
 return `• ${nombreFinal} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 }).join("\n\n")
