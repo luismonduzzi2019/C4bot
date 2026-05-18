@@ -991,13 +991,25 @@ console.log("TELEFONO:", telefono)
 const captionImagen = req.body?.image?.caption || ""
 const imageUrl = req.body?.image?.imageUrl || ""
 
-const comandoResultado = captionImagen.trim().toLowerCase().replace(/\s+/g, "")
+const partesResultado = captionImagen.trim().split(/\s+/)
+const comandoResultado = partesResultado[0]?.toLowerCase()
+const nombresCW = partesResultado.slice(1)
 
 if (
 imageUrl &&
 captionImagen.startsWith("!") &&
 !["!resultadomix", "!resultadocw"].includes(comandoResultado)
+)
 ) {
+
+if (comandoResultado === "!resultadocw" && nombresCW.length !== 5) {
+  await enviarMensaje(
+    telefono,
+    "❌ Para CW usá:\n!resultadocw jugador1 jugador2 jugador3 jugador4 jugador5\n\nEjemplo:\n!resultadocw lauty colt ikea valu kth"
+  )
+  return res.sendStatus(200)
+}
+    
 await reaccionarMensaje(telefono, req.body?.messageId, "❌")
 
 await enviarMensaje(
@@ -1232,14 +1244,6 @@ for (const jugador of jugadoresSupabase || []) {
     alias: []
   }
 }
-
-if (modo === "cw" && cwActual.length !== 5) {
-  await enviarMensaje(
-    telefono,
-    "❌ Primero cargá los 5 jugadores con:\n!cw jugador1 jugador2 jugador3 jugador4 jugador5"
-  )
-  return
-        }
         
 const confirmados = []
 const dudosos = []
@@ -1248,7 +1252,7 @@ for (let i = 0; i < jugadoresDetectados.length; i++) {
   const j = jugadoresDetectados[i]
 
   const nombreCW = modo === "cw"
-    ? cwActual[i]
+    ? nombresCW[i]
     : j.nombre
 
   const match = buscarJugadorRegistrado(
