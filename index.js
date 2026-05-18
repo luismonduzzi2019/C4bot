@@ -1248,8 +1248,11 @@ for (const jugador of jugadoresSupabase || []) {
 const confirmados = []
 const dudosos = []
 
-for (let i = 0; i < jugadoresDetectados.length; i++) {
+const limiteJugadores = modo === "cw" ? 5 : jugadoresDetectados.length
+
+for (let i = 0; i < limiteJugadores; i++) {
   const j = jugadoresDetectados[i]
+if (!j) continue
 
   const nombreCW = modo === "cw"
     ? nombresCW[i]
