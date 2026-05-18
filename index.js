@@ -2781,6 +2781,8 @@ if (actualizado && actualizado.length > 0) {
 
 }
 
+}
+
   resultadoPendiente = null
 
   await enviarMensaje(
