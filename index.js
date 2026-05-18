@@ -1235,6 +1235,8 @@ if (modo === "cw" && tagDominante && !tieneTagClaro) {
         
 resultadoPendiente = {
   modo,
+  estado: estadoCW,
+  nombresCW,
   jugadores: jugadoresDetectados,
   fecha: new Date().toISOString()
 }
@@ -2710,23 +2712,65 @@ await supabase
     return
 }
 
-    if (mensaje.toLowerCase() === "!confirmar") {
-  if (!resultadoPendiente) {
-    await enviarMensaje(telefono, "⚠️ No hay resultado pendiente para confirmar.")
-    return
-  }
+  if (mensaje.toLowerCase() === "!confirmar") {
 
-  await enviarMensaje(
-    telefono,
-    `✅ Resultado confirmado.
-
-📌 Próximo paso: guardar en Supabase.
-
-Modo: ${resultadoPendiente.modo}`
-  )
-
-  return
+if (!resultadoPendiente) {
+await enviarMensaje(telefono, "⚠️ No hay resultado pendiente para confirmar.")
+return
 }
+
+const { modo, estado, nombresCW, jugadores } = resultadoPendiente
+
+for (const jugador of jugadores) {
+
+const nombreFinal =
+modo === "cw"
+? nombresCW[jugadores.indexOf(jugador)]
+: jugador.nombre
+
+const registro = buscarJugadorRegistrado(
+nombreFinal,
+jugadoresParaMatching
+)
+
+if (!registro) continue
+
+const nuevosKills = (registro.kills || 0) + jugador.bajas
+const nuevasMuertes = (registro.muertes || 0) + jugador.muertes
+const nuevosPuntos = (registro.puntos || 0) + jugador.puntos
+
+const nuevasVictorias =
+estado === "victoria"
+? (registro.victorias || 0) + 1
+: (registro.victorias || 0)
+
+const nuevasDerrotas =
+estado === "derrota"
+? (registro.derrotas || 0) + 1
+: (registro.derrotas || 0)
+
+await supabase
+.from("Jugadores")
+.update({
+kills: nuevosKills,
+muertes: nuevasMuertes,
+puntos: nuevosPuntos,
+victorias: nuevasVictorias,
+derrotas: nuevasDerrotas
+})
+.eq("numero", registro.numero)
+
+}
+
+await enviarMensaje(
+telefono,
+`✅ Resultado guardado correctamente en Supabase.`
+)
+
+resultadoPendiente = null
+
+return
+  }
 
 if (mensaje.toLowerCase().startsWith("!editar")) {
   if (!resultadoPendiente) {
