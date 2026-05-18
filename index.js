@@ -2758,19 +2758,28 @@ if (mensaje.toLowerCase() === "!confirmar") {
 
     if (!registro) continue
 
-    await supabase
-      .from("Jugadores")
-      .update({
-        kills: Number(registro.kills || 0) + Number(stat.bajas || 0),
-        muertes: Number(registro.muertes || 0) + Number(stat.muertes || 0),
-        puntos: Number(registro.puntos || 0) + Number(stat.puntos || 0),
-        victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
-        derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
-      })
-      .eq("id", registro.id)
+    const { data: actualizado, error: errorUpdate } = await supabase
+  .from("Jugadores")
+  .update({
+    kills: Number(registro.kills || 0) + Number(stat.bajas || 0),
+    muertes: Number(registro.muertes || 0) + Number(stat.muertes || 0),
+    puntos: Number(registro.puntos || 0) + Number(stat.puntos || 0),
+    victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
+    derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
+  })
+  .eq("nombre", registro.nombre)
+  .select()
 
-    guardados++
-  }
+if (errorUpdate) {
+  console.log("❌ ERROR UPDATE STATS:", errorUpdate)
+} else {
+  console.log("✅ UPDATE STATS:", actualizado)
+}
+
+if (actualizado && actualizado.length > 0) {
+  guardados++
+
+}
 
   resultadoPendiente = null
 
