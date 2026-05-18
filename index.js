@@ -1130,8 +1130,7 @@ const esClanPropio =
 
     return (
   l.length > 8 &&
-  numeros.length >= 4 &&
-  (modo === "mix" || esClanPropio)
+  numeros.length >= 4
 )
 })
 
