@@ -1171,7 +1171,8 @@ if (numeros.length < 5) return null
 
 const ultimosCinco = numeros.slice(-5)
 
-const [bajas, asistencias, muertes, puntos] = ultimosCinco.slice(0, 4)
+// Dinero B A M Pts
+const [_, bajas, asistencias, muertes, puntos] = ultimosCinco
 
 const statsMatch = lineaSinDinero.match(/(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/)
 
