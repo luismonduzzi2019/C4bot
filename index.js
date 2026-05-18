@@ -1645,8 +1645,8 @@ return
 
 const { data: jugadores, error } = await supabase
 .from("Jugadores")
-.select("nombre,idgame,puntos_totales")
-.order("puntos_totales", { ascending: false })
+.select("nombre,idgame,puntos")
+.order("puntos", { ascending: false })
 
 if (error || !jugadores) {
 await enviarMensaje(
@@ -1656,7 +1656,7 @@ telefono,
 return
 }
 
-const jugadoresConPuntos = jugadores.filter(j => (j.puntos_totales || 0) > 0)
+const jugadoresConPuntos = jugadores.filter(j => (j.puntos || 0) > 0)
 
 if (jugadoresConPuntos.length === 0) {
 await enviarMensaje(
@@ -1672,7 +1672,7 @@ const tier3 = jugadoresConPuntos.slice(16)
 
 const formato = (lista, inicio) =>
 lista.map((j, i) =>
-`${inicio + i}° - ${j.nombre} | ID: ${j.idgame || "Sin ID"} | ${j.puntos_totales || 0} pts`
+`${inicio + i}° - ${j.nombre} | ID: ${j.idgame || "Sin ID"} | ${j.puntos || 0} pts`
 ).join("\n")
 
 await enviarMensaje(
