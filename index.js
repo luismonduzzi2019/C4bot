@@ -2564,18 +2564,29 @@ const jugador = jugadoresSupabase.find(j =>
 
     const numeroNuevo = partes[1].replace(/\D/g, "")
 
-    if (organizadores.includes(numeroNuevo)) {
-        await enviarMensaje(telefono, "⚠️ Ese usuario ya es organizador")
-        return
-    }
+    const { data: organizadoresGuardados } = await supabase
+  .from("Organizadores")
+  .select("*")
 
-    organizadores.push(numeroNuevo)
+const yaExiste = organizadoresGuardados.some(
+  o => o.numero?.replace(/\D/g, "") === numeroNuevo
+)
 
-    await enviarMensaje(
-        telefono,
-        `✅ Organizador agregado\n\n📱 ${numeroNuevo}`
-    )
+if (yaExiste) {
+  await enviarMensaje(telefono, "⚠️ Ese usuario ya es organizador")
+  return
+}
 
+await supabase
+  .from("Organizadores")
+  .insert([
+    { numero: numeroNuevo }
+  ])
+
+await enviarMensaje(
+  telefono,
+  `✅ Organizador agregado\n\n📱 ${numeroNuevo}`
+)
     return
 
  }
@@ -2596,13 +2607,23 @@ if (mensaje.toLowerCase().startsWith("!quitarorganizador")) {
 
     const numeroQuitar = partes[1].replace(/\D/g, "")
 
-    if (!organizadores.includes(numeroQuitar)) {
-        await enviarMensaje(telefono, "⚠️ Ese número no es organizador")
-        return
-    }
+    const { data: organizadoresGuardados } = await supabase
+  .from("Organizadores")
+  .select("*")
 
-    organizadores = organizadores.filter(n => n !== numeroQuitar)
+const existe = organizadoresGuardados.find(
+  o => o.numero?.replace(/\D/g, "") === numeroQuitar
+)
 
+if (!existe) {
+  await enviarMensaje(telefono, "⚠️ Ese número no es organizador")
+  return
+}
+
+await supabase
+  .from("Organizadores")
+  .delete()
+  .eq("numero", existe.numero)
     await enviarMensaje(
         telefono,
         `✅ Organizador quitado\n\n📱 ${numeroQuitar}`
