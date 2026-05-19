@@ -2708,12 +2708,55 @@ if (mensaje.toLowerCase() === "!confirmar") {
     const { data: actualizado, error: errorUpdate } = await supabase
   .from("Jugadores")
   .update({
-    kills: Number(registro.kills || 0) + Number(stat.bajas || 0),
-    muertes: Number(registro.muertes || 0) + Number(stat.muertes || 0),
-    puntos: Number(registro.puntos || 0) + Number(stat.puntos || 0),
-    victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
-    derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
-  })
+  // GENERALES
+  kills: Number(registro.kills || 0) + Number(stat.bajas || 0),
+  muertes: Number(registro.muertes || 0) + Number(stat.muertes || 0),
+  puntos: Number(registro.puntos || 0) + Number(stat.puntos || 0),
+  victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
+  derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0),
+
+  // MIX
+  kills_mix: resultadoPendiente.modo === "mix"
+    ? Number(registro.kills_mix || 0) + Number(stat.bajas || 0)
+    : Number(registro.kills_mix || 0),
+
+  deaths_mix: resultadoPendiente.modo === "mix"
+    ? Number(registro.deaths_mix || 0) + Number(stat.muertes || 0)
+    : Number(registro.deaths_mix || 0),
+
+  points_mix: resultadoPendiente.modo === "mix"
+    ? Number(registro.points_mix || 0) + Number(stat.puntos || 0)
+    : Number(registro.points_mix || 0),
+
+  wins_mix: resultadoPendiente.modo === "mix"
+    ? Number(registro.wins_mix || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0)
+    : Number(registro.wins_mix || 0),
+
+  losses_mix: resultadoPendiente.modo === "mix"
+    ? Number(registro.losses_mix || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
+    : Number(registro.losses_mix || 0),
+
+  // CW
+  kills_cw: resultadoPendiente.modo === "cw"
+    ? Number(registro.kills_cw || 0) + Number(stat.bajas || 0)
+    : Number(registro.kills_cw || 0),
+
+  deaths_cw: resultadoPendiente.modo === "cw"
+    ? Number(registro.deaths_cw || 0) + Number(stat.muertes || 0)
+    : Number(registro.deaths_cw || 0),
+
+  points_cw: resultadoPendiente.modo === "cw"
+    ? Number(registro.points_cw || 0) + Number(stat.puntos || 0)
+    : Number(registro.points_cw || 0),
+
+  wins_cw: resultadoPendiente.modo === "cw"
+    ? Number(registro.wins_cw || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0)
+    : Number(registro.wins_cw || 0),
+
+  losses_cw: resultadoPendiente.modo === "cw"
+    ? Number(registro.losses_cw || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
+    : Number(registro.losses_cw || 0)
+})
   .eq("nombre", registro.nombre)
   .select()
 
