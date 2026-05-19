@@ -1269,9 +1269,10 @@ resultadoPendiente = {
   modo,
   estado: estadoCW,
   nombresCW,
-  jugadores: jugadoresDetectados,
-  fecha: new Date().toISOString()
-}
+  jugadores: jugadoresDetectados.map((j, i) => ({
+  ...j,
+  nombre: nombresCW[i] || j.nombre
+})),
 
 const { data: jugadoresSupabase, error: errorJugadores } = await supabase
   .from("Jugadores")
