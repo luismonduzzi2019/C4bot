@@ -1908,6 +1908,62 @@ ${tier3.length ? formato(tier3, 17) : "Sin jugadores"}`
 
 return
 }
+
+if (mensaje.toLowerCase() === "!topkills") {
+
+if (!esAdminPrincipal && !esOrganizador) {
+await enviarMensaje(
+telefono,
+"❌ Solo organizadores pueden usar este comando."
+)
+return
+}
+
+const { data: jugadores, error } = await supabase
+.from("Jugadores")
+.select("nombre,rol,kills")
+.order("kills", { ascending: false })
+
+if (error || !jugadores) {
+await enviarMensaje(
+telefono,
+"❌ Error al cargar el top de kills."
+)
+return
+}
+
+const jugadoresConKills = jugadores.filter(j => (j.kills || 0) > 0)
+
+if (jugadoresConKills.length === 0) {
+await enviarMensaje(
+telefono,
+"🔫 Todavía no hay jugadores con kills registradas."
+)
+return
+}
+
+const topKills = jugadoresConKills.slice(0, 10)
+
+const formato = topKills.map((j, i) => {
+const posicion = `${i + 1}°`
+const nombreRol = `${j.nombre || "Sin nombre"}${j.rol ? ` (${j.rol})` : ""}`
+const nombre = nombreRol.padEnd(22, " ")
+const kills = `${j.kills || 0} kills`
+
+return `${posicion} ${nombre} ${kills}`
+}).join("\n")
+
+await enviarMensaje(
+telefono,
+`🔫 TOP KILLS C4
+
+\`\`\`
+${formato}
+\`\`\``
+)
+
+return
+}
     
 if (mensaje.trim().toLowerCase().startsWith("!registrar")) {
 
