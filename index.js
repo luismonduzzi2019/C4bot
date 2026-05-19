@@ -1639,7 +1639,66 @@ Modo: ${resultadoPendiente.modo}`
 return
 }
     
+if (mensaje.toLowerCase().startsWith("!stats")) {
 
+const partes = mensaje.split(" ")
+
+if (partes.length < 2) {
+await enviarMensaje(
+telefono,
+"❌ Usá: !stats nombre"
+)
+return
+}
+
+const nombreBuscado = partes.slice(1).join(" ")
+
+const { data: jugador, error } = await supabase
+.from("Jugadores")
+.select("*")
+.ilike("nombre", `%${nombreBuscado}%`)
+.single()
+
+if (error || !jugador) {
+await enviarMensaje(
+telefono,
+"❌ Jugador no encontrado."
+)
+return
+}
+
+const kd =
+Number(jugador.muertes || 0) > 0
+? (Number(jugador.kills || 0) / Number(jugador.muertes || 0)).toFixed(2)
+: Number(jugador.kills || 0).toFixed(2)
+
+const wr =
+(Number(jugador.victorias || 0) + Number(jugador.derrotas || 0)) > 0
+? (
+(Number(jugador.victorias || 0) /
+(Number(jugador.victorias || 0) + Number(jugador.derrotas || 0))) * 100
+).toFixed(1)
+: "0.0"
+
+await enviarMensaje(
+telefono,
+`📊 STATS — ${jugador.nombre}
+
+🏆 GENERALES
+
+🔫 Kills: ${jugador.kills || 0}
+💀 Muertes: ${jugador.muertes || 0}
+🎯 Puntos: ${jugador.puntos || 0}
+
+✅ Victorias: ${jugador.victorias || 0}
+❌ Derrotas: ${jugador.derrotas || 0}
+
+📈 Winrate: ${wr}%
+⚔️ KD: ${kd}`
+)
+
+return
+}
 
     if (mensaje.toLowerCase() === "!top") {
 
