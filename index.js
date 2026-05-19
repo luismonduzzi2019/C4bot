@@ -1273,6 +1273,8 @@ resultadoPendiente = {
   ...j,
   nombre: nombresCW[i] || j.nombre
 })),
+    fecha: new Date().toISOString()
+}
 
 const { data: jugadoresSupabase, error: errorJugadores } = await supabase
   .from("Jugadores")
