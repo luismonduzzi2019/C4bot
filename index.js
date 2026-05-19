@@ -1672,7 +1672,7 @@ const tier3 = jugadoresConPuntos.slice(16)
 
 const formato = (lista, inicio) =>
 lista.map((j, i) =>
-`${inicio + i}° ${j.nombre.padEnd(15, "_")} ${j.puntos || 0}`
+`${inicio + i}° ${j.nombre.padEnd(20, " ")} ${String(j.puntos || 0).padStart(3, " ")} pts\n`
 ).join("\n")
 
 await enviarMensaje(
