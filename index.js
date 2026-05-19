@@ -1667,18 +1667,24 @@ telefono,
 return
 }
 
-const kd =
-Number(jugador.muertes || 0) > 0
-? (Number(jugador.kills || 0) / Number(jugador.muertes || 0)).toFixed(2)
-: Number(jugador.kills || 0).toFixed(2)
+const calcKD = (kills, muertes) =>
+Number(muertes || 0) > 0
+? (Number(kills || 0) / Number(muertes || 0)).toFixed(2)
+: Number(kills || 0).toFixed(2)
 
-const wr =
-(Number(jugador.victorias || 0) + Number(jugador.derrotas || 0)) > 0
-? (
-(Number(jugador.victorias || 0) /
-(Number(jugador.victorias || 0) + Number(jugador.derrotas || 0))) * 100
-).toFixed(1)
+const calcWR = (victorias, derrotas) =>
+(Number(victorias || 0) + Number(derrotas || 0)) > 0
+? ((Number(victorias || 0) / (Number(victorias || 0) + Number(derrotas || 0))) * 100).toFixed(1)
 : "0.0"
+
+const kdGeneral = calcKD(jugador.kills, jugador.muertes)
+const wrGeneral = calcWR(jugador.victorias, jugador.derrotas)
+
+const kdMix = calcKD(jugador.kills_mix, jugador.deaths_mix)
+const wrMix = calcWR(jugador.wins_mix, jugador.losses_mix)
+
+const kdCW = calcKD(jugador.kills_cw, jugador.deaths_cw)
+const wrCW = calcWR(jugador.wins_cw, jugador.losses_cw)
 
 await enviarMensaje(
 telefono,
@@ -1693,8 +1699,34 @@ telefono,
 ✅ Victorias: ${jugador.victorias || 0}
 ❌ Derrotas: ${jugador.derrotas || 0}
 
-📈 Winrate: ${wr}%
-⚔️ KD: ${kd}`
+📈 Winrate: ${wrGeneral}%
+⚔️ KD: ${kdGeneral}
+
+
+🎮 MIX
+
+🔫 Kills: ${jugador.kills_mix || 0}
+💀 Muertes: ${jugador.deaths_mix || 0}
+🎯 Puntos: ${jugador.points_mix || 0}
+
+✅ Victorias: ${jugador.wins_mix || 0}
+❌ Derrotas: ${jugador.losses_mix || 0}
+
+📈 Winrate: ${wrMix}%
+⚔️ KD: ${kdMix}
+
+
+🏆 CW / TORNEO
+
+🔫 Kills: ${jugador.kills_cw || 0}
+💀 Muertes: ${jugador.deaths_cw || 0}
+🎯 Puntos: ${jugador.points_cw || 0}
+
+✅ Victorias: ${jugador.wins_cw || 0}
+❌ Derrotas: ${jugador.losses_cw || 0}
+
+📈 Winrate: ${wrCW}%
+⚔️ KD: ${kdCW}`
 )
 
 return
