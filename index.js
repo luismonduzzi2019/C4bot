@@ -1777,7 +1777,7 @@ return
 
 const { data: jugadores, error } = await supabase
 .from("Jugadores")
-.select("nombre,idgame,puntos")
+.select("nombre,idgame,puntos,rol")
 .order("puntos", { ascending: false })
 
 if (error || !jugadores) {
@@ -1806,7 +1806,8 @@ const formato = (lista, inicio) =>
   "```\n" +
   lista.map((j, i) => {
     const posicion = `${inicio + i}°`
-    const nombre = (j.nombre || "Sin nombre").padEnd(12, " ")
+    const nombreRol = `${j.nombre || "Sin nombre"}${j.rol ? ` (${j.rol})` : ""}`
+    const nombre = nombreRol.padEnd(22, " ")
     const puntos = `${j.puntos || 0} pts`
 
     return `${posicion} ${nombre} ${puntos}`
