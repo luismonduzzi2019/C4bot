@@ -1671,9 +1671,15 @@ const tier2 = jugadoresConPuntos.slice(6, 16)
 const tier3 = jugadoresConPuntos.slice(16)
 
 const formato = (lista, inicio) =>
-lista.map((j, i) =>
-`${inicio + i}° ${j.nombre.padEnd(20, " ")} ${String(j.puntos || 0).padStart(3, " ")} pts\n`
-).join("\n")
+  "```txt\n" +
+  lista.map((j, i) => {
+    const posicion = `${inicio + i}°`
+    const nombre = (j.nombre || "Sin nombre").padEnd(12, " ")
+    const puntos = `${j.puntos || 0} pts`
+
+    return `${posicion} ${nombre} ${puntos}`
+  }).join("\n") +
+  "\n```"
 
 await enviarMensaje(
 telefono,
