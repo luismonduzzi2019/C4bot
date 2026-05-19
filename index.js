@@ -1644,20 +1644,12 @@ if (mensaje.toLowerCase().startsWith("!stats")) {
 
 const partes = mensaje.split(" ")
 
-if (partes.length < 2) {
-await enviarMensaje(
-telefono,
-"❌ Usá: !stats nombre"
-)
-return
-}
-
-const nombreBuscado = partes.slice(1).join(" ")
+const numeroActual = String(telefonoJugador).replace(/\D/g, "")
 
 const { data: jugador, error } = await supabase
 .from("Jugadores")
 .select("*")
-.ilike("nombre", `%${nombreBuscado}%`)
+.eq("numero", numeroActual)
 .single()
 
 if (error || !jugador) {
@@ -1666,6 +1658,36 @@ if (error || !jugador) {
     "❌ Jugador no encontrado."
   )
   return
+}
+    const ahora = new Date()
+
+if (!esAdminPrincipal && jugador.ultimo_stats) {
+
+const ultimaFecha = new Date(jugador.ultimo_stats)
+
+const mismoDia =
+ahora.getDate() === ultimaFecha.getDate() &&
+ahora.getMonth() === ultimaFecha.getMonth() &&
+ahora.getFullYear() === ultimaFecha.getFullYear()
+
+if (mismoDia) {
+
+await enviarMensaje(
+telefono,
+"⏳ Ya usaste !stats hoy.\n\n📅 Volvé a intentarlo mañana."
+)
+
+return
+}
+}
+
+if (!esAdminPrincipal) {
+await supabase
+.from("Jugadores")
+.update({
+ultimo_stats: ahora.toISOString()
+})
+.eq("id", jugador.id)
 }
 
 const { data: rankingJugadores } = await supabase
