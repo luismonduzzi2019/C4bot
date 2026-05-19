@@ -1673,13 +1673,16 @@ const resumen = resultadoPendiente.jugadores.map(j =>
 
 await enviarMensaje(
 telefono,
-`✏️ Resultado corregido.
+`📊 Resultado pendiente ${resultadoPendiente.modo?.toUpperCase() || ""}
 
-\`\`\`
+✅ Detectados:
 ${resumen}
-\`\`\`
 
-Usa !confirmar para guardar definitivamente.`
+✅ Si está correcto:
+!confirmar
+
+✏️ Si hay errores:
+!edit`
 )
 
 return
