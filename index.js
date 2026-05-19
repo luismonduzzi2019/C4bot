@@ -1661,12 +1661,27 @@ const { data: jugador, error } = await supabase
 .single()
 
 if (error || !jugador) {
-await enviarMensaje(
-telefono,
-"❌ Jugador no encontrado."
-)
-return
+  await enviarMensaje(
+    telefono,
+    "❌ Jugador no encontrado."
+  )
+  return
 }
+
+const { data: rankingJugadores } = await supabase
+.from("Jugadores")
+.select("id,nombre,puntos")
+.order("puntos", { ascending: false })
+
+const posicionRanking = rankingJugadores
+? rankingJugadores.findIndex(j => j.id === jugador.id) + 1
+: 0
+
+const tierJugador =
+posicionRanking >= 1 && posicionRanking <= 6 ? "Tier 1" :
+posicionRanking >= 7 && posicionRanking <= 16 ? "Tier 2" :
+posicionRanking >= 17 ? "Tier 3" :
+"Sin tier"
 
 const calcKD = (kills, muertes) =>
 Number(muertes || 0) > 0
@@ -1689,7 +1704,10 @@ const wrCW = calcWR(jugador.wins_cw, jugador.losses_cw)
 
 await enviarMensaje(
 telefono,
-`📊 STATS — ${jugador.nombre}
+`📊 STATS — ${jugador.nombre} (${jugador.rol || "Sin rol"})
+
+🏆 Ranking: #${posicionRanking || "N/A"}
+🥇 Tier: ${tierJugador}
 
 \`\`\`
 GENERALES
