@@ -1668,7 +1668,7 @@ jugador.puntos = puntos
 }
 
 const resumen = resultadoPendiente.jugadores.map(j =>
-`${j.nombre} B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+`• ${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 ).join("\n")
 
 await enviarMensaje(
@@ -1703,13 +1703,19 @@ telefono,
 return
 }
 
-await enviarMensaje(
+
+    await enviarMensaje(
 telefono,
-`✅ Resultado pendiente confirmado.
+`📊 Resultado pendiente ${resultadoPendiente.modo?.toUpperCase() || ""}
 
-📌 Próximo paso: guardar en Supabase.
+✅ Detectados:
+${resumen}
 
-Modo: ${resultadoPendiente.modo}`
+✅ Si está correcto:
+!confirmar
+
+✏️ Si hay errores:
+!edit`
 )
 
 return
