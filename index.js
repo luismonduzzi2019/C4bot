@@ -1411,6 +1411,8 @@ const esOrganizador = (organizadoresDB || []).some(org =>
   org.numero?.replace(/\D/g, "") === numeroActual
 )
 
+    const comando = mensaje.toLowerCase().split(" ")[0]
+
 if (
 telefono === GRUPO_STATS &&
 comandosMix.includes(comando)
@@ -1486,8 +1488,6 @@ console.log("📌 mensaje:", mensaje)
 console.log("📌 from:", req.body?.from)
 console.log("📌 chatId:", req.body?.chatId)
 console.log("📌 groupId:", req.body?.groupId)
-
-const comando = mensaje.toLowerCase().split(" ")[0]
 
 if (
 comandosMix.includes(comando) &&
