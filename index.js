@@ -1672,7 +1672,7 @@ const tier3 = jugadoresConPuntos.slice(16)
 
 const formato = (lista, inicio) =>
 lista.map((j, i) =>
-`${inicio + i}° - ${j.nombre} | ID: ${j.idgame || "Sin ID"} | ${j.puntos || 0} pts`
+`${inicio + i}° ${j.nombre.padEnd(15, "_")} ${j.puntos || 0}`
 ).join("\n")
 
 await enviarMensaje(
