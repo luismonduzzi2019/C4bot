@@ -1785,7 +1785,7 @@ ${tier1.length ? formato(tier1, 1) : "Sin jugadores"}
 ${tier2.length ? formato(tier2, 7) : "Sin jugadores"}
 
 🥉 TIER 3
-${tier3.length ? formato(tier3, 17) : "Sin jugadores"}`
+${tier3.length ? formato(tier3, 17) : "Sin jugadores"}
 \`\`\``
 )
 
