@@ -150,6 +150,8 @@ let cwActual = []
 let organizadores = []
 
 const adminPrincipal = "5493412750806"
+const GRUPO_STATS = "120363407953964467-group"
+const GRUPO_MIX = "120363425089190805-group"
 
 const app = express()
 app.use(express.json())
@@ -1342,10 +1344,12 @@ telefono,
 
 📝 REGISTRO
 
-!registrar NICK ID
+!registrar NICK ID ROL
 
 Ejemplo:
-!registrar Colt 139527319
+!registrar Colt 139527319 IGL
+
+• Registrate únicamente con tu rol principal.
 
 🎮 COMANDOS
 
@@ -1377,6 +1381,17 @@ const esOrganizador = (organizadoresDB || []).some(org =>
   org.numero?.replace(/\D/g, "") === numeroActual
 )
 
+if (
+telefono === GRUPO_STATS &&
+comandosMix.includes(comandoActual)
+) {
+await enviarMensaje(
+telefono,
+"❌ Los comandos MIX solo pueden usarse en el grupo MIX."
+)
+return
+}
+    
     if (!esGrupo && !esAdminPrincipal) {
     return res.status(200).json({
         status: true
@@ -1487,16 +1502,16 @@ telefono,
 return
 }
 
-if (
+    if (
 comandosStats.includes(comando) &&
 telefono !== GRUPO_STATS
 ) {
 await enviarMensaje(
 telefono,
-"❌ Los comandos STATS solo pueden usarse en el grupo Estadísticas."
+"❌ Los comandos STATS solo pueden usarse en el grupo STATS."
 )
 return
-}
+    }
 
 if (mensaje.toLowerCase().startsWith("!cw ")) {
   if (!esAdminPrincipal && !esOrganizador) return
