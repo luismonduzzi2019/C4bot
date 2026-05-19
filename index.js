@@ -1468,6 +1468,7 @@ const comandosStats = [
 "!confirmar",
 "!editar",
 "!stats",
+"!top",
 "!topkills",
 "!topmvp",
 "!rank"
@@ -1718,6 +1719,55 @@ Derrotas:  ${jugador.losses_cw || 0}
 WR:        ${wrCW}%
 KD:        ${kdCW}
 \`\`\``
+)
+
+return
+}
+
+    if (mensaje.toLowerCase() === "!resetstats") {
+
+if (!esAdminPrincipal) {
+await enviarMensaje(
+telefono,
+"❌ Solo el admin principal puede reiniciar las estadísticas."
+)
+return
+}
+
+const { error } = await supabase
+.from("Jugadores")
+.update({
+  kills: 0,
+  muertes: 0,
+  puntos: 0,
+  victorias: 0,
+  derrotas: 0,
+
+  kills_mix: 0,
+  deaths_mix: 0,
+  points_mix: 0,
+  wins_mix: 0,
+  losses_mix: 0,
+
+  kills_cw: 0,
+  deaths_cw: 0,
+  points_cw: 0,
+  wins_cw: 0,
+  losses_cw: 0
+})
+.neq("numero", "")
+
+if (error) {
+await enviarMensaje(
+telefono,
+"❌ Error reiniciando estadísticas."
+)
+return
+}
+
+await enviarMensaje(
+telefono,
+"✅ Estadísticas reiniciadas correctamente.\n\n🏁 Nueva temporada iniciada."
 )
 
 return
@@ -2223,6 +2273,7 @@ String(j.idGame || j.idgame).replace(/\D/g, "") === String(jugador.idGame || jug
     return
   }
 
+const grupoMix = telefono
   jugadoresMix.push(jugador)
 
       await reaccionarMensaje(telefono, req.body?.messageId, "✅")
@@ -2854,6 +2905,7 @@ if (mensaje.toLowerCase().startsWith("!editar")) {
   "!confirmar",
   "!editar",
   "!stats",
+  "!resetstats",
   "!topkills",
   "!topmvp",
   "!rank"
