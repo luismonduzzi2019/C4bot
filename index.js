@@ -1837,25 +1837,52 @@ if (mensaje.trim().toLowerCase().startsWith("!registrar")) {
 
   const partes = mensaje.trim().split(/\s+/)
 
-if (partes.length < 3) {
+if (partes.length < 4) {
   await enviarMensaje(
     telefono,
     `❌ Formato incorrecto
 
 Usá:
-!registrar NICK ID
+!registrar NICK ID Rol
 
 Ejemplo:
-!registrar Colt 16735294`
+!registrar Colt 16735294 IGL`
   )
 
   return
 }
 
-const idGame = String(partes[partes.length - 1]).replace(/\D/g, "")
+const rol = partes[partes.length - 1]
+
+const rolesValidos = [
+  "IGL",
+  "Entry",
+  "Support",
+  "Awpper",
+  "Lurker",
+  "Anti-Lurker"
+]
+
+if (!rolesValidos.includes(rol)) {
+  await enviarMensaje(
+    telefono,
+`❌ Rol inválido.
+
+Roles válidos:
+• IGL
+• Entry
+• Support
+• Awpper
+• Lurker
+• Anti-Lurker`
+  )
+  return
+}
+
+const idGame = String(partes[partes.length - 2]).replace(/\D/g, "")
 
 const nick = partes
-  .slice(1, -1)
+  .slice(1, -2)
   .join(" ")
   .trim()
 
@@ -1939,7 +1966,7 @@ await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
 
 await enviarMensaje(
 telefono,
-`⚠️ Ya estás registrado.
+`⚠️ Ya estás registrado. 🎭 Rol: ${yaRegistrado.rol || "Sin rol"}
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
@@ -1952,7 +1979,8 @@ return
 jugadoresRegistrados[telefonoJugador] = {
 nick,
 idGame,
-telefono: numeroLimpio
+telefono: numeroLimpio,
+rol
 }
 
 guardarJugadores(jugadoresRegistrados)
@@ -2014,7 +2042,8 @@ const resultado = await supabase
 .update({
 nombre: nick,
 numero: numeroLimpio,
-idgame: idGame
+idgame: idGame,
+rol: rol,
 })
 .eq("id", jugadorExistente.id)
 
@@ -2038,12 +2067,12 @@ const resultado = await supabase
 nombre: nick,
 numero: numeroLimpio,
 idgame: idGame,
+rol: rol,
 kills: 0,
 muertes: 0,
 victorias: 0,
 derrotas: 0,
 puntos: 0,
-rol: "jugador"
 }
 ])
 
