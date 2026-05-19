@@ -150,8 +150,8 @@ let cwActual = []
 let organizadores = []
 
 const adminPrincipal = "5493412750806"
-const GRUPO_STATS = "120363407953964467-group"
 const GRUPO_MIX = "120363425089190805-group"
+const GRUPO_STATS = "120363407953964467-group"
 
 const app = express()
 app.use(express.json())
@@ -1459,9 +1459,6 @@ console.log("📌 mensaje:", mensaje)
 console.log("📌 from:", req.body?.from)
 console.log("📌 chatId:", req.body?.chatId)
 console.log("📌 groupId:", req.body?.groupId)
-
-    const GRUPO_MIX = "120363425089190805-group"
-const GRUPO_STATS = "120363407953964467-group"
 
 const comandosMix = [
 "!registrar",
