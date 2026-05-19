@@ -2711,6 +2711,18 @@ if (mensaje.toLowerCase() === "!confirmar") {
       puntos: jugador.puntos,
       victorias: jugador.victorias,
       derrotas: jugador.derrotas,
+        
+      kills_mix: jugador.kills_mix,
+      deaths_mix: jugador.deaths_mix,
+      points_mix: jugador.points_mix,
+      wins_mix: jugador.wins_mix,
+      losses_mix: jugador.losses_mix,
+
+      kills_cw: jugador.kills_cw,
+      deaths_cw: jugador.deaths_cw,
+      points_cw: jugador.points_cw,
+      wins_cw: jugador.wins_cw,
+      losses_cw: jugador.losses_cw,
       alias: []
     }
   }
