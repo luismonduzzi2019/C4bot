@@ -1761,22 +1761,22 @@ const tier1 = jugadoresConPuntos.slice(0, 6)
 const tier2 = jugadoresConPuntos.slice(6, 16)
 const tier3 = jugadoresConPuntos.slice(16)
 
-const formato = (lista, inicio) =>
-  
+const formato = (lista, inicio) => 
+  "```\n" +
   lista.map((j, i) => {
     const posicion = `${inicio + i}°`
     const nombre = (j.nombre || "Sin nombre").padEnd(12, " ")
     const puntos = `${j.puntos || 0} pts`
 
     return `${posicion} ${nombre} ${puntos}`
-  }).join("\n") 
+  }).join("\n") +
+  "\n```"
 
 await enviarMensaje(
 telefono,
 
 `🏆 TOP GLOBAL C4
 
- \`\`\`   
 🥇 TIER 1
 ${tier1.length ? formato(tier1, 1) : "Sin jugadores"}
 
@@ -1784,8 +1784,7 @@ ${tier1.length ? formato(tier1, 1) : "Sin jugadores"}
 ${tier2.length ? formato(tier2, 7) : "Sin jugadores"}
 
 🥉 TIER 3
-${tier3.length ? formato(tier3, 17) : "Sin jugadores"}
-\`\`\``
+${tier3.length ? formato(tier3, 17) : "Sin jugadores"}`
 )
 
 return
