@@ -1413,7 +1413,7 @@ const esOrganizador = (organizadoresDB || []).some(org =>
 
 if (
 telefono === GRUPO_STATS &&
-comandosMix.includes(comandoActual)
+comandosMix.includes(comando)
 ) {
 await enviarMensaje(
 telefono,
