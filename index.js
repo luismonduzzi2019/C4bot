@@ -153,6 +153,33 @@ const adminPrincipal = "5493412750806"
 const GRUPO_MIX = "120363425089190805-group"
 const GRUPO_STATS = "120363407953964467-group"
 
+const comandosMix = [
+"!registrar",
+"!entrar",
+"!salir",
+"!cerrarchat",
+"!abrirchat",
+"!comandos",
+"!abrirmix",
+"!cerrarmix",
+"!reiniciarmix",
+"!fake10",
+"!organizadores",
+"!organizador",
+"!quitarorganizador",
+"!mapas",
+]
+
+const comandosStats = [
+"!resultadocw",
+"!resultadomix",
+"!confirmar",
+"!editar",
+"!stats",
+"!top",
+"!topkills"
+]
+
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -1459,33 +1486,6 @@ console.log("📌 mensaje:", mensaje)
 console.log("📌 from:", req.body?.from)
 console.log("📌 chatId:", req.body?.chatId)
 console.log("📌 groupId:", req.body?.groupId)
-
-const comandosMix = [
-"!registrar",
-"!entrar",
-"!salir",
-"!cerrarchat",
-"!abrirchat",
-"!comandos",
-"!abrirmix",
-"!cerrarmix",
-"!reiniciarmix",
-"!fake10",
-"!organizadores",
-"!organizador",
-"!quitarorganizador",
-"!mapas",
-]
-
-const comandosStats = [
-"!resultadocw",
-"!resultadomix",
-"!confirmar",
-"!editar",
-"!stats",
-"!top",
-"!topkills"
-]
 
 const comando = mensaje.toLowerCase().split(" ")[0]
 
