@@ -1603,7 +1603,7 @@ console.log("❌ ERROR AL ENVIAR:", error.message)
 
 }
 
-    if (mensaje.startsWith("!editresultado")) {
+if (mensaje.toLowerCase().startsWith("!edit")) {
 
 if (!esAdminPrincipal && !esOrganizador) {
 await enviarMensaje(
@@ -1613,32 +1613,78 @@ telefono,
 return
 }
 
-const texto = mensaje
-.replace("!editresultado", "")
-.trim()
-
-if (!texto) {
+if (!resultadoPendiente) {
 await enviarMensaje(
 telefono,
-"⚠️ Debes pegar las estadísticas corregidas debajo del comando."
+"❌ No hay ningún resultado pendiente."
 )
 return
 }
 
-resultadoPendiente = {
-modo: "manual",
-textoCorregido: texto,
-fecha: new Date().toISOString()
-}
-        
+const lineas = mensaje
+.split("\n")
+.slice(1)
+.map(l => l.trim())
+.filter(Boolean)
+
+if (lineas.length === 0) {
 await enviarMensaje(
 telefono,
-`✅ Resultado corregido manualmente recibido:\n\n${texto}`
+`❌ Formato incorrecto.
+
+Ejemplo:
+
+!edit
+
+Kea 17 7 16 45
+Colt 16 5 10 35`
+)
+return
+}
+
+for (const linea of lineas) {
+
+const partes = linea.split(" ")
+
+if (partes.length < 5) continue
+
+const nombreBuscado = partes[0].toLowerCase()
+
+const bajas = Number(partes[1]) || 0
+const asistencias = Number(partes[2]) || 0
+const muertes = Number(partes[3]) || 0
+const puntos = Number(partes[4]) || 0
+
+const jugador = resultadoPendiente.jugadores.find(j =>
+j.nombre.toLowerCase().includes(nombreBuscado)
+)
+
+if (!jugador) continue
+
+jugador.bajas = bajas
+jugador.asistencias = asistencias
+jugador.muertes = muertes
+jugador.puntos = puntos
+}
+
+const resumen = resultadoPendiente.jugadores.map(j =>
+`${j.nombre} B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+).join("\n")
+
+await enviarMensaje(
+telefono,
+`✏️ Resultado corregido.
+
+\`\`\`
+${resumen}
+\`\`\`
+
+Usa !confirmar para guardar definitivamente.`
 )
 
 return
-    }
-
+}
+    
 if (mensaje.startsWith("!confirmarresultado")) {
 
 if (!esAdminPrincipal && !esOrganizador) {
