@@ -280,7 +280,6 @@ app.post("/registrar", (req, res) => {
     puntos: 0,
     victorias: 0,
     derrotas: 0,
-    mvps: 0,
     partidas: 0
 },
 
@@ -291,7 +290,6 @@ torneo: {
     puntos: 0,
     victorias: 0,
     derrotas: 0,
-    mvps: 0,
     partidas: 0
 }
 ,
@@ -300,8 +298,7 @@ kills: 0,
 deaths: 0,
 victorias: 0,
 derrotas: 0,
-partidas: 0,
-mvp: 0
+partidas: 0
 }
     }
 
@@ -450,7 +447,6 @@ const winrate =
 💀 Deaths: ${stats.deaths}
 ⚖️ KD: ${kd}
 
-🏆 MVPs: ${stats.mvps}
 ✅ Victorias: ${stats.victorias}
 ❌ Derrotas: ${stats.derrotas}
 🎮 Partidas jugadas: ${stats.partidas}
@@ -502,7 +498,6 @@ const {
     assists,
     puntos,
     victoria,
-    mvp,
     tipo
 } = req.body
 
@@ -1013,6 +1008,14 @@ captionImagen.startsWith("!") &&
 !["!resultadomix", "!resultadocw"].includes(comandoResultado)
 ){
 
+    if (!esAdminPrincipal && !esOrganizador) {
+await enviarMensaje(
+telefono,
+"❌ Solo organizadores pueden usar este comando."
+)
+return
+    }
+
 if (
   comandoResultado === "!resultadocw" &&
   (
@@ -1349,7 +1352,7 @@ telefono,
 Ejemplo:
 !registrar Colt 139527319 IGL
 
-• Registrate únicamente con tu rol principal.
+• Registrate UNICAMENTE con tu ROL PRINCIPAL.
 
 🎮 COMANDOS
 
@@ -1484,9 +1487,7 @@ const comandosStats = [
 "!editar",
 "!stats",
 "!top",
-"!topkills",
-"!topmvp",
-"!rank"
+"!topkills"
 ]
 
 const comando = mensaje.toLowerCase().split(" ")[0]
@@ -1607,6 +1608,14 @@ console.log("❌ ERROR AL ENVIAR:", error.message)
 
     if (mensaje.startsWith("!editresultado")) {
 
+if (!esAdminPrincipal && !esOrganizador) {
+await enviarMensaje(
+telefono,
+"❌ Solo organizadores pueden usar este comando."
+)
+return
+}
+
 const texto = mensaje
 .replace("!editresultado", "")
 .trim()
@@ -1634,6 +1643,14 @@ return
     }
 
 if (mensaje.startsWith("!confirmarresultado")) {
+
+if (!esAdminPrincipal && !esOrganizador) {
+await enviarMensaje(
+telefono,
+"❌ Solo organizadores pueden usar este comando."
+)
+return
+}
 
 if (!resultadoPendiente) {
 await enviarMensaje(
@@ -1830,6 +1847,14 @@ return
 
     if (mensaje.toLowerCase() === "!top") {
 
+if (!esAdminPrincipal && !esOrganizador) {
+await enviarMensaje(
+telefono,
+"❌ Solo organizadores pueden usar !top."
+)
+return
+}
+        
 const { data: jugadores, error } = await supabase
 .from("Jugadores")
 .select("nombre,idgame,puntos,rol")
@@ -2152,7 +2177,7 @@ console.log("SUPABASE ERROR:", error)
 }
 
     if (mensaje.startsWith("!editregistro")) {
-
+        
 const partes = mensaje.split(" ")
 
 if (partes.length < 3) {
@@ -2606,7 +2631,6 @@ telefono,
 🔓 !abrirchat
 
 🧪 !fake10
-🗺️ !mapas
 
 👑 !organizador NUMERO
 ⭕ !quitarorganizador NUMERO
@@ -2640,7 +2664,6 @@ telefono,
 
 🏆 !top
 🎯 !topkills
-📈 !rank
 
 📝 !resultadomix
 📝 !resultadocw
@@ -3024,9 +3047,7 @@ if (mensaje.toLowerCase().startsWith("!editar")) {
   "!editar",
   "!stats",
   "!resetstats",
-  "!topkills",
-  "!topmvp",
-  "!rank"
+  "!topkills"
 ]
 
 if (
