@@ -1690,44 +1690,34 @@ await enviarMensaje(
 telefono,
 `📊 STATS — ${jugador.nombre}
 
-🏆 GENERALES
+\`\`\`
+GENERALES
+Kills:     ${jugador.kills || 0}
+Muertes:   ${jugador.muertes || 0}
+Puntos:    ${jugador.puntos || 0}
+Victorias: ${jugador.victorias || 0}
+Derrotas:  ${jugador.derrotas || 0}
+WR:        ${wrGeneral}%
+KD:        ${kdGeneral}
 
-🔫 Kills: ${jugador.kills || 0}
-💀 Muertes: ${jugador.muertes || 0}
-🎯 Puntos: ${jugador.puntos || 0}
+MIX
+Kills:     ${jugador.kills_mix || 0}
+Muertes:   ${jugador.deaths_mix || 0}
+Puntos:    ${jugador.points_mix || 0}
+Victorias: ${jugador.wins_mix || 0}
+Derrotas:  ${jugador.losses_mix || 0}
+WR:        ${wrMix}%
+KD:        ${kdMix}
 
-✅ Victorias: ${jugador.victorias || 0}
-❌ Derrotas: ${jugador.derrotas || 0}
-
-📈 Winrate: ${wrGeneral}%
-⚔️ KD: ${kdGeneral}
-
-
-🎮 MIX
-
-🔫 Kills: ${jugador.kills_mix || 0}
-💀 Muertes: ${jugador.deaths_mix || 0}
-🎯 Puntos: ${jugador.points_mix || 0}
-
-✅ Victorias: ${jugador.wins_mix || 0}
-❌ Derrotas: ${jugador.losses_mix || 0}
-
-📈 Winrate: ${wrMix}%
-⚔️ KD: ${kdMix}
-
-
-🏆 CW / TORNEO
-
-🔫 Kills: ${jugador.kills_cw || 0}
-💀 Muertes: ${jugador.deaths_cw || 0}
-🎯 Puntos: ${jugador.points_cw || 0}
-
-✅ Victorias: ${jugador.wins_cw || 0}
-❌ Derrotas: ${jugador.losses_cw || 0}
-
-📈 Winrate: ${wrCW}%
-⚔️ KD: ${kdCW}`
-)
+CW / TORNEO
+Kills:     ${jugador.kills_cw || 0}
+Muertes:   ${jugador.deaths_cw || 0}
+Puntos:    ${jugador.points_cw || 0}
+Victorias: ${jugador.wins_cw || 0}
+Derrotas:  ${jugador.losses_cw || 0}
+WR:        ${wrCW}%
+KD:        ${kdCW}
+\`\`\``
 
 return
 }
