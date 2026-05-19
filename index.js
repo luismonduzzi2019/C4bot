@@ -1718,6 +1718,7 @@ Derrotas:  ${jugador.losses_cw || 0}
 WR:        ${wrCW}%
 KD:        ${kdCW}
 \`\`\``
+)
 
 return
 }
