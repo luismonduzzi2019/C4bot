@@ -1671,7 +1671,7 @@ const tier2 = jugadoresConPuntos.slice(6, 16)
 const tier3 = jugadoresConPuntos.slice(16)
 
 const formato = (lista, inicio) =>
-  "```txt\n" +
+  "```\n" +
   lista.map((j, i) => {
     const posicion = `${inicio + i}°`
     const nombre = (j.nombre || "Sin nombre").padEnd(12, " ")
