@@ -2590,36 +2590,27 @@ ${lista || "Lista vacía."}`
 
     if (mensaje.toLowerCase() === "!comandos") {
 
+if (telefono === GRUPO_MIX) {
+
 if (esAdminPrincipal || esOrganizador) {
 
 await enviarMensaje(
 telefono,
-`📋 COMANDOS ORGANIZADOR
-
-🏓 !ping
+`🎮 COMANDOS ORGANIZADOR MIX
 
 🔥 !abrirmix
 ❌ !cerrarmix
-🔁 !reiniciarmix
+🔄 !reiniciarmix
 
 🔒 !cerrarchat
 🔓 !abrirchat
 
-👑 !organizador NUMERO
-🚫 !quitarorganizador NUMERO
-👑 !organizadores
-
 🧪 !fake10
+🗺️ !mapas
 
-👥 COMANDOS JUGADOR
-
-📌 !registrar NICK ID
-✏️ !editregistro NICK ID
-
-🎮 !entrar
-🚪 !salir
-
-👥 !organizadores — Ante cualquier duda, contactate por privado con alguno de ellos.`
+👑 !organizador NUMERO
+⭕ !quitarorganizador NUMERO
+👥 !organizadores`
 )
 
 return
@@ -2627,18 +2618,60 @@ return
 
 await enviarMensaje(
 telefono,
-`📋 COMANDOS JUGADOR
+`🎮 COMANDOS MIX
 
-📌 !registrar NICK ID
-✏️ !editregistro NICK ID
-
+📌 !registrar NICK ID ROL
 🎮 !entrar
 🚪 !salir
 
-👥 !organizadores — Ante cualquier duda, contactate por privado con alguno de ellos.`
+📖 !comandos`
 )
 
 return
+}
+
+if (telefono === GRUPO_STATS) {
+
+if (esAdminPrincipal || esOrganizador) {
+
+await enviarMensaje(
+telefono,
+`📊 COMANDOS ORGANIZADOR STATS
+
+🏆 !top
+🎯 !topkills
+📈 !rank
+
+📝 !resultadomix
+📝 !resultadocw
+
+✅ !confirmar
+✏️ !editar`
+)
+
+if (esAdminPrincipal) {
+
+await enviarMensaje(
+telefono,
+`👑 ADMIN PRINCIPAL
+
+🗑️ !resetstats`
+)
+}
+
+return
+}
+
+await enviarMensaje(
+telefono,
+`📊 COMANDOS STATS
+
+📈 !stats
+📖 !comandos`
+)
+
+return
+}
     }
 
 if (mensaje.toLowerCase() === "!mapas") {
