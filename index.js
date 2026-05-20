@@ -3367,7 +3367,7 @@ await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
         await enviarMensaje(
 telefono,
             
-🚫 Usuario silenciado ${telefono === GRUPO_STATS ? "32 horas" : "12 horas"} por spam.
+🚫 Usuario silenciado por spam.
 
 📱 ${telefonoJugador}
 
@@ -3383,7 +3383,7 @@ telefono,
 `❌ Solo se permiten comandos en este grupo.
 
 ⚠️ Advertencia:
-Si enviás 4 mensajes que no sean comandos, serás bloqueado por ${telefono === GRUPO_STATS ? "32 horas" : "12 horas"}.
+Si enviás 4 mensajes que no sean comandos, serás bloqueado temporalmente.
 
 📊 Mensajes no permitidos: ${antiSpam[numeroActual].length}/4
 
