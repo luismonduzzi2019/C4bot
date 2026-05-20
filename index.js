@@ -443,6 +443,9 @@ app.post("/votar", (req, res) => {
 })
 
 app.post("/resultado", (req, res) => {
+    
+})
+
 app.post("/stats", (req, res) => {
 
     const { whatsapp } = req.body
@@ -3402,6 +3405,8 @@ Usá !comandos para ver la lista disponible.`
 
 res.status(200).json({
     status: true
+})
+
 })
 
 app.listen(process.env.PORT || 3000, () => {
