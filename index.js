@@ -3085,6 +3085,8 @@ if (mensaje.toLowerCase() === "!confirmar") {
       points_cw: jugador.points_cw,
       wins_cw: jugador.wins_cw,
       losses_cw: jugador.losses_cw,
+      racha_actual: jugador.racha_actual,
+      racha_maxima: jugador.racha_maxima,
       alias: []
     }
   }
@@ -3103,7 +3105,10 @@ if (mensaje.toLowerCase() === "!confirmar") {
 
     if (!registro) continue
 
-const gano = resultadoPendiente.estado === "victoria"
+const estadoResultado = String(resultadoPendiente.estado || "").toLowerCase()
+
+const gano = estadoResultado === "victoria"
+const perdio = estadoResultado === "derrota"
 
 const rachaActualNueva = gano
 ? Number(registro.racha_actual || 0) + 1
@@ -3121,8 +3126,8 @@ rachaActualNueva
   kills: Number(registro.kills || 0) + Number(stat.bajas || 0),
   muertes: Number(registro.muertes || 0) + Number(stat.muertes || 0),
   puntos: Number(registro.puntos || 0) + Number(stat.puntos || 0),
-  victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
-  derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0),
+  victorias: Number(registro.victorias || 0) + (gano ? 1 : 0),
+  derrotas: Number(registro.derrotas || 0) + (perdio ? 1 : 0),
   racha_actual: rachaActualNueva,
   racha_maxima: rachaMaximaNueva,
       
@@ -3140,11 +3145,11 @@ rachaActualNueva
     : Number(registro.points_mix || 0),
 
   wins_mix: resultadoPendiente.modo === "mix"
-    ? Number(registro.wins_mix || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0)
+    ? Number(registro.wins_mix || 0) + (resultadoPendiente.estado === "gano" ? 1 : 0)
     : Number(registro.wins_mix || 0),
 
   losses_mix: resultadoPendiente.modo === "mix"
-    ? Number(registro.losses_mix || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
+    ? Number(registro.losses_mix || 0) + (resultadoPendiente.estado === "perdio" ? 1 : 0)
     : Number(registro.losses_mix || 0),
 
   // CW
