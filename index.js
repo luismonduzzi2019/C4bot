@@ -3338,7 +3338,7 @@ if (!mensaje.startsWith("!") && !req.body?.fromApi) {
 
     antiSpam[telefonoJugador] =
         antiSpam[telefonoJugador].filter(
-            t => ahora - t < 12 * 60 * 60 * 1000
+            t => ahora - t < (telefono === GRUPO_STATS ? 32 : 12) * 60 * 60 * 1000
         )
 
    if (antiSpam[numeroActual].length === 3) {
@@ -3359,15 +3359,15 @@ return
 
 if (antiSpam[numeroActual].length >= 4) {
 
-        usuariosMuteados[numeroActual] =
-            ahora + (12 * 60 * 60 * 1000)
+        usuariosMuteados[telefonoActual] =
+    ahora + ((telefono === GRUPO_STATS ? 32 : 12) * 60 * 60 * 1000)
 
 await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
         
         await enviarMensaje(
 telefono,
             
-`⛔ Usuario silenciado 12 horas por spam.
+🚫 Usuario silenciado ${telefono === GRUPO_STATS ? "32 horas" : "12 horas"} por spam.
 
 📱 ${telefonoJugador}
 
@@ -3383,7 +3383,7 @@ telefono,
 `❌ Solo se permiten comandos en este grupo.
 
 ⚠️ Advertencia:
-Si enviás 4 mensajes que no sean comandos, serás bloqueado por 12 horas.
+Si enviás 4 mensajes que no sean comandos, serás bloqueado por ${telefono === GRUPO_STATS ? "32 horas" : "12 horas"}.
 
 📊 Mensajes no permitidos: ${antiSpam[numeroActual].length}/4
 
