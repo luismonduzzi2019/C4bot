@@ -1873,6 +1873,8 @@ telefono,
 
 🏆 Ranking: #${posicionRanking || "N/A"}
 🥇 Tier: ${tierJugador}
+Racha actual: ${jugador.racha_actual || 0}
+Racha máxima: ${jugador.racha_maxima || 0}
 
 \`\`\`
 GENERALES
@@ -1881,8 +1883,6 @@ Muertes:   ${jugador.muertes || 0}
 Puntos:    ${jugador.puntos || 0}
 Victorias: ${jugador.victorias || 0}
 Derrotas:  ${jugador.derrotas || 0}
-Racha actual: ${jugador.racha_actual || 0}
-Racha máxima: ${jugador.racha_maxima || 0}
 WR:        ${wrGeneral}%
 KD:        ${kdGeneral}
 
