@@ -1427,7 +1427,7 @@ Ver lista de comandos.
 • Mensajes inválidos tendrán reacción ❌.
 • Los comandos válidos tendrán ✅.
 • !stats tiene límite de uso diario.
-• No hagas spam de comandos/mensajes o recibiras advertencias seguidas de ban por una semana.`
+• No hagas spam de comandos/mensajes o recibiras advertencias seguidas de ban por 32 horas.`
 )
 
 return
@@ -3367,7 +3367,7 @@ await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
         await enviarMensaje(
 telefono,
             
-🚫 Usuario silenciado por spam.
+`🚫 Usuario silenciado por spam.
 
 📱 ${telefonoJugador}
 
