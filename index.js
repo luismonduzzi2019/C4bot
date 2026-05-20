@@ -3107,6 +3107,8 @@ if (mensaje.toLowerCase() === "!confirmar") {
 
 const estadoResultado = String(resultadoPendiente.estado || "").toLowerCase()
 
+console.log("🔥 ESTADO:", estadoResultado)
+
 const gano = estadoResultado === "victoria"
 const perdio = estadoResultado === "derrota"
 
