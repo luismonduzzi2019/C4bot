@@ -1873,8 +1873,9 @@ telefono,
 
 🏆 Ranking: #${posicionRanking || "N/A"}
 🥇 Tier: ${tierJugador}
-Racha actual: ${jugador.racha_actual || 0}
-Racha máxima: ${jugador.racha_maxima || 0}
+🏆 Racha de victorias:
+├ Actual: ${jugador.racha_actual || 0}
+└ Máxima: ${jugador.racha_maxima || 0}
 
 \`\`\`
 GENERALES
