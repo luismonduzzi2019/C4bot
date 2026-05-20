@@ -3166,11 +3166,11 @@ rachaActualNueva
     : Number(registro.points_cw || 0),
 
   wins_cw: resultadoPendiente.modo === "cw"
-    ? Number(registro.wins_cw || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0)
+    ? Number(registro.wins_cw || 0) + (resultadoPendiente.estado === "gano" ? 1 : 0)
     : Number(registro.wins_cw || 0),
 
   losses_cw: resultadoPendiente.modo === "cw"
-    ? Number(registro.losses_cw || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
+    ? Number(registro.losses_cw || 0) + (resultadoPendiente.estado === "perdio" ? 1 : 0)
     : Number(registro.losses_cw || 0)
 })
   .eq("nombre", registro.nombre)
@@ -3181,6 +3181,10 @@ if (errorUpdate) {
 } else {
   console.log("✅ UPDATE STATS:", actualizado)
 }
+      console.log("🔥 RACHAS:", {
+actual: rachaActualNueva,
+maxima: rachaMaximaNueva
+})
 
 if (actualizado && actualizado.length > 0) {
   guardados++
