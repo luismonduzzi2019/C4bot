@@ -1658,11 +1658,20 @@ const asistencias = Number(partes[2]) || 0
 const muertes = Number(partes[3]) || 0
 const puntos = Number(partes[4]) || 0
 
-const jugador = resultadoPendiente.jugadores.find(j =>
-j.nombre.toLowerCase().includes(nombreBuscado)
+let jugador = resultadoPendiente.jugadores.find(j =>
+String(j.nombre || "").toLowerCase().includes(nombreBuscado)
 )
 
-if (!jugador) continue
+if (!jugador) {
+jugador = {
+nombre: partes[0],
+bajas: 0,
+asistencias: 0,
+muertes: 0,
+puntos: 0
+}
+resultadoPendiente.jugadores.push(jugador)
+}
 
 jugador.bajas = bajas
 jugador.asistencias = asistencias
