@@ -1373,6 +1373,7 @@ telefono,
 • Respetá MAYÚSCULAS y minúsculas EXACTAS.
 • Podés usar espacios si tu nick real los tiene.
 • El nombre debe coincidir exactamente con capturas de resultados.
+• Tu rol debe estar registrado con Mayúscula al principio.
 • 4 mensajes no permitidos = mute por 12 horas.
 
 📝 REGISTRO
@@ -2094,7 +2095,7 @@ if (partes.length < 4) {
     `❌ Formato incorrecto
 
 Usá:
-!registrar NICK ID Rol
+!registrar NICK ID ROL
 
 Ejemplo:
 !registrar Colt 16735294 IGL`
@@ -2191,10 +2192,10 @@ telefono,
 `❌ Formato incorrecto.
 
 Usá:
-!registrar NICK ID
+!registrar NICK ID ROL
 
 Ejemplo:
-!registrar Colt 139527319
+!registrar Colt 139527319 IGL
 
 ⚠️ El ID debe ser numérico y real.`
 )
