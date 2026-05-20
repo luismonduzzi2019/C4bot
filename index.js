@@ -3405,6 +3405,8 @@ Usá !comandos para ver la lista disponible.`
     return
 }
 
+})
+    
 res.status(200).json({
     status: true
 })
