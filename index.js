@@ -3404,8 +3404,6 @@ res.status(200).json({
     status: true
 })
 
-})
-
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
 })
