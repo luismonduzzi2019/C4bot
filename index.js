@@ -582,7 +582,7 @@ if (mvp === "si") {
 ❌ Derrotas: ${jugador.derrotas}
 🎮 Mixes: ${jugador.mixes}
 `)
-})
+
 app.get("/topkills", (req, res) => {
 
     const ranking = [...jugadores]
