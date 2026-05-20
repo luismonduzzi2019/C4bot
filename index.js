@@ -2813,6 +2813,7 @@ telefono,
 🔓 !abrirchat
 
 🧪 !fake10
+🛠 !editregistro NICK ID ROL
 
 👑 !organizador NUMERO
 ⭕ !quitarorganizador NUMERO
@@ -2827,6 +2828,7 @@ telefono,
 `🎮 COMANDOS MIX
 
 📌 !registrar NICK ID ROL
+🛠 !editregistro NICK ID ROL
 🎮 !entrar
 🚪 !salir
 
