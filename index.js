@@ -3100,6 +3100,17 @@ if (mensaje.toLowerCase() === "!confirmar") {
 
     if (!registro) continue
 
+const gano = resultadoPendiente.estado === "victoria"
+
+const rachaActualNueva = gano
+? Number(registro.racha_actual || 0) + 1
+: 0
+
+const rachaMaximaNueva = Math.max(
+Number(registro.racha_maxima || 0),
+rachaActualNueva
+)
+      
     const { data: actualizado, error: errorUpdate } = await supabase
   .from("Jugadores")
   .update({
@@ -3109,7 +3120,9 @@ if (mensaje.toLowerCase() === "!confirmar") {
   puntos: Number(registro.puntos || 0) + Number(stat.puntos || 0),
   victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
   derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0),
-
+  racha_actual: rachaActualNueva,
+  racha_maxima: rachaMaximaNueva,
+      
   // MIX
   kills_mix: resultadoPendiente.modo === "mix"
     ? Number(registro.kills_mix || 0) + Number(stat.bajas || 0)
