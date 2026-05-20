@@ -521,6 +521,8 @@ res.send(`
 `)
 })
 
+app.post("/resultado", (req, res) => {
+
 const {
     whatsapp,
     kills,
