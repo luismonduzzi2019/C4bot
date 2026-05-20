@@ -3355,6 +3355,14 @@ Usá !comandos para ver la lista disponible.`
 
     return
 }
+
+if (telefono === GRUPO_STATS) {
+    await reaccionarMensaje(
+        telefono,
+        req.body?.messageId,
+        "❌"
+    )
+}
     
   res.status(200).json({
     status: true
