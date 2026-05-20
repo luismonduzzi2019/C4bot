@@ -2217,7 +2217,7 @@ await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
 
 await enviarMensaje(
 telefono,
-`⚠️ Ya estás registrado. 🎭 Rol: ${yaRegistrado.rol || "Sin rol"}
+`⚠️ Ya estás registrado.
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
