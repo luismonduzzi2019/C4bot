@@ -1691,7 +1691,7 @@ ${resumen}
 return
 }
     
-if (mensaje.startsWith("!confirmarresultado")) {
+if (mensaje.toLowerCase().startsWith("!confirmar")) {
 
 if (!esAdminPrincipal && !esOrganizador) {
 await enviarMensaje(
@@ -1701,7 +1701,7 @@ telefono,
 return
 }
 
-if (!resultadoPendiente) {
+if (!resultadoPendiente || !resultadoPendiente.jugadores) {
 await enviarMensaje(
 telefono,
 "⚠️ No hay ningún resultado pendiente para confirmar."
@@ -1709,19 +1709,66 @@ telefono,
 return
 }
 
+const modo = resultadoPendiente.modo
+const estado = resultadoPendiente.estado
 
-    await enviarMensaje(
+for (const jugadorResultado of resultadoPendiente.jugadores) {
+
+const nombreBuscado = String(jugadorResultado.nombre || "").toLowerCase()
+
+const { data: jugadoresDB, error } = await supabase
+.from("Jugadores")
+.select("*")
+
+if (error || !jugadoresDB) continue
+
+const jugadorDB = jugadoresDB.find(j =>
+String(j.nombre || "").toLowerCase().includes(nombreBuscado) ||
+nombreBuscado.includes(String(j.nombre || "").toLowerCase())
+)
+
+if (!jugadorDB) continue
+
+const gano = estado === "victoria" ? 1 : 0
+const perdio = estado === "derrota" ? 1 : 0
+
+const updateData = {
+kills: Number(jugadorDB.kills || 0) + Number(jugadorResultado.bajas || 0),
+muertes: Number(jugadorDB.muertes || 0) + Number(jugadorResultado.muertes || 0),
+puntos: Number(jugadorDB.puntos || 0) + Number(jugadorResultado.puntos || 0),
+victorias: Number(jugadorDB.victorias || 0) + gano,
+derrotas: Number(jugadorDB.derrotas || 0) + perdio
+}
+
+if (modo === "cw") {
+updateData.kills_cw = Number(jugadorDB.kills_cw || 0) + Number(jugadorResultado.bajas || 0)
+updateData.deaths_cw = Number(jugadorDB.deaths_cw || 0) + Number(jugadorResultado.muertes || 0)
+updateData.assists_cw = Number(jugadorDB.assists_cw || 0) + Number(jugadorResultado.asistencias || 0)
+updateData.points_cw = Number(jugadorDB.points_cw || 0) + Number(jugadorResultado.puntos || 0)
+updateData.wins_cw = Number(jugadorDB.wins_cw || 0) + gano
+updateData.losses_cw = Number(jugadorDB.losses_cw || 0) + perdio
+}
+
+if (modo === "mix") {
+updateData.kills_mix = Number(jugadorDB.kills_mix || 0) + Number(jugadorResultado.bajas || 0)
+updateData.deaths_mix = Number(jugadorDB.deaths_mix || 0) + Number(jugadorResultado.muertes || 0)
+updateData.assists_mix = Number(jugadorDB.assists_mix || 0) + Number(jugadorResultado.asistencias || 0)
+updateData.points_mix = Number(jugadorDB.points_mix || 0) + Number(jugadorResultado.puntos || 0)
+updateData.wins_mix = Number(jugadorDB.wins_mix || 0) + gano
+updateData.losses_mix = Number(jugadorDB.losses_mix || 0) + perdio
+}
+
+await supabase
+.from("Jugadores")
+.update(updateData)
+.eq("id", jugadorDB.id)
+}
+
+resultadoPendiente = null
+
+await enviarMensaje(
 telefono,
-`📊 Resultado pendiente ${resultadoPendiente.modo?.toUpperCase() || ""}
-
-✅ Detectados:
-${resumen}
-
-✅ Si está correcto:
-!confirmar
-
-✏️ Si hay errores:
-!edit`
+"✅ Resultado confirmado y estadísticas sumadas correctamente."
 )
 
 return
