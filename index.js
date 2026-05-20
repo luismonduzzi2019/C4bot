@@ -2363,10 +2363,10 @@ telefono,
 `✏️ Formato incorrecto
 
 Usá:
-!editregistro NICK ID
+!editregistro NICK ID ROL
 
 Ejemplo:
-!editregistro Colt 123456`
+!editregistro Colt 123456 IGL`
 )
 return
 }
@@ -2374,6 +2374,8 @@ return
 const nick = partes[1]
 const idGame = partes[2]
 
+const rol = partes[partes.length - 1]
+        
 const numeroLimpio = String(telefonoJugador).replace(/\D/g, "")
 
 const { data: jugadores } = await supabase
@@ -2399,7 +2401,8 @@ const { error } = await supabase
 .update({
 nombre: nick,
 numero: numeroLimpio,
-idgame: idGame
+idgame: idGame,
+rol: rol
 })
 .eq("id", jugadorExistente.id)
 
