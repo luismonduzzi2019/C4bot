@@ -2221,7 +2221,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🛡️ Rol: ${rol}`
 )
 
 return
@@ -2243,7 +2244,8 @@ telefono,
 `♻️ Registro actualizado.
 
 🎮 Nick: ${nick}
-🆔 ID: ${idGame}`
+🆔 ID: ${idGame}
+🛡️ Rol: ${rol}`
 )
 
 return
