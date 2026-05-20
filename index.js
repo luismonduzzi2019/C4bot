@@ -3341,7 +3341,7 @@ if (!mensaje.startsWith("!") && !req.body?.fromApi) {
             t => ahora - t < (telefono === GRUPO_STATS ? 32 : 12) * 60 * 60 * 1000
         )
 
-   if (antiSpam[numeroActual].length === 3) {
+   if (antiSpam[telefonoJugador].length === 3) {
 
 await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
        
@@ -3357,9 +3357,9 @@ Si seguís enviando mensajes no permitidos serás silenciado temporalmente.`
 return
 }
 
-if (antiSpam[numeroActual].length >= 4) {
+if (antiSpam[telefonoJugador].length >= 4) {
 
-        usuariosMuteados[telefonoActual] =
+        usuariosMuteados[telefonoJugador] =
     ahora + ((telefono === GRUPO_STATS ? 32 : 12) * 60 * 60 * 1000)
 
 await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
@@ -3385,7 +3385,7 @@ telefono,
 ⚠️ Advertencia:
 Si enviás 4 mensajes que no sean comandos, serás bloqueado temporalmente.
 
-📊 Mensajes no permitidos: ${antiSpam[numeroActual].length}/4
+📊 Mensajes no permitidos: ${antiSpam[telefonoJugador].length}/4
 
 Usá !comandos para ver la lista disponible.`
 )
