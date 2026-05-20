@@ -2284,7 +2284,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🛡️ Rol: ${rol}`
 )
 
 return
@@ -2308,7 +2309,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🛡️ Rol: ${rol}`
 )
 
 } else {
@@ -2339,7 +2341,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🛡️ Rol: ${rol}`
 )
 
 }
@@ -2406,7 +2409,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🛡️ Rol: ${rol}`
 )
 
 return
