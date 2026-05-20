@@ -3341,45 +3341,44 @@ if (!mensaje.startsWith("!") && !req.body?.fromApi) {
             t => ahora - t < (telefono === GRUPO_STATS ? 32 : 12) * 60 * 60 * 1000
         )
 
-   if (antiSpam[telefonoJugador].length === 3) {
+    if (antiSpam[telefonoJugador].length === 3) {
 
-await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
-       
-await enviarMensaje(
-telefono,
+        await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
+
+        await enviarMensaje(
+            telefono,
 `⚠️ Advertencia por spam.
 
 📱 ${telefonoJugador}
 
 Si seguís enviando mensajes no permitidos serás silenciado temporalmente.`
-)
+        )
 
-return
-}
+        return
+    }
 
-if (antiSpam[telefonoJugador].length >= 4) {
+    if (antiSpam[telefonoJugador].length >= 4) {
 
         usuariosMuteados[telefonoJugador] =
-    ahora + ((telefono === GRUPO_STATS ? 32 : 12) * 60 * 60 * 1000)
+            ahora + ((telefono === GRUPO_STATS ? 32 : 12) * 60 * 60 * 1000)
 
-await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
-        
+        await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
+
         await enviarMensaje(
-telefono,
-            
+            telefono,
 `🚫 Usuario silenciado por spam.
 
 📱 ${telefonoJugador}
 
 ⚠️ Motivo:
 Enviar demasiados mensajes no permitidos en el grupo mix.`
-)
+        )
 
         return
     }
 
- await enviarMensaje(
-telefono,
+    await enviarMensaje(
+        telefono,
 `❌ Solo se permiten comandos en este grupo.
 
 ⚠️ Advertencia:
@@ -3388,12 +3387,20 @@ Si enviás 4 mensajes que no sean comandos, serás bloqueado temporalmente.
 📊 Mensajes no permitidos: ${antiSpam[telefonoJugador].length}/4
 
 Usá !comandos para ver la lista disponible.`
-)
+    )
+
+    if (telefono === GRUPO_STATS) {
+        await reaccionarMensaje(
+            telefono,
+            req.body?.messageId,
+            "❌"
+        )
+    }
 
     return
 }
-    
-  res.status(200).json({
+
+res.status(200).json({
     status: true
 })
 
