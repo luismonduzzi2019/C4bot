@@ -2119,6 +2119,8 @@ if (!rolesValidos.includes(rol)) {
     telefono,
 `❌ Rol inválido.
 
+⚠️ Respeta mayúsculas y minúsculas en el "Rol".
+
 Roles válidos:
 • IGL
 • Entry
