@@ -1644,7 +1644,7 @@ if (mensaje.toLowerCase() === "!jugadores") {
     return
   }
 
-  let texto = "👥 Jugadores del Clan C4\n\n```"
+  let texto = "👥 Integrantes del Clan C4\n\n```"
 
   for (const rol of ordenRoles) {
 
@@ -1657,7 +1657,9 @@ if (mensaje.toLowerCase() === "!jugadores") {
     texto += `📌 ${rol}\n`
 
     jugadoresRol.forEach(jugador => {
-      texto += `${jugador.nombre.padEnd(18)} ${jugador.rol}\n`
+      const nombre = String(jugador.nombre || "").padEnd(16, " ")
+const rolJugador = String(jugador.rol || "").padStart(12, " ")
+texto += `${nombre}${rolJugador}\n`
     })
 
     texto += "\n"
