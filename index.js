@@ -1664,9 +1664,11 @@ const ranking = jugadoresDB
   .findIndex(j => j.id === jugador.id || j.numero === jugador.numero) + 1
 
 const nombre = String(jugador.nombre || "").trim()
-const top = ranking > 0 ? `Top ${ranking}` : "Sin top"
+const top = ranking > 0
+  ? `#${String(ranking).padStart(2, "0")}`
+  : "#--"
 
-texto += `• ${nombre.trim()} (${top.trim()})\n`
+texto += `${top.padEnd(8, " ")}${nombre.trim()}\n`
     })
 
     texto += "\n"
