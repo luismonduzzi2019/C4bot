@@ -1644,7 +1644,7 @@ if (mensaje.toLowerCase() === "!jugadores") {
     return
   }
 
-  let texto = "👥 Jugadores del Clan C4\n\n"
+  let texto = "👥 Jugadores del Clan C4\n\n```"
 
   for (const rol of ordenRoles) {
 
@@ -1657,13 +1657,14 @@ if (mensaje.toLowerCase() === "!jugadores") {
     texto += `📌 ${rol}\n`
 
     jugadoresRol.forEach(jugador => {
-      texto += `• ${jugador.nombre}          ${jugador.rol}\n`
+      texto += `${jugador.nombre.padEnd(18)} ${jugador.rol}\n`
     })
 
     texto += "\n"
   }
 
-  await enviarMensaje(telefono, texto)
+  texto += "```"
+await enviarMensaje(telefono, texto)
 
   return
 }
