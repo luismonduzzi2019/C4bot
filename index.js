@@ -3362,7 +3362,6 @@ if (telefono === GRUPO_STATS) {
         req.body?.messageId,
         "❌"
     )
-}
     
   res.status(200).json({
     status: true
