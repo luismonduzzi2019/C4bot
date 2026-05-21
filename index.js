@@ -1657,9 +1657,7 @@ if (mensaje.toLowerCase() === "!jugadores") {
     texto += `📌 ${rol}\n`
 
     jugadoresRol.forEach(jugador => {
-      const nombre = String(jugador.nombre || "").padEnd(16, " ")
-const rolJugador = String(jugador.rol || "").padStart(12, " ")
-const puntos = jugador.puntos || jugador.stats?.puntos || 0
+      
 const ranking = jugadoresDB
   .slice()
   .sort((a, b) => (b.puntos || b.stats?.puntos || 0) - (a.puntos || a.stats?.puntos || 0))
