@@ -1396,41 +1396,6 @@ Ejemplo:
 return
 }
 
-if (telefono === GRUPO_STATS) {
-
-await enviarMensaje(
-telefono,
-
-`👋 Bienvenido al grupo Estadísticas C4 📊
-
-Este grupo sirve para consultar estadísticas, tops y rankings de jugadores registrados.
-
-📊 COMANDOS DISPONIBLES
-
-📈 !stats
-Ver tus estadísticas personales.
-
-🏆 !top
-Ver ranking general.
-
-🎯 !topkills
-Ver ranking de kills.
-
-📖 !comandos
-Ver lista de comandos.
-
-⚠️ IMPORTANTE
-
-• En este grupo solo se permiten comandos.
-• Mensajes inválidos tendrán reacción ❌.
-• Los comandos válidos tendrán ✅.
-• !stats tiene límite de uso diario.
-• No hagas spam de comandos/mensajes o recibirás advertencias seguidas de ban por 32 horas.`
-)
-
-return
-}
-    
 const esGrupo = req.body?.isGroup || String(telefono).includes("-group")
     
     const telefonoJugador =
