@@ -1621,6 +1621,53 @@ console.log("❌ ERROR AL ENVIAR:", error.message)
 
 }
 
+if (mensaje.toLowerCase() === "!jugadores") {
+
+  const ordenRoles = [
+    "IGL",
+    "Entry",
+    "Support",
+    "Awpper",
+    "Lurker",
+    "Anti-Lurker"
+  ]
+
+  const { data: jugadoresDB, error } = await supabase
+    .from("Jugadores")
+    .select("*")
+
+  if (error) {
+    await enviarMensaje(
+      telefono,
+      "❌ Error obteniendo jugadores."
+    )
+    return
+  }
+
+  let texto = "👥 Jugadores del Clan C4\n\n"
+
+  for (const rol of ordenRoles) {
+
+    const jugadoresRol = jugadoresDB.filter(
+      j => (j.rol || "").toLowerCase() === rol.toLowerCase()
+    )
+
+    if (jugadoresRol.length === 0) continue
+
+    texto += `📌 ${rol}\n`
+
+    jugadoresRol.forEach(jugador => {
+      texto += `• ${jugador.nombre}          ${jugador.rol}\n`
+    })
+
+    texto += "\n"
+  }
+
+  await enviarMensaje(telefono, texto)
+
+  return
+}
+    
 if (mensaje.toLowerCase().startsWith("!edit")) {
 
 if (!esAdminPrincipal && !esOrganizador) {
