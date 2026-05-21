@@ -1664,9 +1664,9 @@ const ranking = jugadoresDB
   .findIndex(j => j.id === jugador.id || j.numero === jugador.numero) + 1
 
 const nombre = `${jugador.nombre}`.padEnd(22, " ")
-const top = ranking > 0 ? `Top ${ranking}` : "Sin top"
+const top = ranking > 0 ? `Top ${String(ranking).padStart(2, " ")}` : "Sin top"
 
-texto += `${nombre}${top}\n`
+texto += `${nombre}  ${top}\n`
     })
 
     texto += "\n"
