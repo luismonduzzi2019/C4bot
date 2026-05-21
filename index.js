@@ -1372,7 +1372,7 @@ Grupo para registrar resultados, consultar estadísticas, ver rankings y seguir 
 
 📋 REGLAS IMPORTANTES
 
-• Usá solo !top, !topkilms y !stats (solo estadísticas personales).
+• Usá solo !top, !topkills y !stats (solo estadísticas personales).
 • No envíes mensajes comunes en este grupo.
 • El registro de resultados lo hacen organizadores/administradores.
 • Las estadísticas se actualizan cuando un resultado es confirmado.
@@ -2068,13 +2068,23 @@ return
 
     if (mensaje.toLowerCase() === "!top") {
 
-if (!esAdminPrincipal && !esOrganizador) {
-await enviarMensaje(
-telefono,
-"❌ Solo organizadores pueden usar !top."
-)
-return
-}
+        if (!esAdminPrincipal && !esOrganizador) {
+  global.cooldownsTop = global.cooldownsTop || {}
+
+  const ultimoUso = global.cooldownsTop[numeroActual]
+
+  if (ultimoUso && Date.now() - ultimoUso < 86400000) {
+    const restante = Math.ceil((86400000 - (Date.now() - ultimoUso)) / 3600000)
+
+    await enviarMensaje(
+      telefono,
+      `⏳ Ya usaste el comando !top hoy.\nEsperá ${restante} hora(s) para volver a usarlo.`
+    )
+    return
+  }
+
+  global.cooldownsTop[numeroActual] = Date.now()
+        }
         
 const { data: jugadores, error } = await supabase
 .from("Jugadores")
@@ -2136,11 +2146,21 @@ return
 if (mensaje.toLowerCase() === "!topkills") {
 
 if (!esAdminPrincipal && !esOrganizador) {
-await enviarMensaje(
-telefono,
-"❌ Solo organizadores pueden usar este comando."
-)
-return
+  global.cooldownsTopKills = global.cooldownsTopKills || {}
+
+  const ultimoUso = global.cooldownsTopKills[numeroActual]
+
+  if (ultimoUso && Date.now() - ultimoUso < 86400000) {
+    const restante = Math.ceil((86400000 - (Date.now() - ultimoUso)) / 3600000)
+
+    await enviarMensaje(
+      telefono,
+      `⏳ Ya usaste el comando !topkils hoy.\nEsperá ${restante} hora(s) para volver a usarlo.`
+    )
+    return
+  }
+
+  global.cooldownsTopKills[numeroActual] = Date.now()
 }
 
 const { data: jugadores, error } = await supabase
