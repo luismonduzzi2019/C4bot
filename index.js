@@ -2972,8 +2972,10 @@ await enviarMensaje(
 telefono,
 `📊 COMANDOS ORGANIZADOR STATS
 
+📈 !stats
 🏆 !top
 🎯 !topkills
+👥 !jugadores
 
 📝 !resultadomix
 📝 !resultadocw
@@ -3000,8 +3002,9 @@ telefono,
 `📊 COMANDOS STATS
 
 📈 !stats
+🏆 !top
+🎯 !topkills
 📖 !comandos`
-)
 
 return
 }
