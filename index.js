@@ -1483,6 +1483,8 @@ setTimeout(() => {
 
     if (!mensaje) return res.sendStatus(200)
 
+    if (req.body?.fromMe || req.body?.isMe) return res.sendStatus(200)
+
 const comandosConReaccionPropia = ["!registrar"]
 
 if (
