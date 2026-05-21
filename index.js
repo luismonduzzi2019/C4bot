@@ -1659,7 +1659,13 @@ if (mensaje.toLowerCase() === "!jugadores") {
     jugadoresRol.forEach(jugador => {
       const nombre = String(jugador.nombre || "").padEnd(16, " ")
 const rolJugador = String(jugador.rol || "").padStart(12, " ")
-texto += `${nombre}${rolJugador}\n`
+const puntos = jugador.puntos || jugador.stats?.puntos || 0
+const ranking = jugadoresDB
+  .slice()
+  .sort((a, b) => (b.puntos || b.stats?.puntos || 0) - (a.puntos || a.stats?.puntos || 0))
+  .findIndex(j => j.id === jugador.id || j.numero === jugador.numero) + 1
+
+texto += `${jugador.nombre.padEnd(18)} Top ${ranking}\n`
     })
 
     texto += "\n"
