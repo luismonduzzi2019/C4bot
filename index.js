@@ -1362,6 +1362,39 @@ return
 }
 
 global.ultimasBienvenidas[numeroNuevo] = Date.now()
+
+    if (telefono === GRUPO_STATS) {
+  await enviarMensaje(
+    telefono,
+    `📊 Bienvenido al grupo Stats C4 🇦🇷
+
+Grupo para registrar resultados, consultar estadísticas, ver rankings y seguir el rendimiento de los jugadores del Clan C4.
+
+📋 REGLAS IMPORTANTES
+
+• Usá solo !top, !topkilms y !stats (solo estadísticas personales).
+• No envíes mensajes comunes en este grupo.
+• El registro de resultados lo hacen organizadores/administradores.
+• Las estadísticas se actualizan cuando un resultado es confirmado.
+• 4 mensajes no permitidos = bloqueo por 32 horas.
+
+📊 COMANDOS
+
+!stats
+!top
+!topkills
+!jugadores (solo organizadores)
+!comandos
+
+✅ QUÉ HACER
+
+• Consultá tus estadísticas personales con !stats (permitido solo una vez al dia).
+• Revisá el ranking general con !top (permitido solo una vez al dia).
+• Revisá el ranking de kills con !topkills (permitido una vez al dia).
+• Mirá integrantes y roles con !jugadores (comando solo para organizadores)`
+  )
+  return
+}
     
 await enviarMensaje(
 telefono,
