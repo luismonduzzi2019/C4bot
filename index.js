@@ -1485,15 +1485,13 @@ setTimeout(() => {
 
 const comandosConReaccionPropia = ["!registrar"]
 
-const todosLosComandos = [...comandosMix, ...comandosStats]
-
 if (
   mensaje.startsWith("!") &&
-  todosLosComandos.includes(comando) &&
+  comando &&
   !comandosConReaccionPropia.includes(comando)
 ) {
   await reaccionarMensaje(telefono, req.body?.messageId, "✅")
-} else if (!mensaje.startsWith("!") || !todosLosComandos.includes(comando)) {
+} else if (!mensaje.startsWith("!")) {
   await reaccionarMensaje(telefono, req.body?.messageId, "❌")
 }
     
