@@ -1322,11 +1322,22 @@ const confirmados = []
 const dudosos = []
 const nombresYaProcesados = new Set()
         
-const limiteJugadores = modo === "cw" ? 5 : jugadoresDetectados.length
+const limiteJugadores =
+  modo === "cw"
+    ? 5
+    : nombresMixManual.length > 0
+      ? nombresMixManual.length
+      : jugadoresDetectados.length
 
 for (let i = 0; i < limiteJugadores; i++) {
-  const j = jugadoresDetectados[i]
-if (!j) continue
+  const j = jugadoresDetectados[i] || {
+  nombre: nombresMixManual[i] || `Jugador ${i + 1}`,
+  bajas: 0,
+  asistencias: 0,
+  muertes: 0,
+  puntos: 0,
+  faltanteOCR: true
+  }
 
   const nombreCW = modo === "cw"
     ? nombresCW[i]
@@ -1356,10 +1367,10 @@ nombresYaProcesados.add(claveNombre)
 
   const linea = `• ${match ? match.nombre : nombreReferencia} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 
-  if (match && match.score >= 45) {
+  if (match && match.score >= 45 && !j.faltanteOCR) {
     confirmados.push(linea)
   } else {
-    dudosos.push(`• ⚠️ ${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`)
+    dudosos.push(`• ⚠️ ${nombreReferencia} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`)
   }
 }
 
