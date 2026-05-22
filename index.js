@@ -1879,7 +1879,7 @@ return
 }
 
 const modo = resultadoPendiente.modo
-const estado = resultadoPendiente.estado
+const estado = resultadoPendiente.estado || resultadoPendiente.estadoCW
 
 for (const jugadorResultado of resultadoPendiente.jugadores) {
 
