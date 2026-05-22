@@ -1503,13 +1503,11 @@ const esOrganizador = (organizadoresDB || []).some(org =>
 
 if (
   telefono === GRUPO_STATS &&
-  comandosMix.includes(comando) &&
-  comando !== "!comandos"
+  ["!resultadomix", "!resultadocw", "!confirmar", "!editar", "!edit"].includes(comando)
 ) {
 await enviarMensaje(
 telefono,
-"❌ Los comandos MIX solo pueden usarse en el grupo MIX."
-)
+"❌ Los resultados no se cargan en el grupo STATS.\n\nUsá el grupo de administradores/resultados."
 return
 }
     
