@@ -1009,6 +1009,16 @@ console.log("📩 WEBHOOK RECIBIDO")
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone    
 
+ const esDelBot =
+req.body?.fromMe === true ||
+req.body?.isMe === true ||
+req.body?.fromApi === true ||
+req.body?.senderName === "C4 Top / Organizador Mix"
+
+if (esDelBot) {
+return res.status(200).json({ status: true })
+}   
+    
 if (!mensaje) {
 return res.status(200).json({ status: true })
     }
