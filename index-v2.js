@@ -498,3 +498,146 @@ async function manejarGrupoAdmin(data) {
 
   return
 }
+
+// ==================================================
+// GRUPO MIX
+// ==================================================
+
+async function manejarGrupoMix(data) {
+
+  try {
+
+    const {
+      mensaje,
+      comando,
+      grupo,
+      mensajeId,
+      numeroJugador,
+      organizador
+    } = data
+
+    console.log("MIX:", mensaje)
+
+    // ==================================================
+    // IGNORAR MENSAJES DEL BOT
+    // ==================================================
+
+    if (!mensaje) {
+      return
+    }
+
+    // ==================================================
+    // COMANDO INVÁLIDO
+    // ==================================================
+
+    const esComando =
+      mensaje.startsWith("!")
+
+    if (
+      esComando &&
+      !comandosMix.includes(comando)
+    ) {
+
+      await reaccionarMensaje(
+        grupo,
+        mensajeId,
+        "❌"
+      )
+
+      return
+    }
+
+    // ==================================================
+    // !PING
+    // ==================================================
+
+    if (comando === "!ping") {
+
+      await reaccionarMensaje(
+        grupo,
+        mensajeId,
+        "🏓"
+      )
+
+      await enviarMensaje(
+        grupo,
+        "🏓 Pong!"
+      )
+
+      return
+    }
+
+    // ==================================================
+    // !COMANDOS
+    // ==================================================
+
+    if (comando === "!comandos") {
+
+      await reaccionarMensaje(
+        grupo,
+        mensajeId,
+        "📋"
+      )
+
+      await enviarMensaje(
+        grupo,
+`📋 COMANDOS MIX
+
+!ping
+!abrirchat
+!cerrarchat
+!abrirmix
+!cerrarmix
+!reiniciarmix
+!entrar
+!salir
+!registrar
+!editregistro
+!agregarorganizador
+!quitarorganizador
+!organizadores`
+      )
+
+      return
+    }
+
+    // ==================================================
+    // !ABRIRMIX
+    // ==================================================
+
+    if (comando === "!abrirmix") {
+
+      if (!organizador) {
+
+        await reaccionarMensaje(
+          grupo,
+          mensajeId,
+          "⛔"
+        )
+
+        return
+      }
+
+      mixAbierto = true
+
+      jugadoresMix = []
+
+      await reaccionarMensaje(
+        grupo,
+        mensajeId,
+        "🔥"
+      )
+
+      await enviarMensaje(
+        grupo,
+        "🔥 MIX ABIERTO\n\nUsen !entrar"
+      )
+
+      return
+    }
+
+  } catch (error) {
+
+    console.log("ERROR MIX:", error)
+  }
+}
