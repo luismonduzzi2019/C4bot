@@ -1541,8 +1541,9 @@ console.log("📌 chatId:", req.body?.chatId)
 console.log("📌 groupId:", req.body?.groupId)
 
 if (
-comandosMix.includes(comando) &&
-telefono !== GRUPO_MIX
+  comandosMix.includes(comando) &&
+  telefono !== GRUPO_MIX &&
+  comando !== "!comandos"
 ) {
 await enviarMensaje(
 telefono,
