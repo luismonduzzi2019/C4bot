@@ -1009,6 +1009,10 @@ console.log("📩 WEBHOOK RECIBIDO")
   const mensaje = req.body?.text?.message || ""
   const telefono = req.body?.phone    
 
+if (!mensaje) {
+return res.status(200).json({ status: true })
+    }
+
 if (
 mensaje.includes("Este grupo es únicamente para comandos STATS") ||
 mensaje.includes("Los resultados no se cargan en el grupo STATS")
