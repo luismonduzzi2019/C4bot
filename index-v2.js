@@ -105,17 +105,36 @@ const comandosAdmin = [
 // FUNCIONES GENERALES
 // ==================================================
 
-async function enviarMensaje(grupo, texto) {
+async function enviarMensaje(telefono, mensaje) {
   try {
-    if (!sock) return
 
-    await sock.sendMessage(grupo, {
-      text: texto
-    })
+    const respuesta = await fetch(
+      `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_TOKEN}/send-text`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Client-Token": process.env.ZAPI_CLIENT_TOKEN
+        },
+        body: JSON.stringify({
+          phone: telefono,
+          message: mensaje
+        })
+      }
+    )
+
+    console.log("STATUS ENVIO:", respuesta.status)
+    console.log("RESPUESTA ENVIO:", await respuesta.text())
 
   } catch (error) {
+
     console.log("ERROR ENVIANDO MENSAJE:", error)
+
   }
+}
+
+  console.log("STATUS ENVIO:", respuesta.status)
+  console.log("RESPUESTA ENVIO:", await respuesta.text())
 }
 
 async function reaccionarMensaje(grupo, mensajeId, emoji) {
