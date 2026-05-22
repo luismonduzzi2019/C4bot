@@ -133,10 +133,6 @@ async function enviarMensaje(telefono, mensaje) {
   }
 }
 
-  console.log("STATUS ENVIO:", respuesta.status)
-  console.log("RESPUESTA ENVIO:", await respuesta.text())
-}
-
 async function reaccionarMensaje(grupo, mensajeId, emoji) {
   try {
     if (!sock) return
