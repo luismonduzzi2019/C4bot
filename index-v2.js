@@ -354,6 +354,7 @@ app.post("/webhook", async (req, res) => {
   try {
 
     const body = req.body || {}
+    console.log("WEBHOOK RECIBIDO:", JSON.stringify(body, null, 2))
 
     const mensaje =
       body?.text?.message || ""
