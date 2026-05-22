@@ -352,3 +352,171 @@ function tiempoMuteRestante(numero) {
 // ==================================================
 
 cargarOrganizadores()
+
+// ==================================================
+// WEBHOOK - ROUTER PRINCIPAL
+// ==================================================
+
+app.post("/webhook", async (req, res) => {
+
+  try {
+
+    const body = req.body || {}
+
+    const mensaje =
+      body?.text?.message || ""
+
+    const grupo =
+      body?.phone || ""
+
+    const esGrupo =
+      body?.isGroup || false
+
+    const mensajeId =
+      body?.messageId || null
+
+    const telefonoJugador =
+      body?.participantPhone ||
+      body?.senderPhone ||
+      body?.author ||
+      body?.from ||
+      ""
+
+    const numeroJugador =
+      limpiarNumero(telefonoJugador)
+
+    const comando =
+      obtenerComando(mensaje)
+
+    // ==================================================
+    // IGNORAR EVENTOS INVÁLIDOS
+    // ==================================================
+
+    if (!mensaje) {
+      return res.sendStatus(200)
+    }
+
+    if (
+      body?.fromMe ||
+      body?.isMe ||
+      body?.fromApi
+    ) {
+      return res.sendStatus(200)
+    }
+
+    // ==================================================
+    // CARGAR ORGANIZADORES
+    // ==================================================
+
+    await cargarOrganizadores()
+
+    const organizador =
+      esOrganizador(numeroJugador)
+
+    // ==================================================
+    // ROUTER DE GRUPOS
+    // ==================================================
+
+    if (grupo === GRUPO_MIX) {
+
+      await manejarGrupoMix({
+        req,
+        res,
+        mensaje,
+        comando,
+        grupo,
+        mensajeId,
+        numeroJugador,
+        organizador
+      })
+
+      return
+    }
+
+    if (grupo === GRUPO_STATS) {
+
+      await manejarGrupoStats({
+        req,
+        res,
+        mensaje,
+        comando,
+        grupo,
+        mensajeId,
+        numeroJugador,
+        organizador
+      })
+
+      return
+    }
+
+    if (grupo === GRUPO_ADMIN) {
+
+      await manejarGrupoAdmin({
+        req,
+        res,
+        mensaje,
+        comando,
+        grupo,
+        mensajeId,
+        numeroJugador,
+        organizador
+      })
+
+      return
+    }
+
+    return res.sendStatus(200)
+
+  } catch (error) {
+
+    console.log("ERROR WEBHOOK:", error)
+
+    return res.sendStatus(500)
+  }
+})
+
+// ==================================================
+// MANEJADORES DE GRUPOS
+// ==================================================
+
+async function manejarGrupoMix(data) {
+
+  const {
+    mensaje,
+    comando,
+    grupo,
+    mensajeId
+  } = data
+
+  console.log("GRUPO MIX:", mensaje)
+
+  return
+}
+
+async function manejarGrupoStats(data) {
+
+  const {
+    mensaje,
+    comando,
+    grupo,
+    mensajeId
+  } = data
+
+  console.log("GRUPO STATS:", mensaje)
+
+  return
+}
+
+async function manejarGrupoAdmin(data) {
+
+  const {
+    mensaje,
+    comando,
+    grupo,
+    mensajeId
+  } = data
+
+  console.log("GRUPO ADMIN:", mensaje)
+
+  return
+}
