@@ -359,11 +359,8 @@ console.log(JSON.stringify(req.body, null, 2))
     const body = req.body || {}
     console.log("WEBHOOK RECIBIDO:", JSON.stringify(body, null, 2))
 
-    const mensaje =
-      body?.text?.message || ""
-
-    const grupo =
-      body?.phone || ""
+    const mensaje = req.body?.text?.message || ""
+    const grupo = req.body?.phone
 
     const esGrupo =
       body?.isGroup || false
