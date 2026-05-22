@@ -1884,7 +1884,11 @@ kills: Number(jugadorDB.kills || 0) + Number(jugadorResultado.bajas || 0),
 muertes: Number(jugadorDB.muertes || 0) + Number(jugadorResultado.muertes || 0),
 puntos: Number(jugadorDB.puntos || 0) + Number(jugadorResultado.puntos || 0),
 victorias: Number(jugadorDB.victorias || 0) + gano,
-derrotas: Number(jugadorDB.derrotas || 0) + perdio
+derrotas: Number(jugadorDB.derrotas || 0) + perdio,
+racha_actual: gano ? Number(jugadorDB.racha_actual || 0) + 1 : 0,
+racha_maxima: gano
+  ? Math.max(Number(jugadorDB.racha_maxima || 0), Number(jugadorDB.racha_actual || 0) + 1)
+  : Number(jugadorDB.racha_maxima || 0)
 }
 
 if (modo === "cw") {
