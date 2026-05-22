@@ -468,6 +468,15 @@ console.log(JSON.stringify(req.body, null, 2))
   }
 })
 
+app.post("/", async (req, res) => {
+  console.log("📩 WEBHOOK RECIBIDO EN RAÍZ V2")
+  console.log(JSON.stringify(req.body, null, 2))
+
+  return res.status(200).json({
+    status: true
+  })
+})
+
 // ==================================================
 // MANEJADORES DE GRUPOS
 // ==================================================
