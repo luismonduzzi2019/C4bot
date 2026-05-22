@@ -1891,9 +1891,21 @@ const { data: jugadoresDB, error } = await supabase
 
 if (error || !jugadoresDB) continue
 
-const jugadorDB = jugadoresDB.find(j =>
-String(j.nombre || "").toLowerCase().includes(nombreBuscado) ||
-nombreBuscado.includes(String(j.nombre || "").toLowerCase())
+const jugadoresParaMatching = {}
+
+for (const j of jugadoresDB) {
+  jugadoresParaMatching[j.numero || j.id] = {
+    nick: j.nombre,
+    nombre: j.nombre,
+    id: j.id,
+    numero: j.numero,
+    alias: []
+  }
+}
+
+const jugadorDB = buscarJugadorRegistrado(
+  nombreBuscado,
+  jugadoresParaMatching
 )
 
 if (!jugadorDB) continue
