@@ -174,28 +174,6 @@ async function conectarWhatsApp() {
 }
 
 // ==================================================
-// WEBHOOK
-// ==================================================
-
-app.post("/webhook", async (req, res) => {
-
-  try {
-
-    return res.status(200).json({
-      status: true
-    })
-
-  } catch (error) {
-
-    console.log(error)
-
-    return res.status(500).json({
-      status: false
-    })
-  }
-})
-
-// ==================================================
 // SERVIDOR
 // ==================================================
 
