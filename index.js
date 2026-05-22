@@ -1019,6 +1019,11 @@ const partesResultado = captionImagen.trim().split(/\s+/)
 
 const comandoResultado = partesResultado[0]?.toLowerCase()
 
+    const nombresMixManual =
+  comandoResultado === "!resultadomix"
+    ? partesResultado.slice(1)
+    : []
+
 const estadoCW =
   comandoResultado === "!resultadocw"
     ? partesResultado[1]?.toLowerCase()
@@ -1271,7 +1276,10 @@ resultadoPendiente = {
   nombresCW,
   jugadores: jugadoresDetectados.map((j, i) => ({
   ...j,
-  nombre: nombresCW[i] || j.nombre
+  nombre:
+  modo === "mix"
+    ? nombresMixManual[i] || j.nombre
+    : nombresCW[i] || j.nombre
 })),
     fecha: new Date().toISOString()
 }
@@ -1323,14 +1331,19 @@ if (!j) continue
     ? nombresCW[i]
     : j.nombre
 
-  const match = buscarJugadorRegistrado(
-  nombreCW,
+ const nombreReferencia =
+  modo === "cw"
+    ? nombresCW[i]
+    : nombresMixManual[i] || j.nombre
+
+const match = buscarJugadorRegistrado(
+  nombreReferencia,
   modo === "mix" && Object.keys(jugadoresMixParaMatching).length > 0
     ? jugadoresMixParaMatching
     : jugadoresParaMatching
 )
 
-  const linea = `• ${match ? match.nombre : nombreCW} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+  const linea = `• ${match ? match.nombre : nombreReferencia} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 
   if (match && match.score >= 45) {
     confirmados.push(linea)
