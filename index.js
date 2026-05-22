@@ -1502,6 +1502,13 @@ const esOrganizador = (organizadoresDB || []).some(org =>
     const comando = mensaje.toLowerCase().split(" ")[0]
     const esComandoStatsValido = comandosStats.includes(comando)
 
+    if (
+mensaje.includes("Este grupo es únicamente para comandos STATS") ||
+mensaje.includes("Los resultados no se cargan en el grupo STATS")
+) {
+return res.status(200).json({ status: true })
+    }
+
 if (
 req.body?.fromMe ||
 req.body?.isMe ||
