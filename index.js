@@ -1217,7 +1217,7 @@ const esClanPropio =
 
     return (
   l.length > 8 &&
-  numeros.length >= 4
+  numeros.length >= 3
 )
 })
 
@@ -1320,7 +1320,8 @@ if (modo === "mix" && jugadoresMix.length > 0) {
         
 const confirmados = []
 const dudosos = []
-
+const nombresYaProcesados = new Set()
+        
 const limiteJugadores = modo === "cw" ? 5 : jugadoresDetectados.length
 
 for (let i = 0; i < limiteJugadores; i++) {
@@ -1342,6 +1343,16 @@ const match = buscarJugadorRegistrado(
     ? jugadoresMixParaMatching
     : jugadoresParaMatching
 )
+
+    const claveNombre = (match ? match.nombre : nombreReferencia)
+  .toLowerCase()
+  .replace(/[^a-z0-9]/g, "")
+
+if (nombresYaProcesados.has(claveNombre)) {
+  continue
+}
+
+nombresYaProcesados.add(claveNombre)
 
   const linea = `• ${match ? match.nombre : nombreReferencia} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 
