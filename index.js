@@ -1451,8 +1451,9 @@ const esOrganizador = (organizadoresDB || []).some(org =>
     const comando = mensaje.toLowerCase().split(" ")[0]
 
 if (
-telefono === GRUPO_STATS &&
-comandosMix.includes(comando)
+  telefono === GRUPO_STATS &&
+  comandosMix.includes(comando) &&
+  comando !== "!comandos"
 ) {
 await enviarMensaje(
 telefono,
