@@ -1525,7 +1525,7 @@ return
     
 if (
 telefono === GRUPO_STATS &&
-!esComandoStatsValido &&
+!esComandoStatsValido
 ) {
 
 await reaccionarMensaje(telefono, req.body?.messageId, "🚫")
