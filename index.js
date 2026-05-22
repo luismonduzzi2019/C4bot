@@ -1555,6 +1555,8 @@ if (
 telefono === GRUPO_STATS &&
 !esComandoStatsValido
 ) {
+return res.status(200).json({ status: true })
+}
     
     if (!esGrupo && !esAdminPrincipal) {
     return res.status(200).json({
