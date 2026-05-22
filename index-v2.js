@@ -46,9 +46,9 @@ const PORT = process.env.PORT || 3000
 // IDS DE GRUPOS
 // ==================================================
 
-const GRUPO_MIX = ""
-const GRUPO_STATS = ""
-const GRUPO_ADMIN = ""
+const GRUPO_MIX = "120363425089190805-group"
+const GRUPO_STATS = "120363407953964467-group"
+const GRUPO_ADMIN = "ID_DEL_GRUPO_ADMIN-group"
 
 // ==================================================
 // VARIABLES GLOBALES
