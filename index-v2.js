@@ -196,7 +196,6 @@ app.listen(PORT, async () => {
 
   console.log(`SERVIDOR ONLINE ${PORT}`)
 
-  await conectarWhatsApp()
 })
 
 // ==================================================
