@@ -1500,6 +1500,7 @@ const esOrganizador = (organizadoresDB || []).some(org =>
 )
 
     const comando = mensaje.toLowerCase().split(" ")[0]
+    const esComandoStatsValido = comandosStats.includes(comando)
 
 if (
   telefono === GRUPO_STATS &&
@@ -1508,6 +1509,25 @@ if (
 await enviarMensaje(
 telefono,
 "❌ Los resultados no se cargan en el grupo STATS.\n\nUsá el grupo de administradores/resultados."
+)
+
+return
+}
+
+if (telefono === GRUPO_STATS && esComandoStatsValido) {
+  await reaccionarMensaje(telefono, req.body?.messageId, "✅")
+}
+    
+if (
+telefono === GRUPO_STATS &&
+!esComandoStatsValido
+) {
+
+await reaccionarMensaje(telefono, req.body?.messageId, "🚫")
+
+await enviarMensaje(
+telefono,
+"🚫 Este grupo es únicamente para comandos STATS."
 )
 
 return
