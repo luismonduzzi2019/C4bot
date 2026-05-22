@@ -1295,6 +1295,20 @@ for (const jugador of jugadoresSupabase || []) {
     alias: []
   }
 }
+
+const jugadoresMixParaMatching = {}
+
+if (modo === "mix" && jugadoresMix.length > 0) {
+  for (const jugador of jugadoresMix) {
+    jugadoresMixParaMatching[jugador.telefono || jugador.idGame || jugador.nick] = {
+      nick: jugador.nick,
+      nombre: jugador.nick,
+      id: jugador.idGame,
+      numero: jugador.telefono,
+      alias: []
+    }
+  }
+}
         
 const confirmados = []
 const dudosos = []
@@ -1310,9 +1324,11 @@ if (!j) continue
     : j.nombre
 
   const match = buscarJugadorRegistrado(
-    nombreCW,
-    jugadoresParaMatching
-  )
+  nombreCW,
+  modo === "mix" && Object.keys(jugadoresMixParaMatching).length > 0
+    ? jugadoresMixParaMatching
+    : jugadoresParaMatching
+)
 
   const linea = `• ${match ? match.nombre : nombreCW} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 
