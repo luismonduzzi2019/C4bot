@@ -1555,16 +1555,6 @@ if (
 telefono === GRUPO_STATS &&
 !esComandoStatsValido
 ) {
-
-await reaccionarMensaje(telefono, req.body?.messageId, "🚫")
-
-await enviarMensaje(
-telefono,
-"🚫 Este grupo es únicamente para comandos STATS."
-)
-
-return
-}
     
     if (!esGrupo && !esAdminPrincipal) {
     return res.status(200).json({
