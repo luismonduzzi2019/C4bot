@@ -1503,9 +1503,12 @@ const esOrganizador = (organizadoresDB || []).some(org =>
     const esComandoStatsValido = comandosStats.includes(comando)
 
 if (
-  telefono === GRUPO_STATS &&
-  ["!resultadomix", "!resultadocw", "!confirmar", "!editar", "!edit"].includes(comando)
+telefono === GRUPO_STATS &&
+["!resultadomix", "!resultadocw", "!confirmar", "!editar", "!edit"].includes(comando) &&
+!req.body?.fromMe &&
+!req.body?.isMe
 ) {
+    
 await enviarMensaje(
 telefono,
 "❌ Los resultados no se cargan en el grupo STATS.\n\nUsá el grupo de administradores/resultados."
@@ -1513,14 +1516,12 @@ telefono,
 
 return
 }
-
-if (telefono === GRUPO_STATS && esComandoStatsValido) {
-  await reaccionarMensaje(telefono, req.body?.messageId, "✅")
-}
     
 if (
 telefono === GRUPO_STATS &&
-!esComandoStatsValido
+!esComandoStatsValido &&
+!req.body?.fromMe &&
+!req.body?.isMe
 ) {
 
 await reaccionarMensaje(telefono, req.body?.messageId, "🚫")
