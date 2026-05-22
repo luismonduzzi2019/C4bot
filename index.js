@@ -1508,6 +1508,8 @@ if (
 await enviarMensaje(
 telefono,
 "❌ Los resultados no se cargan en el grupo STATS.\n\nUsá el grupo de administradores/resultados."
+)
+
 return
 }
     
