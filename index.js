@@ -3005,7 +3005,8 @@ telefono,
 🏆 !top
 🎯 !topkills
 📖 !comandos`
-
+)
+    
 return
 }
     }
