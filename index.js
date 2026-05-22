@@ -171,13 +171,13 @@ const comandosMix = [
 ]
 
 const comandosStats = [
-"!resultadocw",
-"!resultadomix",
-"!confirmar",
-"!editar",
-"!stats",
 "!top",
-"!topkills"
+"!topkills",
+"!stats",
+"!jugadores",
+"!comandos",
+"!ping",
+"!resetstats"
 ]
 
 const app = express()
