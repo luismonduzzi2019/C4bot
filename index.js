@@ -1503,10 +1503,16 @@ const esOrganizador = (organizadoresDB || []).some(org =>
     const esComandoStatsValido = comandosStats.includes(comando)
 
 if (
+req.body?.fromMe ||
+req.body?.isMe ||
+telefonoJugador === telefono
+) {
+return res.status(200).json({ status: true })
+}
+    
+if (
 telefono === GRUPO_STATS &&
-["!resultadomix", "!resultadocw", "!confirmar", "!editar", "!edit"].includes(comando) &&
-!req.body?.fromMe &&
-!req.body?.isMe
+["!resultadomix", "!resultadocw", "!confirmar", "!editar", "!edit"].includes(comando)
 ) {
     
 await enviarMensaje(
@@ -1520,8 +1526,6 @@ return
 if (
 telefono === GRUPO_STATS &&
 !esComandoStatsValido &&
-!req.body?.fromMe &&
-!req.body?.isMe
 ) {
 
 await reaccionarMensaje(telefono, req.body?.messageId, "🚫")
