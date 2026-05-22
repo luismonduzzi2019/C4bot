@@ -205,3 +205,150 @@ app.listen(PORT, async () => {
 
   await conectarWhatsApp()
 })
+
+// ==================================================
+// SISTEMA DE JUGADORES
+// ==================================================
+
+const PATH_JUGADORES = "./jugadores.json"
+
+function cargarJugadores() {
+
+  try {
+
+    if (!fs.existsSync(PATH_JUGADORES)) {
+      return {}
+    }
+
+    const data =
+      fs.readFileSync(PATH_JUGADORES, "utf8")
+
+    return JSON.parse(data)
+
+  } catch (error) {
+
+    console.log("ERROR CARGANDO JUGADORES:", error)
+
+    return {}
+  }
+}
+
+function guardarJugadores(jugadores) {
+
+  try {
+
+    fs.writeFileSync(
+      PATH_JUGADORES,
+      JSON.stringify(jugadores, null, 2)
+    )
+
+  } catch (error) {
+
+    console.log("ERROR GUARDANDO JUGADORES:", error)
+  }
+}
+
+let jugadores = cargarJugadores()
+
+// ==================================================
+// SISTEMA DE ORGANIZADORES
+// ==================================================
+
+async function cargarOrganizadores() {
+
+  try {
+
+    const { data, error } = await supabase
+      .from("Organizadores")
+      .select("*")
+
+    if (error) {
+      console.log(error)
+      return []
+    }
+
+    organizadoresCache = data || []
+
+    return organizadoresCache
+
+  } catch (error) {
+
+    console.log("ERROR ORGANIZADORES:", error)
+
+    return []
+  }
+}
+
+function esOrganizador(numero) {
+
+  const numeroLimpio =
+    String(numero).replace(/\D/g, "")
+
+  return organizadoresCache.some(org => {
+
+    const numeroOrg =
+      String(org.numero || "")
+        .replace(/\D/g, "")
+
+    return numeroOrg === numeroLimpio
+  })
+}
+
+// ==================================================
+// NORMALIZACIÓN
+// ==================================================
+
+function limpiarTexto(texto = "") {
+
+  return String(texto)
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ")
+}
+
+function limpiarNumero(numero = "") {
+
+  return String(numero)
+    .replace(/\D/g, "")
+}
+
+function normalizarNick(nick = "") {
+
+  return limpiarTexto(nick)
+    .replace(/[^a-z0-9]/gi, "")
+}
+
+// ==================================================
+// HELPERS
+// ==================================================
+
+function obtenerComando(texto = "") {
+
+  return texto
+    .trim()
+    .split(" ")[0]
+    .toLowerCase()
+}
+
+function usuarioEstaMuteado(numero) {
+
+  return (
+    usuariosMuteados[numero] &&
+    usuariosMuteados[numero] > Date.now()
+  )
+}
+
+function tiempoMuteRestante(numero) {
+
+  if (!usuariosMuteados[numero]) {
+    return 0
+  }
+
+  return usuariosMuteados[numero] - Date.now()
+}
+
+// ==================================================
+// INICIALIZACIÓN
+// ==================================================
+
+cargarOrganizadores()
