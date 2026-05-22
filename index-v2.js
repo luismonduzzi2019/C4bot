@@ -500,7 +500,7 @@ async function manejarGrupoAdmin(data) {
 }
 
 // ==================================================
-// GRUPO MIX
+// GRUPO MIX - VERSIÓN COMPLETA BASE
 // ==================================================
 
 async function manejarGrupoMix(data) {
@@ -516,68 +516,23 @@ async function manejarGrupoMix(data) {
       organizador
     } = data
 
-    console.log("MIX:", mensaje)
+    if (!mensaje) return
 
-    // ==================================================
-    // IGNORAR MENSAJES DEL BOT
-    // ==================================================
+    const esComando = mensaje.startsWith("!")
 
-    if (!mensaje) {
+    if (esComando && !comandosMix.includes(comando)) {
+      await reaccionarMensaje(grupo, mensajeId, "❌")
       return
     }
-
-    // ==================================================
-    // COMANDO INVÁLIDO
-    // ==================================================
-
-    const esComando =
-      mensaje.startsWith("!")
-
-    if (
-      esComando &&
-      !comandosMix.includes(comando)
-    ) {
-
-      await reaccionarMensaje(
-        grupo,
-        mensajeId,
-        "❌"
-      )
-
-      return
-    }
-
-    // ==================================================
-    // !PING
-    // ==================================================
 
     if (comando === "!ping") {
-
-      await reaccionarMensaje(
-        grupo,
-        mensajeId,
-        "🏓"
-      )
-
-      await enviarMensaje(
-        grupo,
-        "🏓 Pong!"
-      )
-
+      await reaccionarMensaje(grupo, mensajeId, "🏓")
+      await enviarMensaje(grupo, "🏓 Pong!")
       return
     }
 
-    // ==================================================
-    // !COMANDOS
-    // ==================================================
-
     if (comando === "!comandos") {
-
-      await reaccionarMensaje(
-        grupo,
-        mensajeId,
-        "📋"
-      )
+      await reaccionarMensaje(grupo, mensajeId, "📋")
 
       await enviarMensaje(
         grupo,
@@ -601,36 +556,127 @@ async function manejarGrupoMix(data) {
       return
     }
 
-    // ==================================================
-    // !ABRIRMIX
-    // ==================================================
-
     if (comando === "!abrirmix") {
 
       if (!organizador) {
-
-        await reaccionarMensaje(
-          grupo,
-          mensajeId,
-          "⛔"
-        )
-
+        await reaccionarMensaje(grupo, mensajeId, "⛔")
         return
       }
 
       mixAbierto = true
-
       jugadoresMix = []
 
-      await reaccionarMensaje(
-        grupo,
-        mensajeId,
-        "🔥"
-      )
+      await reaccionarMensaje(grupo, mensajeId, "🔥")
 
       await enviarMensaje(
         grupo,
-        "🔥 MIX ABIERTO\n\nUsen !entrar"
+`🔥 MIX ABIERTO
+
+Cupos: 0/10
+
+Usen !entrar para anotarse.`
+      )
+
+      return
+    }
+
+    if (comando === "!cerrarmix") {
+
+      if (!organizador) {
+        await reaccionarMensaje(grupo, mensajeId, "⛔")
+        return
+      }
+
+      mixAbierto = false
+
+      await reaccionarMensaje(grupo, mensajeId, "🔒")
+      await enviarMensaje(grupo, "🔒 Mix cerrado.")
+
+      return
+    }
+
+    if (comando === "!reiniciarmix") {
+
+      if (!organizador) {
+        await reaccionarMensaje(grupo, mensajeId, "⛔")
+        return
+      }
+
+      mixAbierto = false
+      jugadoresMix = []
+
+      await reaccionarMensaje(grupo, mensajeId, "♻️")
+      await enviarMensaje(grupo, "♻️ Mix reiniciado.")
+
+      return
+    }
+
+    if (comando === "!entrar") {
+
+      if (!mixAbierto) {
+        await reaccionarMensaje(grupo, mensajeId, "⛔")
+        await enviarMensaje(grupo, "⛔ No hay mix abierto.")
+        return
+      }
+
+      const yaEsta = jugadoresMix.some(j =>
+        j.numero === numeroJugador
+      )
+
+      if (yaEsta) {
+        await reaccionarMensaje(grupo, mensajeId, "⚠️")
+        return
+      }
+
+      jugadoresMix.push({
+        numero: numeroJugador,
+        fecha: Date.now()
+      })
+
+      await reaccionarMensaje(grupo, mensajeId, "✅")
+
+      await enviarMensaje(
+        grupo,
+`✅ Entraste al mix.
+
+Cupos: ${jugadoresMix.length}/10`
+      )
+
+      if (jugadoresMix.length >= 10) {
+        mixAbierto = false
+
+        await enviarMensaje(
+          grupo,
+`🔥 MIX COMPLETO 10/10
+
+Próximo paso:
+división automática de equipos.`
+        )
+      }
+
+      return
+    }
+
+    if (comando === "!salir") {
+
+      const antes = jugadoresMix.length
+
+      jugadoresMix = jugadoresMix.filter(j =>
+        j.numero !== numeroJugador
+      )
+
+      if (jugadoresMix.length === antes) {
+        await reaccionarMensaje(grupo, mensajeId, "⚠️")
+        return
+      }
+
+      await reaccionarMensaje(grupo, mensajeId, "✅")
+
+      await enviarMensaje(
+        grupo,
+`✅ Saliste del mix.
+
+Cupos: ${jugadoresMix.length}/10`
       )
 
       return
