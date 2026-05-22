@@ -1542,13 +1542,7 @@ if (
 telefono === GRUPO_STATS &&
 ["!resultadomix", "!resultadocw", "!confirmar", "!editar", "!edit"].includes(comando)
 ) {
-    
-await enviarMensaje(
-telefono,
-"❌ Los resultados no se cargan en el grupo STATS.\n\nUsá el grupo de administradores/resultados."
-)
-
-return
+return res.status(200).json({ status: true })
 }
     
 if (
