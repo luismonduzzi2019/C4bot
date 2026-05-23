@@ -858,6 +858,46 @@ return
 }
 
 // =====================================================
+// !BIENVENIDA
+// =====================================================
+
+if (comando === "!bienvenida") {
+
+await reaccionarMensaje(grupo, mensajeId, "📊")
+
+await enviarMensaje(
+grupo,
+`📊 BIENVENIDOS A STATS C4
+
+Este grupo está destinado exclusivamente a estadísticas individuales y grupales.
+
+📌 COMANDOS DISPONIBLES
+
+!stats
+!top
+!topkills
+!comandos
+!organizadores (ante dudas o consultas comunicarse con uno de ellos)
+
+⏳ LÍMITES
+
+!stats → 1 uso cada 24 hs
+!top → 1 uso cada 24 hs
+!topkills → 1 uso cada 24 hs
+
+⚠️ IMPORTANTE
+
+Solo se permiten comandos del sistema STATS.
+Los mensajes normales o comandos incorrectos generan advertencias automáticas.
+4 advertencias ⚠️ automáticas general 1 ban de 32 hs.
+
+🏆 Respeten el orden y utilicen correctamente los comandos.`
+)
+
+return
+}
+
+// =====================================================
 // COMANDO INVÁLIDO
 // =====================================================
 
