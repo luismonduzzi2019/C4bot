@@ -521,13 +521,14 @@ async function manejarGrupoMix(data) {
 
 try {
 
-const mensaje = (data.text?.message || "").trim()
-const comando = mensaje.split(" ")[0].toLowerCase()
-const grupo = data.chatId
-const mensajeId = data.messageId
-const numeroJugador = data.phone || ""
-
-const organizador = data.organizador
+const {
+mensaje,
+comando,
+grupo,
+mensajeId,
+numeroJugador,
+organizador
+} = data
 
 console.log("DEBUG MIX:", {
 mensaje,
