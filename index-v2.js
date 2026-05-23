@@ -595,6 +595,42 @@ Math.floor(Math.random() * 180)
       return
     }
 
+// =====================================================
+// !BIENVENIDA
+// =====================================================
+
+if (comando === "!bienvenida") {
+
+await reaccionarMensaje(grupo, mensajeId, "👋")
+
+await enviarMensaje(
+grupo,
+`🇦🇷 BIENVENIDOS A MIX C4
+
+Este grupo está destinado exclusivamente a la organización de mixes.
+
+📌 COMANDOS PRINCIPALES
+
+!registrar NICK ID ROL
+!entrar
+!salir
+!comandos
+
+⚠️ IMPORTANTE
+
+Solo se permiten comandos CORRECTOS del bot.
+Los mensajes normales o comandos incorrectos generan advertencias automáticas.
+4 advertencias ⚠️ automáticas generan 1 ban de 12 hs.
+
+🎮 Cuando el mix esté abierto, utilizá !entrar para sumarte a la lista.
+🚪 Si no puedes participar de dicha mix por diferentes motivos usa !salir.
+
+🔥 ¡Respeten los horarios y mantengan ordenado el grupo!`
+)
+
+return
+}
+
     if (comando === "!abrirmix") {
 
       if (!organizador) {
