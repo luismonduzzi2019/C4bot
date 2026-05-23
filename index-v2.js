@@ -584,7 +584,7 @@ Math.floor(Math.random() * 180)
 !reiniciarmix
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
-!organizadores
+!organizadores (ante dudas o consultas contactate con alguno de ellos)
 !registrar
 !editregistro
 !entrar
@@ -811,6 +811,7 @@ grupo,
 !jugadores
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
+!organizadores (ante dudas o consultas contactate con alguno de ellos)
 !stats (permitido 1 vez cada 24 hs)
 !top (permitido 1 vez cada 24 hs)
 !topkills (permitido 1 vez cada 24 hs)
