@@ -572,12 +572,10 @@ Math.floor(Math.random() * 180)
         `📋 COMANDOS GRUPO MIX
 
 👑 ADMIN PRINCIPAL
-
 !agregarorganizador
 !quitarorganizador
 
 🛡️ ADMIN / ORGANIZADORES
-
 !ping
 !abrirchat
 !cerrarchat
@@ -586,7 +584,6 @@ Math.floor(Math.random() * 180)
 !reiniciarmix
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
-
 !organizadores
 !registrar
 !editregistro
@@ -808,15 +805,12 @@ grupo,
 `📊 COMANDOS GRUPO STATS
 
 👑 ADMIN PRINCIPAL
-
 !reiniciarstats
 
 🛡️ ADMIN / ORGANIZADORES
-
 !jugadores
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
-
 !stats (permitido 1 vez cada 24 hs)
 !top (permitido 1 vez cada 24 hs)
 !topkills (permitido 1 vez cada 24 hs)
