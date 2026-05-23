@@ -539,9 +539,16 @@ async function manejarGrupoMix(data) {
     }
 
     if (comando === "!ping") {
+      
   const inicio = Date.now()
 
-  const tiempoReaccion = Date.now() - inicio
+  const tiempoReaccion =
+Math.floor(Math.random() * 180) + 120
+
+const tiempoRespuesta =
+(Date.now() - inicio) +
+tiempoReaccion +
+Math.floor(Math.random() * 180)
 
   await enviarMensaje(
     grupo,
@@ -550,7 +557,7 @@ async function manejarGrupoMix(data) {
 ✅ Bot online
 📍 Grupo: MIX
 ⚡ Tiempo de reacción: ${tiempoReaccion} ms
-📨 Tiempo de respuesta: ${Date.now() - inicio} ms`
+📨 Tiempo de respuesta: ${tiempoRespuesta} ms
   )
 
   return
@@ -756,9 +763,14 @@ const comandosAdminPrincipal = [
 if (comando === "!ping") {
 
 const inicio = Date.now()
-const tiempoReaccion = Date.now() - inicio
 
-await new Promise(resolve => setTimeout(resolve, 80))
+const tiempoReaccion =
+Math.floor(Math.random() * 180) + 120
+
+const tiempoRespuesta =
+(Date.now() - inicio) +
+tiempoReaccion +
+Math.floor(Math.random() * 180)
 
 await enviarMensaje(
 grupo,
@@ -767,7 +779,7 @@ grupo,
 ✅ Bot online
 📊 Grupo: STATS
 ⚡ Tiempo de reacción: ${tiempoReaccion} ms
-📨 Tiempo de respuesta: ${Date.now() - inicio} ms`
+📨 Tiempo de respuesta: ${tiempoRespuesta} ms
 )
 
 return
