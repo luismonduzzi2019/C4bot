@@ -557,7 +557,7 @@ Math.floor(Math.random() * 180)
 ✅ Bot online
 📍 Grupo: MIX
 ⚡ Tiempo de reacción: ${tiempoReaccion} ms
-📨 Tiempo de respuesta: ${tiempoRespuesta} ms
+📨 Tiempo de respuesta: ${tiempoRespuesta} ms`
   )
 
   return
@@ -779,7 +779,7 @@ grupo,
 ✅ Bot online
 📊 Grupo: STATS
 ⚡ Tiempo de reacción: ${tiempoReaccion} ms
-📨 Tiempo de respuesta: ${tiempoRespuesta} ms
+📨 Tiempo de respuesta: ${tiempoRespuesta} ms`
 )
 
 return
