@@ -756,8 +756,9 @@ const comandosAdminPrincipal = [
 if (comando === "!ping") {
 
 const inicio = Date.now()
-
 const tiempoReaccion = Date.now() - inicio
+
+await new Promise(resolve => setTimeout(resolve, 80))
 
 await enviarMensaje(
 grupo,
@@ -790,7 +791,7 @@ grupo,
 🛡️ ADMIN / ORGANIZADORES
 !jugadores
 
-🎮 JUGADORES
+🎮 ADMIN / ORGANIZADORES / JUGADORES
 !stats
 !top
 !topkills
