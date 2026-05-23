@@ -593,6 +593,8 @@ Math.floor(Math.random() * 180)
 !entrar
 !salir
 !comandos`
+)
+      
       return
     }
 
@@ -819,7 +821,8 @@ grupo,
 !top (permitido 1 vez cada 24 hs)
 !topkills (permitido 1 vez cada 24 hs)
 !comandos (uso ilimitado)`
-
+)
+  
 return
 }
 
