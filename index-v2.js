@@ -568,7 +568,15 @@ Math.floor(Math.random() * 180)
 
       await enviarMensaje(
         grupo,
-`📋 COMANDOS MIX
+
+        `📋 COMANDOS GRUPO MIX
+
+👑 ADMIN PRINCIPAL
+
+!agregarorganizador
+!quitarorganizador
+
+🛡️ ADMIN / ORGANIZADORES
 
 !ping
 !abrirchat
@@ -576,15 +584,15 @@ Math.floor(Math.random() * 180)
 !abrirmix
 !cerrarmix
 !reiniciarmix
-!entrar
-!salir
+
+👥 ADMIN / ORGANIZADORES / INTEGRANTES
+
+!organizadores
 !registrar
 !editregistro
-!agregarorganizador
-!quitarorganizador
-!organizadores`
-      )
-
+!entrar
+!salir
+!comandos`
       return
     }
 
@@ -798,17 +806,19 @@ grupo,
 `📊 COMANDOS GRUPO STATS
 
 👑 ADMIN PRINCIPAL
+
 !reiniciarstats
 
 🛡️ ADMIN / ORGANIZADORES
+
 !jugadores
 
-🎮 ADMIN / ORGANIZADORES / JUGADORES
-!stats
-!top
-!topkills
-!comandos`
-)
+👥 ADMIN / ORGANIZADORES / INTEGRANTES
+
+!stats (permitido 1 vez cada 24 hs)
+!top (permitido 1 vez cada 24 hs)
+!topkills (permitido 1 vez cada 24 hs)
+!comandos (uso ilimitado)`
 
 return
 }
