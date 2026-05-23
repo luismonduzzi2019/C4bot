@@ -655,114 +655,457 @@ Usen !entrar para anotarse.`
       return
     }
 
+// =====================================================
+// COMANDO CERRARMIX (GRUPO MIX) 
+// =====================================================
+
     if (comando === "!cerrarmix") {
 
-      if (!organizador) {
-        await reaccionarMensaje(grupo, mensajeId, "⛔")
-        return
-      }
+if (!organizador) {
 
-      mixAbierto = false
+await enviarMensaje(
+grupo,
+"❌ Solo administradores pueden cerrar mixes"
+)
 
-      await reaccionarMensaje(grupo, mensajeId, "🔒")
-      await enviarMensaje(grupo, "🔒 Mix cerrado.")
-
-      return
-    }
-
-    if (comando === "!reiniciarmix") {
-
-      if (!organizador) {
-        await reaccionarMensaje(grupo, mensajeId, "⛔")
-        return
-      }
-
-      mixAbierto = false
-      jugadoresMix = []
-
-      await reaccionarMensaje(grupo, mensajeId, "♻️")
-      await enviarMensaje(grupo, "♻️ Mix reiniciado.")
-
-      return
-    }
-
-    if (comando === "!entrar") {
-
-      if (!mixAbierto) {
-        await reaccionarMensaje(grupo, mensajeId, "⛔")
-        await enviarMensaje(grupo, "⛔ No hay mix abierto.")
-        return
-      }
-
-      const yaEsta = jugadoresMix.some(j =>
-        j.numero === numeroJugador
-      )
-
-      if (yaEsta) {
-        await reaccionarMensaje(grupo, mensajeId, "⚠️")
-        return
-      }
-
-      jugadoresMix.push({
-        numero: numeroJugador,
-        fecha: Date.now()
-      })
-
-      await reaccionarMensaje(grupo, mensajeId, "✅")
-
-      await enviarMensaje(
-        grupo,
-`✅ Entraste al mix.
-
-Cupos: ${jugadoresMix.length}/10`
-      )
-
-      if (jugadoresMix.length >= 10) {
-        mixAbierto = false
-
-        await enviarMensaje(
-          grupo,
-`🔥 MIX COMPLETO 10/10
-
-Próximo paso:
-división automática de equipos.`
-        )
-      }
-
-      return
-    }
-
-    if (comando === "!salir") {
-
-      const antes = jugadoresMix.length
-
-      jugadoresMix = jugadoresMix.filter(j =>
-        j.numero !== numeroJugador
-      )
-
-      if (jugadoresMix.length === antes) {
-        await reaccionarMensaje(grupo, mensajeId, "⚠️")
-        return
-      }
-
-      await reaccionarMensaje(grupo, mensajeId, "✅")
-
-      await enviarMensaje(
-        grupo,
-`✅ Saliste del mix.
-
-Cupos: ${jugadoresMix.length}/10`
-      )
-
-      return
-    }
-
-  } catch (error) {
-
-    console.log("ERROR MIX:", error)
-  }
+return
 }
 
+mixAbierto = false
+
+await cerrarChatGrupo(grupo)
+
+chatMixActivo = false
+jugadoresMix = []
+
+await enviarMensaje(
+grupo,
+`🔒 MIX CERRADA
+
+👥 Cupos: 0/10
+
+Usá:
+!abrirmix
+
+para abrir una nueva.`
+)
+
+return
+    }
+
+// =====================================================
+// COMANDO REINICIARMIX (GRUPO MIX) 
+// =====================================================
+    
+    if (comando === "!reiniciarmix") {
+
+if (!organizador) {
+
+await enviarMensaje(
+grupo,
+"❌ Solo administradores pueden reiniciar mixes"
+)
+
+return
+}
+
+await abrirChatGrupo(grupo)
+
+jugadoresMix = []
+
+mixAbierto = true
+chatMixActivo = true
+
+await enviarMensaje(
+grupo,
+`♻️ MIX REINICIADO
+
+👥 Cupos: 0/10
+
+Usá:
+!entrar
+
+para anotarte nuevamente.`
+)
+
+return
+    }
+
+// =====================================================
+// COMANDO FAKE10 (GRUPO MIX) 
+// =====================================================
+    
+  if (comando === "!fake10") {
+
+if (!organizador) {
+
+await enviarMensaje(
+grupo,
+"❌ Solo administradores pueden usar fake10"
+)
+
+return
+}
+
+jugadoresMix = [
+{ nick: "Alpha" },
+{ nick: "Bravo" },
+{ nick: "Charlie" },
+{ nick: "Delta" },
+{ nick: "Echo" },
+{ nick: "Foxtrot" },
+{ nick: "Ghost" },
+{ nick: "Hunter" },
+{ nick: "Iceman" },
+{ nick: "Joker" }
+]
+
+mixAbierto = true
+
+await enviarMensaje(
+grupo,
+`🧪 MIX DE PRUEBA CARGADA
+
+👥 Cupos: 10/10`
+)
+
+const jugadoresMezclados =
+[...jugadoresMix].sort(() => Math.random() - 0.5)
+
+const equipoA = jugadoresMezclados.slice(0, 5)
+const equipoB = jugadoresMezclados.slice(5, 10)
+
+let listaA = ""
+let listaB = ""
+
+equipoA.forEach((j, i) => {
+listaA += `${i + 1}. ${j.nick}\n`
+})
+
+equipoB.forEach((j, i) => {
+listaB += `${i + 1}. ${j.nick}\n`
+})
+
+await enviarMensaje(
+grupo,
+`🔥 MIX COMPLETO
+
+🔵 EQUIPO A
+${listaA}
+
+🔴 EQUIPO B
+${listaB}`
+)
+
+await enviarEncuesta(grupo)
+
+mixAbierto = false
+
+return
+  }
+
+// =====================================================
+// COMANDO ENTRAR (GRUPO MIX) 
+// =====================================================
+
+    
+if (comando === "!entrar") {
+
+if (!mixAbierto) {
+await enviarMensaje(grupo, "❌ No hay ningún mix abierto.")
+return
+}
+
+const numeroActual =
+String(numeroJugador).replace(/\D/g, "")
+
+let jugador = Object.values(jugadoresRegistrados).find(
+j =>
+String(j.telefono).replace(/\D/g, "") === numeroActual
+)
+
+if (!jugador) {
+
+const { data: jugadorSupabase } = await supabase
+.from("Jugadores")
+.select("*")
+.eq("numero", numeroActual)
+.maybeSingle()
+
+if (jugadorSupabase) {
+
+jugador = {
+nick: jugadorSupabase.nombre,
+idGame: jugadorSupabase.idgame,
+telefono: jugadorSupabase.numero
+}
+
+jugadoresRegistrados[jugador.idGame] = jugador
+guardarJugadores(jugadoresRegistrados)
+
+}
+}
+
+if (!jugador) {
+
+await enviarMensaje(
+grupo,
+"❌ No estás registrado.\n\nUsá:\n!registrar NICK ID"
+)
+
+return
+}
+
+const yaEsta = jugadoresMix.find(j =>
+String(j.telefono).replace(/\D/g, "") === numeroActual
+)
+
+if (yaEsta) {
+
+await enviarMensaje(
+grupo,
+"⚠️ Ya estás dentro del mix."
+)
+
+return
+}
+
+jugadoresMix.push(jugador)
+
+await reaccionarMensaje(grupo, mensajeId, "✅")
+
+let lista = ""
+
+jugadoresMix.forEach((j, index) => {
+lista += `${index + 1}. ${j.nick}\n`
+})
+
+await enviarMensaje(
+grupo,
+`✅ ${jugador.nick} entró al mix.
+
+🔥 MIX ACTUAL
+
+👥 Cupos: ${jugadoresMix.length}/10
+⏳ Faltan: ${10 - jugadoresMix.length}
+
+${lista || "Lista vacía."}`
+)
+
+if (jugadoresMix.length >= 10) {
+
+mixAbierto = false
+chatMixActivo = false
+
+await cerrarChatGrupo()
+
+await enviarMensaje(
+grupo,
+`🔒 Chat cerrado automáticamente.
+
+🎮 Mix completa.
+📋 Generando equipos...`
+)
+
+const mezclados =
+[...jugadoresMix].sort(() => Math.random() - 0.5)
+
+const equipoA = mezclados.slice(0, 5)
+const equipoB = mezclados.slice(5, 10)
+
+equiposMixActual = {
+equipoA,
+equipoB
+}
+
+const listaA =
+equipoA.map((j, i) =>
+`${i + 1}. ${j.nick}`
+).join("\n")
+
+const listaB =
+equipoB.map((j, i) =>
+`${i + 1}. ${j.nick}`
+).join("\n")
+
+await enviarMensaje(
+grupo,
+`🔥 MIX COMPLETO
+
+🔵 EQUIPO A
+${listaA}
+
+🔴 EQUIPO B
+${listaB}`
+)
+
+await enviarEncuesta(grupo)
+
+}
+
+return
+}
+
+// =====================================================
+// COMANDO SALIR (GRUPO MIX) 
+// =====================================================
+    
+if (comando === "!salir") {
+
+if (!mixAbierto) {
+
+await enviarMensaje(
+grupo,
+"❌ No hay ningún mix abierto."
+)
+
+return
+}
+
+const numeroActual =
+String(numeroJugador).replace(/\D/g, "")
+
+const indexJugador = jugadoresMix.findIndex(
+j =>
+String(j.telefono).replace(/\D/g, "") === numeroActual
+)
+
+if (indexJugador === -1) {
+
+await enviarMensaje(
+grupo,
+"⚠️ No estás anotado en el mix."
+)
+
+return
+}
+
+const jugador = jugadoresMix[indexJugador]
+
+jugadoresMix.splice(indexJugador, 1)
+
+let lista = ""
+
+jugadoresMix.forEach((j, index) => {
+lista += `${index + 1}. ${j.nick}\n`
+})
+
+await reaccionarMensaje(grupo, mensajeId, "🚪")
+
+await enviarMensaje(
+grupo,
+`🚪 ${jugador.nick} salió del mix.
+
+🔥 MIX ACTUAL
+
+👥 Cupos: ${jugadoresMix.length}/10
+⏳ Faltan: ${10 - jugadoresMix.length}
+
+${lista || "Lista vacía."}`
+)
+
+return
+} 
+
+// =====================================================
+// ANTI SPAM (GRUPO MIX)
+// =====================================================
+
+if (!mensaje.startsWith("!") && !data.fromApi) {
+
+const ahora = Date.now()
+
+if (usuariosMuteados[numeroJugador]) {
+
+if (ahora < usuariosMuteados[numeroJugador]) {
+return
+}
+
+delete usuariosMuteados[numeroJugador]
+}
+
+if (!antiSpam[numeroJugador]) {
+antiSpam[numeroJugador] = []
+}
+
+antiSpam[numeroJugador].push(ahora)
+
+antiSpam[numeroJugador] =
+antiSpam[numeroJugador].filter(
+t => ahora - t < 12 * 60 * 60 * 1000
+)
+
+if (antiSpam[numeroJugador].length === 3) {
+
+await reaccionarMensaje(
+grupo,
+mensajeId,
+"⚠️"
+)
+
+await enviarMensaje(
+grupo,
+`⚠️ Advertencia por spam.
+
+📱 ${numeroJugador}
+
+Si seguís enviando mensajes no permitidos serás silenciado temporalmente.`
+)
+
+return
+}
+
+if (antiSpam[numeroJugador].length >= 4) {
+
+usuariosMuteados[numeroJugador] =
+ahora + (12 * 60 * 60 * 1000)
+
+await reaccionarMensaje(
+grupo,
+mensajeId,
+"⛔"
+)
+
+await enviarMensaje(
+grupo,
+`⛔ Usuario silenciado 12 horas por spam.
+
+📱 ${numeroJugador}
+
+⚠️ Motivo:
+Enviar demasiados mensajes no permitidos en el grupo mix.`
+)
+
+return
+}
+
+await reaccionarMensaje(
+grupo,
+mensajeId,
+"❌"
+)
+
+await enviarMensaje(
+grupo,
+`❌ Solo se permiten comandos en este grupo.
+
+⚠️ Advertencia:
+Si enviás 4 mensajes que no sean comandos, serás bloqueado por 12 horas.
+
+📊 Mensajes no permitidos:
+${antiSpam[numeroJugador].length}/4
+
+Usá !comandos para ver la lista disponible.`
+)
+
+return
+}
+
+} catch (error) {
+console.log("ERROR MIX:", error)
+}
+}
+    
 // =====================================================
 // GRUPO STATS - VERSIÓN COMPLETA BASE
 // =====================================================
