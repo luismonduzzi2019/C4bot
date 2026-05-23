@@ -504,9 +504,23 @@ async function manejarGrupoStats(data) {
     mensajeId
   } = data
 
+  
   console.log("GRUPO STATS:", mensaje)
 
-  return
+if (comando === "!ping") {
+    await enviarMensaje(grupo, "🏓 Pong STATS!")
+    return
+}
+
+if (comando === "!comandos") {
+    await enviarMensaje(
+        grupo,
+        "📊 COMANDOS STATS\n\n!ping\n!comandos"
+    )
+    return
+}
+
+return
 }
 
 async function manejarGrupoAdmin(data) {
