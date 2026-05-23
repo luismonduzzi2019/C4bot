@@ -62,7 +62,12 @@ let jugadoresMix = []
 
 let usuariosMuteados = {}
 
+let advertenciasStats = {}
+let usoDiarioStats = {}
+
 let organizadoresCache = []
+
+const mensajesProcesados = new Set()
 
 // ==================================================
 // COMANDOS
@@ -368,6 +373,18 @@ console.log(JSON.stringify(req.body, null, 2))
     const mensajeId =
       body?.messageId || null
 
+    if (mensajeId) {
+  if (mensajesProcesados.has(mensajeId)) {
+    return res.sendStatus(200)
+  }
+
+  mensajesProcesados.add(mensajeId)
+
+  setTimeout(() => {
+    mensajesProcesados.delete(mensajeId)
+  }, 60000)
+    }
+
     const telefonoJugador =
       body?.participantPhone ||
       body?.senderPhone ||
@@ -481,48 +498,6 @@ app.post("/", async (req, res) => {
 // MANEJADORES DE GRUPOS
 // ==================================================
 
-async function manejarGrupoMix(data) {
-
-  const {
-    mensaje,
-    comando,
-    grupo,
-    mensajeId
-  } = data
-
-  console.log("GRUPO MIX:", mensaje)
-
-  return
-}
-
-async function manejarGrupoStats(data) {
-
-  const {
-    mensaje,
-    comando,
-    grupo,
-    mensajeId
-  } = data
-
-  
-  console.log("GRUPO STATS:", mensaje)
-
-if (comando === "!ping") {
-    await enviarMensaje(grupo, "🏓 Pong STATS!")
-    return
-}
-
-if (comando === "!comandos") {
-    await enviarMensaje(
-        grupo,
-        "📊 COMANDOS STATS\n\n!ping\n!comandos"
-    )
-    return
-}
-
-return
-}
-
 async function manejarGrupoAdmin(data) {
 
   const {
@@ -564,9 +539,21 @@ async function manejarGrupoMix(data) {
     }
 
     if (comando === "!ping") {
-      await reaccionarMensaje(grupo, mensajeId, "🏓")
-      await enviarMensaje(grupo, "🏓 Pong!")
-      return
+  const inicio = Date.now()
+
+  const tiempoReaccion = Date.now() - inicio
+
+  await enviarMensaje(
+    grupo,
+`Hola!!! Pong! 🏓
+
+✅ Bot online
+📍 Grupo: MIX
+⚡ Tiempo de reacción: ${tiempoReaccion} ms
+📨 Tiempo de respuesta: ${Date.now() - inicio} ms`
+  )
+
+  return
     }
 
     if (comando === "!comandos") {
@@ -724,4 +711,312 @@ Cupos: ${jugadoresMix.length}/10`
 
     console.log("ERROR MIX:", error)
   }
+}
+
+// =====================================================
+// GRUPO STATS - VERSIÓN COMPLETA BASE
+// =====================================================
+
+async function manejarGrupoStats(data) {
+
+try {
+
+const {
+mensaje,
+comando,
+grupo,
+mensajeId,
+numeroJugador,
+organizador
+} = data
+
+if (!mensaje) return
+
+const esComando = mensaje.startsWith("!")
+
+const comandosJugadores = [
+"!stats",
+"!top",
+"!topkills",
+"!comandos"
+]
+
+const comandosOrganizadores = [
+"!jugadores"
+]
+
+const comandosAdminPrincipal = [
+"!reiniciarstats"
+]
+
+// =====================================================
+// !PING
+// =====================================================
+
+if (comando === "!ping") {
+
+const inicio = Date.now()
+
+const tiempoReaccion = Date.now() - inicio
+
+await enviarMensaje(
+grupo,
+`Hola!!! Pong! 🏓
+
+✅ Bot online
+📊 Grupo: STATS
+⚡ Tiempo de reacción: ${tiempoReaccion} ms
+📨 Tiempo de respuesta: ${Date.now() - inicio} ms`
+)
+
+return
+}
+
+// =====================================================
+// !COMANDOS
+// =====================================================
+
+if (comando === "!comandos") {
+
+await reaccionarMensaje(grupo, mensajeId, "📋")
+
+await enviarMensaje(
+grupo,
+`📊 COMANDOS GRUPO STATS
+
+👑 ADMIN PRINCIPAL
+!reiniciarstats
+
+🛡️ ADMIN / ORGANIZADORES
+!jugadores
+
+🎮 JUGADORES
+!stats
+!top
+!topkills
+!comandos`
+)
+
+return
+}
+
+// =====================================================
+// COMANDO INVÁLIDO
+// =====================================================
+
+const comandoPermitido =
+[
+...comandosJugadores,
+...comandosOrganizadores,
+...comandosAdminPrincipal,
+"!ping"
+].includes(comando)
+
+if (esComando && !comandoPermitido) {
+
+await reaccionarMensaje(grupo, mensajeId, "❌")
+
+if (!advertenciasStats[numeroJugador]) {
+advertenciasStats[numeroJugador] = 0
+}
+
+advertenciasStats[numeroJugador]++
+
+await enviarMensaje(
+grupo,
+`⚠️ Advertencia ${advertenciasStats[numeroJugador]}/4
+
+Solo se permiten comandos del sistema STATS.`
+)
+
+if (advertenciasStats[numeroJugador] >= 4) {
+
+usuariosMuteados[numeroJugador] =
+Date.now() + (32 * 60 * 60 * 1000)
+
+await enviarMensaje(
+grupo,
+"⛔ Usuario bloqueado temporalmente por spam."
+)
+
+advertenciasStats[numeroJugador] = 0
+}
+
+return
+}
+
+// =====================================================
+// MENSAJE NORMAL
+// =====================================================
+
+if (!esComando) {
+
+await reaccionarMensaje(grupo, mensajeId, "❌")
+
+if (!advertenciasStats[numeroJugador]) {
+advertenciasStats[numeroJugador] = 0
+}
+
+advertenciasStats[numeroJugador]++
+
+await enviarMensaje(
+grupo,
+`⚠️ Advertencia ${advertenciasStats[numeroJugador]}/4
+
+Solo se permiten comandos del sistema STATS.`
+)
+
+if (advertenciasStats[numeroJugador] >= 4) {
+
+usuariosMuteados[numeroJugador] =
+Date.now() + (32 * 60 * 60 * 1000)
+
+await enviarMensaje(
+grupo,
+"⛔ Usuario bloqueado temporalmente por spam."
+)
+
+advertenciasStats[numeroJugador] = 0
+}
+
+return
+}
+
+// =====================================================
+// SISTEMA DE USO DIARIO
+// =====================================================
+
+const comandosConCooldown = [
+"!stats",
+"!top",
+"!topkills"
+]
+
+if (comandosConCooldown.includes(comando)) {
+
+if (!usoDiarioStats[numeroJugador]) {
+usoDiarioStats[numeroJugador] = {}
+}
+
+const ultimoUso =
+usoDiarioStats[numeroJugador][comando]
+
+if (
+ultimoUso &&
+(Date.now() - ultimoUso) < (24 * 60 * 60 * 1000)
+) {
+
+await reaccionarMensaje(grupo, mensajeId, "⏳")
+
+await enviarMensaje(
+grupo,
+"⏳ Ya utilizaste ese comando hoy."
+)
+
+return
+}
+
+usoDiarioStats[numeroJugador][comando] =
+Date.now()
+}
+
+// =====================================================
+// !STATS
+// =====================================================
+
+if (comando === "!stats") {
+
+await reaccionarMensaje(grupo, mensajeId, "📊")
+
+await enviarMensaje(
+grupo,
+"📊 Sistema de estadísticas en construcción."
+)
+
+return
+}
+
+// =====================================================
+// !TOP
+// =====================================================
+
+if (comando === "!top") {
+
+await reaccionarMensaje(grupo, mensajeId, "🏆")
+
+await enviarMensaje(
+grupo,
+"🏆 Sistema TOP en construcción."
+)
+
+return
+}
+
+// =====================================================
+// !TOPKILLS
+// =====================================================
+
+if (comando === "!topkills") {
+
+await reaccionarMensaje(grupo, mensajeId, "💀")
+
+await enviarMensaje(
+grupo,
+"💀 Sistema TOP KILLS en construcción."
+)
+
+return
+}
+
+// =====================================================
+// !JUGADORES
+// =====================================================
+
+if (comando === "!jugadores") {
+
+if (!organizador) {
+
+await reaccionarMensaje(grupo, mensajeId, "⛔")
+
+return
+}
+
+await reaccionarMensaje(grupo, mensajeId, "📋")
+
+await enviarMensaje(
+grupo,
+"📋 Sistema de jugadores en construcción."
+)
+
+return
+}
+
+// =====================================================
+// !REINICIARSTATS
+// =====================================================
+
+if (comando === "!reiniciarstats") {
+
+if (!organizador) {
+
+await reaccionarMensaje(grupo, mensajeId, "⛔")
+
+return
+}
+
+await reaccionarMensaje(grupo, mensajeId, "♻️")
+
+await enviarMensaje(
+grupo,
+"♻️ Reinicio de temporada en construcción."
+)
+
+return
+}
+
+} catch (error) {
+
+console.log("ERROR GRUPO STATS:", error)
+
+}
 }
