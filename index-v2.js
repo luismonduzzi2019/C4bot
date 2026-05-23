@@ -518,31 +518,31 @@ async function manejarGrupoAdmin(data) {
 
 async function manejarGrupoMix(data) {
 
-  try {
+try {
 
-    const {
-      mensaje,
-      comando,
-      grupo,
-      mensajeId,
-      numeroJugador,
-      organizador
-    } = data
+const grupo = data.chatId
+const mensaje = (data.text || "").trim()
+const mensajeId = data.messageId
+const numeroJugador = data.phone || ""
+const comando = mensaje.split(" ")[0].toLowerCase()
 
-    if (!mensaje) return
+if (grupo !== GRUPO_MIX) {
+return
+}
 
-    const esComando = mensaje.startsWith("!")
+const organizador =
+adminsPrincipales.includes(numeroJugador) ||
+organizadores.includes(numeroJugador)
 
-    if (esComando && !comandosMix.includes(comando)) {
-      await reaccionarMensaje(grupo, mensajeId, "❌")
-      return
-    }
+// =====================================================
+// !PING
+// =====================================================
 
-    if (comando === "!ping") {
-      
-  const inicio = Date.now()
+if (comando === "!ping") {
 
-  const tiempoReaccion =
+const inicio = Date.now()
+
+const tiempoReaccion =
 Math.floor(Math.random() * 180) + 120
 
 const tiempoRespuesta =
@@ -550,50 +550,54 @@ const tiempoRespuesta =
 tiempoReaccion +
 Math.floor(Math.random() * 180)
 
-  await enviarMensaje(
-    grupo,
+await reaccionarMensaje(grupo, mensajeId, "🏓")
+
+await enviarMensaje(
+grupo,
 `Hola!!! Pong! 🏓
 
 ✅ Bot online
 📍 Grupo: MIX
 ⚡ Tiempo de reacción: ${tiempoReaccion} ms
 📨 Tiempo de respuesta: ${tiempoRespuesta} ms`
-  )
+)
 
-  return
-    }
+return
+}
 
-    if (comando === "!comandos") {
-      await reaccionarMensaje(grupo, mensajeId, "📋")
+// =====================================================
+// !COMANDOS
+// =====================================================
 
-      await enviarMensaje(
-        grupo,
+if (comando === "!comandos") {
 
-        `📋 COMANDOS GRUPO MIX
+await enviarMensaje(
+grupo,
+`📋 COMANDOS GRUPO MIX
 
 👑 ADMIN PRINCIPAL
 !agregarorganizador
 !quitarorganizador
 
 🛡️ ADMIN / ORGANIZADORES
-!ping
 !abrirchat
 !cerrarchat
 !abrirmix
 !cerrarmix
 !reiniciarmix
+!fake10
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
-!organizadores (ante dudas o consultas contactate con alguno de ellos)
+!organizadores
+!ping
 !registrar
 !editregistro
 !entrar
-!salir
-!comandos`
+!salir`
 )
-      
-      return
-    }
+
+return
+}
 
 // =====================================================
 // !BIENVENIDA
@@ -611,204 +615,65 @@ Este grupo está destinado exclusivamente a la organización de mixes.
 
 📌 COMANDOS PRINCIPALES
 
-!registrar NICK ID ROL
+!registrar NICK ID
 !entrar
 !salir
 !comandos
 
 ⚠️ IMPORTANTE
 
-Solo se permiten comandos CORRECTOS del bot.
+Solo se permiten comandos del bot.
 Los mensajes normales o comandos incorrectos generan advertencias automáticas.
-4 advertencias ⚠️ automáticas generan 1 ban de 12 hs.
 
-🎮 Cuando el mix esté abierto, utilizá !entrar para sumarte a la lista.
-🚪 Si no puedes participar de dicha mix por diferentes motivos usa !salir.
-
-🔥 ¡Respeten los horarios y mantengan ordenado el grupo!`
+🎮 Cuando el mix esté abierto, utilizá !entrar para sumarte a la lista.`
 )
 
 return
 }
 
-    if (comando === "!abrirmix") {
-
-      if (!organizador) {
-        await reaccionarMensaje(grupo, mensajeId, "⛔")
-        return
-      }
-
-      mixAbierto = true
-      jugadoresMix = []
-
-      await reaccionarMensaje(grupo, mensajeId, "🔥")
-
-      await enviarMensaje(
-        grupo,
-`🔥 MIX ABIERTO
-
-Cupos: 0/10
-
-Usen !entrar para anotarse.`
-      )
-
-      return
-    }
-
 // =====================================================
-// COMANDO CERRARMIX (GRUPO MIX) 
+// !ABRIRMIX
 // =====================================================
 
-    if (comando === "!cerrarmix") {
+if (comando === "!abrirmix") {
 
 if (!organizador) {
 
 await enviarMensaje(
 grupo,
-"❌ Solo administradores pueden cerrar mixes"
+"❌ Solo administradores pueden abrir mixes"
 )
 
 return
 }
-
-mixAbierto = false
-
-await cerrarChatGrupo(grupo)
-
-chatMixActivo = false
-jugadoresMix = []
-
-await enviarMensaje(
-grupo,
-`🔒 MIX CERRADA
-
-👥 Cupos: 0/10
-
-Usá:
-!abrirmix
-
-para abrir una nueva.`
-)
-
-return
-    }
-
-// =====================================================
-// COMANDO REINICIARMIX (GRUPO MIX) 
-// =====================================================
-    
-    if (comando === "!reiniciarmix") {
-
-if (!organizador) {
-
-await enviarMensaje(
-grupo,
-"❌ Solo administradores pueden reiniciar mixes"
-)
-
-return
-}
-
-await abrirChatGrupo(grupo)
-
-jugadoresMix = []
 
 mixAbierto = true
 chatMixActivo = true
+jugadoresMix = []
+
+await abrirChatGrupo(grupo)
+
+await reaccionarMensaje(grupo, mensajeId, "🔥")
 
 await enviarMensaje(
 grupo,
-`♻️ MIX REINICIADO
+`🔥 MIX ABIERTA
 
 👥 Cupos: 0/10
 
 Usá:
 !entrar
 
-para anotarte nuevamente.`
-)
-
-return
-    }
-
-// =====================================================
-// COMANDO FAKE10 (GRUPO MIX) 
-// =====================================================
-    
-  if (comando === "!fake10") {
-
-if (!organizador) {
-
-await enviarMensaje(
-grupo,
-"❌ Solo administradores pueden usar fake10"
+para ingresar al mix.`
 )
 
 return
 }
 
-jugadoresMix = [
-{ nick: "Alpha" },
-{ nick: "Bravo" },
-{ nick: "Charlie" },
-{ nick: "Delta" },
-{ nick: "Echo" },
-{ nick: "Foxtrot" },
-{ nick: "Ghost" },
-{ nick: "Hunter" },
-{ nick: "Iceman" },
-{ nick: "Joker" }
-]
-
-mixAbierto = true
-
-await enviarMensaje(
-grupo,
-`🧪 MIX DE PRUEBA CARGADA
-
-👥 Cupos: 10/10`
-)
-
-const jugadoresMezclados =
-[...jugadoresMix].sort(() => Math.random() - 0.5)
-
-const equipoA = jugadoresMezclados.slice(0, 5)
-const equipoB = jugadoresMezclados.slice(5, 10)
-
-let listaA = ""
-let listaB = ""
-
-equipoA.forEach((j, i) => {
-listaA += `${i + 1}. ${j.nick}\n`
-})
-
-equipoB.forEach((j, i) => {
-listaB += `${i + 1}. ${j.nick}\n`
-})
-
-await enviarMensaje(
-grupo,
-`🔥 MIX COMPLETO
-
-🔵 EQUIPO A
-${listaA}
-
-🔴 EQUIPO B
-${listaB}`
-)
-
-await enviarEncuesta(grupo)
-
-mixAbierto = false
-
-return
-  }
-
 // =====================================================
-// COMANDO ENTRAR (GRUPO MIX) 
+// !ENTRAR
 // =====================================================
 
-    
 if (comando === "!entrar") {
 
 if (!mixAbierto) {
@@ -897,7 +762,7 @@ if (jugadoresMix.length >= 10) {
 mixAbierto = false
 chatMixActivo = false
 
-await cerrarChatGrupo()
+await cerrarChatGrupo(grupo)
 
 await enviarMensaje(
 grupo,
@@ -947,9 +812,9 @@ return
 }
 
 // =====================================================
-// COMANDO SALIR (GRUPO MIX) 
+// !SALIR
 // =====================================================
-    
+
 if (comando === "!salir") {
 
 if (!mixAbierto) {
@@ -1005,10 +870,159 @@ ${lista || "Lista vacía."}`
 )
 
 return
-} 
+}
 
 // =====================================================
-// ANTI SPAM (GRUPO MIX)
+// !CERRARMIX
+// =====================================================
+
+if (comando === "!cerrarmix") {
+
+if (!organizador) {
+
+await enviarMensaje(
+grupo,
+"❌ Solo administradores pueden cerrar mixes"
+)
+
+return
+}
+
+mixAbierto = false
+
+await cerrarChatGrupo(grupo)
+
+chatMixActivo = false
+jugadoresMix = []
+
+await enviarMensaje(
+grupo,
+`🔒 MIX CERRADA
+
+👥 Cupos: 0/10
+
+Usá:
+!abrirmix
+
+para abrir una nueva.`
+)
+
+return
+}
+
+// =====================================================
+// !REINICIARMIX
+// =====================================================
+
+if (comando === "!reiniciarmix") {
+
+if (!organizador) {
+
+await enviarMensaje(
+grupo,
+"❌ Solo administradores pueden reiniciar mixes"
+)
+
+return
+}
+
+await abrirChatGrupo(grupo)
+
+jugadoresMix = []
+
+mixAbierto = true
+chatMixActivo = true
+
+await enviarMensaje(
+grupo,
+`♻️ MIX REINICIADO
+
+👥 Cupos: 0/10
+
+Usá:
+!entrar
+
+para anotarte nuevamente.`
+)
+
+return
+}
+
+// =====================================================
+// !FAKE10
+// =====================================================
+
+if (comando === "!fake10") {
+
+if (!organizador) {
+
+await enviarMensaje(
+grupo,
+"❌ Solo administradores pueden usar fake10"
+)
+
+return
+}
+
+jugadoresMix = [
+{ nick: "Alpha" },
+{ nick: "Bravo" },
+{ nick: "Charlie" },
+{ nick: "Delta" },
+{ nick: "Echo" },
+{ nick: "Foxtrot" },
+{ nick: "Ghost" },
+{ nick: "Hunter" },
+{ nick: "Iceman" },
+{ nick: "Joker" }
+]
+
+mixAbierto = true
+
+await enviarMensaje(
+grupo,
+`🧪 MIX DE PRUEBA CARGADA
+
+👥 Cupos: 10/10`
+)
+
+const jugadoresMezclados =
+[...jugadoresMix].sort(() => Math.random() - 0.5)
+
+const equipoA = jugadoresMezclados.slice(0, 5)
+const equipoB = jugadoresMezclados.slice(5, 10)
+
+let listaA = ""
+let listaB = ""
+
+equipoA.forEach((j, i) => {
+listaA += `${i + 1}. ${j.nick}\n`
+})
+
+equipoB.forEach((j, i) => {
+listaB += `${i + 1}. ${j.nick}\n`
+})
+
+await enviarMensaje(
+grupo,
+`🔥 MIX COMPLETO
+
+🔵 EQUIPO A
+${listaA}
+
+🔴 EQUIPO B
+${listaB}`
+)
+
+await enviarEncuesta(grupo)
+
+mixAbierto = false
+
+return
+}
+
+// =====================================================
+// ANTI SPAM MIX
 // =====================================================
 
 if (!mensaje.startsWith("!") && !data.fromApi) {
@@ -1103,360 +1117,5 @@ return
 
 } catch (error) {
 console.log("ERROR MIX:", error)
-}
-}
-    
-// =====================================================
-// GRUPO STATS - VERSIÓN COMPLETA BASE
-// =====================================================
-
-async function manejarGrupoStats(data) {
-
-try {
-
-const {
-mensaje,
-comando,
-grupo,
-mensajeId,
-numeroJugador,
-organizador
-} = data
-
-if (!mensaje) return
-
-const esComando = mensaje.startsWith("!")
-
-const comandosJugadores = [
-"!stats",
-"!top",
-"!topkills",
-"!comandos"
-]
-
-const comandosOrganizadores = [
-"!jugadores"
-]
-
-const comandosAdminPrincipal = [
-"!reiniciarstats"
-]
-
-// =====================================================
-// !PING
-// =====================================================
-
-if (comando === "!ping") {
-
-const inicio = Date.now()
-
-const tiempoReaccion =
-Math.floor(Math.random() * 180) + 120
-
-const tiempoRespuesta =
-(Date.now() - inicio) +
-tiempoReaccion +
-Math.floor(Math.random() * 180)
-
-await enviarMensaje(
-grupo,
-`Hola!!! Pong! 🏓
-
-✅ Bot online
-📊 Grupo: STATS
-⚡ Tiempo de reacción: ${tiempoReaccion} ms
-📨 Tiempo de respuesta: ${tiempoRespuesta} ms`
-)
-
-return
-}
-
-// =====================================================
-// !COMANDOS
-// =====================================================
-
-if (comando === "!comandos") {
-
-await reaccionarMensaje(grupo, mensajeId, "📋")
-
-await enviarMensaje(
-grupo,
-`📊 COMANDOS GRUPO STATS
-
-👑 ADMIN PRINCIPAL
-!reiniciarstats
-
-🛡️ ADMIN / ORGANIZADORES
-!jugadores
-
-👥 ADMIN / ORGANIZADORES / INTEGRANTES
-!organizadores (ante dudas o consultas contactate con alguno de ellos)
-!stats (permitido 1 vez cada 24 hs)
-!top (permitido 1 vez cada 24 hs)
-!topkills (permitido 1 vez cada 24 hs)
-!comandos (uso ilimitado)`
-)
-  
-return
-}
-
-// =====================================================
-// !BIENVENIDA
-// =====================================================
-
-if (comando === "!bienvenida") {
-
-await reaccionarMensaje(grupo, mensajeId, "📊")
-
-await enviarMensaje(
-grupo,
-`📊 BIENVENIDOS A STATS C4
-
-Este grupo está destinado exclusivamente a estadísticas individuales y grupales.
-
-📌 COMANDOS DISPONIBLES
-
-!stats
-!top
-!topkills
-!comandos
-!organizadores (ante dudas o consultas comunicarse con uno de ellos)
-
-⏳ LÍMITES
-
-!stats → 1 uso cada 24 hs
-!top → 1 uso cada 24 hs
-!topkills → 1 uso cada 24 hs
-
-⚠️ IMPORTANTE
-
-Solo se permiten comandos del sistema STATS.
-Los mensajes normales o comandos incorrectos generan advertencias automáticas.
-4 advertencias ⚠️ automáticas general 1 ban de 32 hs.
-
-🏆 Respeten el orden y utilicen correctamente los comandos.`
-)
-
-return
-}
-
-// =====================================================
-// COMANDO INVÁLIDO
-// =====================================================
-
-const comandoPermitido =
-[
-...comandosJugadores,
-...comandosOrganizadores,
-...comandosAdminPrincipal,
-"!ping"
-].includes(comando)
-
-if (esComando && !comandoPermitido) {
-
-await reaccionarMensaje(grupo, mensajeId, "❌")
-
-if (!advertenciasStats[numeroJugador]) {
-advertenciasStats[numeroJugador] = 0
-}
-
-advertenciasStats[numeroJugador]++
-
-await enviarMensaje(
-grupo,
-`⚠️ Advertencia ${advertenciasStats[numeroJugador]}/4
-
-Solo se permiten comandos del sistema STATS.`
-)
-
-if (advertenciasStats[numeroJugador] >= 4) {
-
-usuariosMuteados[numeroJugador] =
-Date.now() + (32 * 60 * 60 * 1000)
-
-await enviarMensaje(
-grupo,
-"⛔ Usuario bloqueado temporalmente por spam."
-)
-
-advertenciasStats[numeroJugador] = 0
-}
-
-return
-}
-
-// =====================================================
-// MENSAJE NORMAL
-// =====================================================
-
-if (!esComando) {
-
-await reaccionarMensaje(grupo, mensajeId, "❌")
-
-if (!advertenciasStats[numeroJugador]) {
-advertenciasStats[numeroJugador] = 0
-}
-
-advertenciasStats[numeroJugador]++
-
-await enviarMensaje(
-grupo,
-`⚠️ Advertencia ${advertenciasStats[numeroJugador]}/4
-
-Solo se permiten comandos del sistema STATS.`
-)
-
-if (advertenciasStats[numeroJugador] >= 4) {
-
-usuariosMuteados[numeroJugador] =
-Date.now() + (32 * 60 * 60 * 1000)
-
-await enviarMensaje(
-grupo,
-"⛔ Usuario bloqueado temporalmente por spam."
-)
-
-advertenciasStats[numeroJugador] = 0
-}
-
-return
-}
-
-// =====================================================
-// SISTEMA DE USO DIARIO
-// =====================================================
-
-const comandosConCooldown = [
-"!stats",
-"!top",
-"!topkills"
-]
-
-if (comandosConCooldown.includes(comando)) {
-
-if (!usoDiarioStats[numeroJugador]) {
-usoDiarioStats[numeroJugador] = {}
-}
-
-const ultimoUso =
-usoDiarioStats[numeroJugador][comando]
-
-if (
-ultimoUso &&
-(Date.now() - ultimoUso) < (24 * 60 * 60 * 1000)
-) {
-
-await reaccionarMensaje(grupo, mensajeId, "⏳")
-
-await enviarMensaje(
-grupo,
-"⏳ Ya utilizaste ese comando hoy."
-)
-
-return
-}
-
-usoDiarioStats[numeroJugador][comando] =
-Date.now()
-}
-
-// =====================================================
-// !STATS
-// =====================================================
-
-if (comando === "!stats") {
-
-await reaccionarMensaje(grupo, mensajeId, "📊")
-
-await enviarMensaje(
-grupo,
-"📊 Sistema de estadísticas en construcción."
-)
-
-return
-}
-
-// =====================================================
-// !TOP
-// =====================================================
-
-if (comando === "!top") {
-
-await reaccionarMensaje(grupo, mensajeId, "🏆")
-
-await enviarMensaje(
-grupo,
-"🏆 Sistema TOP en construcción."
-)
-
-return
-}
-
-// =====================================================
-// !TOPKILLS
-// =====================================================
-
-if (comando === "!topkills") {
-
-await reaccionarMensaje(grupo, mensajeId, "💀")
-
-await enviarMensaje(
-grupo,
-"💀 Sistema TOP KILLS en construcción."
-)
-
-return
-}
-
-// =====================================================
-// !JUGADORES
-// =====================================================
-
-if (comando === "!jugadores") {
-
-if (!organizador) {
-
-await reaccionarMensaje(grupo, mensajeId, "⛔")
-
-return
-}
-
-await reaccionarMensaje(grupo, mensajeId, "📋")
-
-await enviarMensaje(
-grupo,
-"📋 Sistema de jugadores en construcción."
-)
-
-return
-}
-
-// =====================================================
-// !REINICIARSTATS
-// =====================================================
-
-if (comando === "!reiniciarstats") {
-
-if (!organizador) {
-
-await reaccionarMensaje(grupo, mensajeId, "⛔")
-
-return
-}
-
-await reaccionarMensaje(grupo, mensajeId, "♻️")
-
-await enviarMensaje(
-grupo,
-"♻️ Reinicio de temporada en construcción."
-)
-
-return
-}
-
-} catch (error) {
-
-console.log("ERROR GRUPO STATS:", error)
-
 }
 }
