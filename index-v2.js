@@ -520,19 +520,19 @@ async function manejarGrupoMix(data) {
 
 try {
 
-const grupo = data.chatId
-const mensaje = (data.text || "").trim()
-const mensajeId = data.messageId
-const numeroJugador = data.phone || ""
-const comando = mensaje.split(" ")[0].toLowerCase()
+const {
+mensage,
+mensaje,
+comando,
+grupo,
+mensajeId,
+numeroJugador,
+organizador
+} = data
 
 if (grupo !== GRUPO_MIX) {
 return
 }
-
-const organizador =
-adminsPrincipales.includes(numeroJugador) ||
-organizadores.includes(numeroJugador)
 
 // =====================================================
 // !PING
