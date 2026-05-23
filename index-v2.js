@@ -500,12 +500,13 @@ app.post("/", async (req, res) => {
 
 async function manejarGrupoAdmin(data) {
 
-  const {
-    mensaje,
-    comando,
-    grupo,
-    mensajeId
-  } = data
+const {
+mensaje,
+comando,
+grupo,
+mensajeId,
+numeroJugador
+} = data
 
   console.log("GRUPO ADMIN:", mensaje)
 
@@ -521,15 +522,23 @@ async function manejarGrupoMix(data) {
 try {
 
 const {
-mensage,
 mensaje,
 comando,
 grupo,
 mensajeId,
-numeroJugador,
-organizador
+numeroJugador
 } = data
 
+const organizador = data.organizador
+
+console.log("DEBUG MIX:", {
+mensaje,
+comando,
+grupo,
+numeroJugador,
+organizador
+})
+  
 if (grupo !== GRUPO_MIX) {
 return
 }
