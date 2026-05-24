@@ -153,13 +153,14 @@ app.post("/webhook", async (req, res) => {
 
   await enviarMensaje(
     groupId,
-`Hola!!! 🏓 Pong
 
-🤖 Bot activo
-📍 Grupo: ${nombreGrupo}
-⚡ Tiempo de reacción: ${tiempoReaccion}ms
-⏱️ Tiempo de respuesta: ${tiempoRespuesta}ms`
-  )
+  "Hola!!! 🏓 Pong\n\n" +
+    
+  "🤖 Bot activo\n\n" +
+  `📍 Grupo: ${nombreGrupo}\n\n` +
+  `⚡ Tiempo de reacción: ${tiempoReaccion}ms\n` +
+  `⏱ Tiempo de respuesta: ${tiempoRespuesta}ms`
+)
 
   return res.status(200).json({ ok: true })
     }
