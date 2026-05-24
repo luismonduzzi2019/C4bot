@@ -163,7 +163,11 @@ app.post("/webhook", async (req, res) => {
 
   return res.status(200).json({ ok: true })
     }
-})
+
+} catch (error) {
+  console.log("ERROR WEBHOOK:", error)
+  return res.status(200).json({ ok: false })
+}
 
 const PORT = process.env.PORT || 3000
 
