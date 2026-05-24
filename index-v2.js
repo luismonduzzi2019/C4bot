@@ -401,6 +401,13 @@ body?.from ||
 
     const comando =
       obtenerComando(mensaje)
+    console.log("ROUTER DEBUG:", {
+  mensaje,
+  comando,
+  grupo,
+  GRUPO_MIX,
+  esMix: grupo === GRUPO_MIX
+})
 
     // ==================================================
     // IGNORAR EVENTOS INVÁLIDOS
