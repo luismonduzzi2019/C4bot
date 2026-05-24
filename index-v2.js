@@ -57,6 +57,7 @@ const GRUPO_ADMIN = "ID_DEL_GRUPO_ADMIN-group"
 let sock = null
 
 let mixAbierto = false
+let chatMixActivo = false
 
 let jugadoresMix = []
 
@@ -80,6 +81,7 @@ const comandosMix = [
   "!abrirmix",
   "!cerrarmix",
   "!reiniciarmix",
+  "!fake10",
   "!entrar",
   "!salir",
   "!registrar",
