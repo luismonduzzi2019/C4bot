@@ -365,7 +365,11 @@ console.log(JSON.stringify(req.body, null, 2))
     console.log("WEBHOOK RECIBIDO:", JSON.stringify(body, null, 2))
 
     const mensaje = req.body?.text?.message || ""
-    const grupo = req.body?.phone
+    const grupo =
+body?.phone ||
+body?.chatId ||
+body?.from ||
+""
 
     const esGrupo =
       body?.isGroup || false
