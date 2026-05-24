@@ -138,6 +138,16 @@ async function enviarMensaje(telefono, mensaje) {
   }
 }
 
+async function abrirChatGrupo(grupo) {
+  console.log("ABRIR CHAT GRUPO:", grupo)
+  return
+}
+
+async function cerrarChatGrupo(grupo) {
+  console.log("CERRAR CHAT GRUPO:", grupo)
+  return
+}
+
 async function reaccionarMensaje(grupo, mensajeId, emoji) {
   try {
     if (!sock) return
