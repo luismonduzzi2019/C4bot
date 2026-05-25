@@ -1596,7 +1596,7 @@ try {
 const nombreGrupo =
 telefono === GRUPO_MIX ? "Mix" :
 telefono === GRUPO_STATS ? "Stats" :
-"Privado"
+telefono === GRUPO_RESULTADOS ? "Registro de resultados" :
 
 const tiempoRespuesta = Math.floor(Math.random() * 200) + 300
 const tiempoReaccion = Math.floor(Math.random() * 150) + 200
@@ -1610,7 +1610,7 @@ telefono,
 📨 Tiempo de respuesta: ${tiempoRespuesta}ms
 ⚡ Tiempo de reacción: ${tiempoReaccion}ms
 
-✅ Listo para responde!`
+✅ Listo para responder!`
 )
 
 console.log("✅ RESPUESTA ENVIADA")
