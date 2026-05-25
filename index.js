@@ -2801,89 +2801,81 @@ ${lista || "Lista vacía."}`
     return
 }
 
-    if (mensaje.toLowerCase() === "!comandos") {
+if (mensaje.toLowerCase() === "!comandos") {
+  if (telefono === GRUPO_MIX) {
+    await enviarMensaje(
+      telefono,
+`🎮 COMANDOS MIX C4
 
-if (telefono === GRUPO_MIX) {
+👑 ADMIN PRINCIPAL
+• !organizador NUMERO
+• !quitarorganizador NUMERO
+• !fake10
 
-if (esAdminPrincipal || esOrganizador) {
+🤙🏻 ADMIN / ORGANIZADORES
+• !abrirmix
+• !cerrarmix
+• !reiniciarmix
+• !cerrarchat
+• !abrirchat
+• !ping
 
-await enviarMensaje(
-telefono,
-`🎮 COMANDOS ORGANIZADOR MIX
 
-🔥 !abrirmix
-❌ !cerrarmix
-🔄 !reiniciarmix
+👥 ADMIN / ORGANIZADORES / INTEGRANTES
+• !registrar NICK ID ROL
+• !editregistro
+• !entrar
+• !salir
+• !organizadores`
+    )
+    return
+  }
 
-🔒 !cerrarchat
-🔓 !abrirchat
+  if (telefono === GRUPO_STATS) {
+    await enviarMensaje(
+      telefono,
+`📊 COMANDOS STATS C4
 
-🧪 !fake10
+👑 ADMIN PRINCIPAL
+• !resetstats
 
-👑 !organizador NUMERO
-⭕ !quitarorganizador NUMERO
-👥 !organizadores`
-)
+🤙🏻 ADMIN / ORGANIZADORES
+• !jugadores
 
-return
+👥 ADMIN / ORGANIZADORES / INTEGRANTES
+• !stats (personales) (1 uso cada 24 hs)
+• !top (1 uso cada 24 hs)
+• !topkills (1 uso cada 24 hs)
+• !organizadores (ante dudas o consultas contactarse al privado con alguno de ellos)
+• !ping`
+    )
+    return
+  }
+
+  if (telefono === GRUPO_RESULTADOS) {
+    await enviarMensaje(
+      telefono,
+`📸 COMANDOS RESULTADOS C4
+
+🤙🏻 ADMIN / ORGANIZADORES
+
+• !resultadomix
+• !resultadocw
+• !confirmar
+• !editar
+• !ping`
+    )
+    return
+  }
+
+  await enviarMensaje(
+    telefono,
+    "❌ Este grupo no tiene comandos configurados."
+  )
+  return
 }
 
-await enviarMensaje(
-telefono,
-`🎮 COMANDOS MIX
-
-📌 !registrar NICK ID ROL
-🎮 !entrar
-🚪 !salir
-
-📖 !comandos`
-)
-
-return
 }
-
-if (telefono === GRUPO_STATS) {
-
-if (esAdminPrincipal || esOrganizador) {
-
-await enviarMensaje(
-telefono,
-`📊 COMANDOS ORGANIZADOR STATS
-
-🏆 !top
-🎯 !topkills
-
-📝 !resultadomix
-📝 !resultadocw
-
-✅ !confirmar
-✏️ !editar`
-)
-
-if (esAdminPrincipal) {
-
-await enviarMensaje(
-telefono,
-`👑 ADMIN PRINCIPAL
-
-🗑️ !resetstats`
-)
-}
-
-return
-}
-
-await enviarMensaje(
-telefono,
-`📊 COMANDOS STATS
-
-📈 !stats
-📖 !comandos`
-)
-
-return
-}
-    }
 
 if (mensaje.toLowerCase() === "!mapas") {
 
