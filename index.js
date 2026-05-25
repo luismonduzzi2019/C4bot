@@ -2839,13 +2839,13 @@ if (mensaje.toLowerCase() === "!comandos") {
 
 🤙🏻 ADMIN / ORGANIZADORES
 • !jugadores
+• !ping
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
-• !stats (personales) (1 uso cada 24 hs)
-• !top (1 uso cada 24 hs)
-• !topkills (1 uso cada 24 hs)
-• !organizadores (ante dudas o consultas contactarse al privado con alguno de ellos)
-• !ping`
+• !stats (solo personales)  -  (1 uso cada 24 hs)
+• !top  -  (1 uso cada 24 hs)
+• !topkills  -   (1 uso cada 24 hs)
+• !organizadores  -  (ante dudas o consultas contactarse al privado con alguno de ellos)`
     )
     return
   }
