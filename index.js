@@ -2875,8 +2875,6 @@ if (mensaje.toLowerCase() === "!comandos") {
   return
 }
 
-}
-
 if (mensaje.toLowerCase() === "!mapas") {
 
 await enviarMensaje(
