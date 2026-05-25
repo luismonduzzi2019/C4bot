@@ -1370,36 +1370,65 @@ return
 
 global.ultimasBienvenidas[numeroNuevo] = Date.now()
     
-await enviarMensaje(
-telefono,
-`👋 Bienvenido al grupo Mix C4 🇦🇷
+let mensajeBienvenida = ""
 
-📋 REGLAS IMPORTANTES
+if (telefono === GRUPO_MIX) {
+  mensajeBienvenida = `👋 Bienvenido al grupo Mix C4 🇦🇷
 
-• Registrate con tu NICK REAL e ID REAL.
-• Respetá MAYÚSCULAS y minúsculas EXACTAS.
-• Podés usar espacios si tu nick real los tiene.
-• El nombre debe coincidir exactamente con capturas de resultados.
-• 4 mensajes no permitidos = mute por 12 horas.
+🎮 Este grupo sirve para el registro individual en la comunidad y la organización automática de partidas mixtas del clan.
 
-📝 REGISTRO
+⚠️ REGLAS IMPORTANTES
 
-!registrar NICK ID ROL
+• Respetá el uso del grupo.
+• Evitá mensajes innecesarios o fuera de contexto.
+• El spam o mensajes no permitidos pueden generar advertencias.
+• Acumular advertencias puede terminar en bloqueo temporal.
 
-Ejemplo:
-!registrar Colt 139527319 IGL
+👥 Ante dudas, consultá con los organizadores.
 
-• Registrate UNICAMENTE con tu ROL PRINCIPAL.
+📌 Usá !comandos para ver la lista disponible.`
+}
 
-🎮 COMANDOS
+if (telefono === GRUPO_STATS) {
+  mensajeBienvenida = `👋 Bienvenido al grupo Stats C4 📊
 
-!registrar
-!entrar
-!salir
-!comandos`
-)
+📈 Este grupo sirve para consultar estadísticas personales, estadísticas generales y distintos tops del clan.
 
-return
+⚠️ REGLAS IMPORTANTES
+
+• Respetá el uso del grupo.
+• No envíes mensajes comunes o fuera de contexto.
+• El spam o mensajes no permitidos pueden generar advertencias.
+• Acumular advertencias puede terminar en bloqueo temporal.
+
+👥 Ante dudas, consultá con los organizadores.
+
+📌 Usá !comandos para ver la lista disponible.`
+}
+
+if (telefono === GRUPO_RESULTADOS) {
+  mensajeBienvenida = `👋 Bienvenido al grupo Resultados C4 📸
+
+📝 Este grupo sirve para cargar resultados de Mix/CW/Torneo y actualizar estadísticas generales del clan e integrantes.
+
+⚠️ REGLAS IMPORTANTES
+
+• Respetá el uso del grupo.
+• Subí resultados de forma clara y ordenada.
+• Evitá mensajes innecesarios o fuera de lugar.
+• El spam o mensajes no permitidos pueden generar advertencias.
+• Acumular advertencias puede terminar en bloqueo temporal.
+
+👥 Ante dudas, consultá con los organizadores.
+
+📌 Usá !comandos para ver la lista disponible.`
+}
+
+if (mensajeBienvenida) {
+  await enviarMensaje(telefono, mensajeBienvenida)
+}
+
+    return
 }
     
 const esGrupo = req.body?.isGroup || String(telefono).includes("-group")
