@@ -1457,6 +1457,30 @@ const esOrganizador = (organizadoresDB || []).some(org =>
 
     const comando = mensaje.toLowerCase().split(" ")[0]
 
+const esGrupoModerado = telefono === GRUPO_MIX || telefono === GRUPO_STATS
+
+if (esGrupoModerado && !req.body?.fromApi && req.body?.messageId) {
+  const comandosPermitidos =
+    telefono === GRUPO_MIX
+      ? [...comandosMix, ...comandosGlobales]
+      : [...comandosStats, ...comandosGlobales]
+
+  if (mensaje.startsWith("!")) {
+    if (comandosPermitidos.includes(comando)) {
+      await reaccionarMensaje(telefono, req.body?.messageId, "✅")
+    } else {
+      await reaccionarMensaje(telefono, req.body?.messageId, "❌")
+
+      await enviarMensaje(
+        telefono,
+        "❌ Comando no reconocido. Revisá si está bien escrito o usá !comandos para ver la lista disponible."
+      )
+
+      return
+    }
+  }
+}
+
 if (
 telefono === GRUPO_STATS &&
 comandosMix.includes(comando)
