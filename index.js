@@ -152,7 +152,7 @@ let organizadores = []
 const adminPrincipal = "5493412750806"
 const GRUPO_MIX = "120363425089190805-group"
 const GRUPO_STATS = "120363407953964467-group"
-const GRUPO_RESULTADOS = "PEGAR_ID_DEL_GRUPO_RESULTADOS"
+const GRUPO_RESULTADOS = "120363425988843305-group"
 
 const comandosMix = [
 "!registrar",
