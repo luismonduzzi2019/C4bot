@@ -152,9 +152,11 @@ let organizadores = []
 const adminPrincipal = "5493412750806"
 const GRUPO_MIX = "120363425089190805-group"
 const GRUPO_STATS = "120363407953964467-group"
+const GRUPO_RESULTADOS = "PEGAR_ID_DEL_GRUPO_RESULTADOS"
 
 const comandosMix = [
 "!registrar",
+"!editregistro",
 "!entrar",
 "!salir",
 "!cerrarchat",
@@ -171,13 +173,20 @@ const comandosMix = [
 ]
 
 const comandosStats = [
-"!resultadocw",
-"!resultadomix",
-"!confirmar",
-"!editar",
+
+"!comandos",
+"!jugadores",
+"!organizadores",
 "!stats",
 "!top",
 "!topkills"
+]
+
+const comandosResultados = [
+"!resultadocw",
+"!resultadomix",
+"!confirmar",
+"!editar"
 ]
 
 const app = express()
