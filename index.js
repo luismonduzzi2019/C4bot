@@ -1597,6 +1597,7 @@ const nombreGrupo =
 telefono === GRUPO_MIX ? "Mix" :
 telefono === GRUPO_STATS ? "Stats" :
 telefono === GRUPO_RESULTADOS ? "Registro de resultados" :
+"Grupo desconocido"
 
 const tiempoRespuesta = Math.floor(Math.random() * 200) + 300
 const tiempoReaccion = Math.floor(Math.random() * 150) + 200
