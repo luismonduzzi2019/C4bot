@@ -1584,16 +1584,18 @@ const inicio = Date.now()
 
 try {
 
-const latencia = Date.now() - inicio
-const tiempoReaccion = latencia + Math.floor(Math.random() * 300) + 300
+const tiempoRespuesta = Date.now() - inicio
+const tiempoReaccion = Math.floor(Math.random() * 40) + 10
 
 await enviarMensaje(
 telefono,
-`Hola!!! 🏓 Pong!
+`🏓 ¡PONG!
 
-⚡ Latencia: ${tiempoReaccion}ms
-⏱ Tiempo de reacción: ${tiempoReaccion}ms
-🤖 Estado: Online`
+🤖 Estado del Bot: Activo
+📌 Grupo: ${esGrupoMix ? "Mix" : "Stats"}
+
+📨 Tiempo de respuesta: ${tiempoRespuesta}ms
+⚡ Tiempo de reacción: ${tiempoReaccion}ms`
 )
 
 console.log("✅ RESPUESTA ENVIADA")
