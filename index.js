@@ -1584,15 +1584,20 @@ const inicio = Date.now()
 
 try {
 
+const nombreGrupo =
+telefono === GRUPO_MIX ? "Mix" :
+telefono === GRUPO_STATS ? "Stats" :
+"Privado"
+
 const tiempoRespuesta = Date.now() - inicio
 const tiempoReaccion = Math.floor(Math.random() * 40) + 10
-
+    
 await enviarMensaje(
 telefono,
-`🏓 ¡PONG!
+`Hola!!! 🏓¡Pong!
 
 🤖 Estado del Bot: Activo
-📌 Grupo: ${esGrupoMix ? "Mix" : "Stats"}
+📌 Grupo: ${nombreGrupo}
 
 📨 Tiempo de respuesta: ${tiempoRespuesta}ms
 ⚡ Tiempo de reacción: ${tiempoReaccion}ms`
