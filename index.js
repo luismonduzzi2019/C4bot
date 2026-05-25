@@ -3339,3 +3339,17 @@ Usá !comandos para ver la lista disponible.`
 app.listen(process.env.PORT || 3000, () => {
     console.log("🔥 C4 BOT PANEL ONLINE")
 })
+
+// Servidor mínimo para que Render detecte puerto abierto
+const expressStatus = require("express")
+const appStatus = expressStatus()
+
+appStatus.get("/", (req, res) => {
+  res.send("🔥 C4 BOT ONLINE")
+})
+
+const PORT = process.env.PORT || 3000
+
+appStatus.listen(PORT, () => {
+  console.log("🌐 Servidor activo en puerto " + PORT)
+})
