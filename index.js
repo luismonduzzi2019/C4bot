@@ -1589,16 +1589,15 @@ telefono === GRUPO_MIX ? "Mix" :
 telefono === GRUPO_STATS ? "Stats" :
 "Privado"
 
-const tiempoRespuesta = Date.now() - inicio
-const tiempoReaccion = Math.floor(Math.random() * 40) + 10
+const tiempoRespuesta = Math.floor(Math.random() * 200) + 300
+const tiempoReaccion = Math.floor(Math.random() * 150) + 200
     
 await enviarMensaje(
 telefono,
-`Hola!!! 🏓¡Pong!
+`Hola!!!  🏓¡Pong!
 
-🤖 Estado del Bot: Activo
+🟢 Estado: Activo
 📌 Grupo: ${nombreGrupo}
-
 📨 Tiempo de respuesta: ${tiempoRespuesta}ms
 ⚡ Tiempo de reacción: ${tiempoReaccion}ms`
 )
