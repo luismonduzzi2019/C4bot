@@ -1608,7 +1608,9 @@ telefono,
 🟢 Estado: Activo
 📌 Grupo: ${nombreGrupo}
 📨 Tiempo de respuesta: ${tiempoRespuesta}ms
-⚡ Tiempo de reacción: ${tiempoReaccion}ms`
+⚡ Tiempo de reacción: ${tiempoReaccion}ms
+
+✅ Listo para responde!`
 )
 
 console.log("✅ RESPUESTA ENVIADA")
