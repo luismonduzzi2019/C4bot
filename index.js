@@ -161,7 +161,6 @@ const comandosMix = [
 "!salir",
 "!cerrarchat",
 "!abrirchat",
-"!comandos",
 "!abrirmix",
 "!cerrarmix",
 "!reiniciarmix",
@@ -174,7 +173,6 @@ const comandosMix = [
 
 const comandosStats = [
 
-"!comandos",
 "!jugadores",
 "!organizadores",
 "!stats",
