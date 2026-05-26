@@ -2560,14 +2560,77 @@ Jugador 10 5 8 30`
   }
 
   resultadoPendiente = {
-    modo,
-    estado,
-    jugadores
+  modo,
+  estado,
+  jugadores,
+  bloqueadoPorDudosos: false
   }
 
+const { data: jugadoresSupabase } = await supabase
+.from("Jugadores")
+.select("*")
+
+const coincidencias = []
+const dudosos = []
+const noEncontrados = []
+
+for (const jugador of jugadores) {
+
+const nombreIngresado = jugador.nombre.toLowerCase()
+
+const similares = (jugadoresSupabase || []).filter(j => {
+const nombreDB = String(j.nombre || "").toLowerCase()
+
+return (
+nombreDB.includes(nombreIngresado) ||
+nombreIngresado.includes(nombreDB)
+)
+})
+
+if (similares.length === 1) {
+
+const encontrado = similares[0]
+
+coincidencias.push(
+`✅ ${jugador.nombre} → ${encontrado.nombre}`
+)
+
+jugador.nombre = encontrado.nombre
+
+} else if (similares.length > 1) {
+
+dudosos.push(
+`⚠️ ${jugador.nombre} → ${similares.map(s => s.nombre).join(" / ")}`
+)
+
+} else {
+
+noEncontrados.push(`❌ ${jugador.nombre}`)
+
+}
+
+}
+
+resultadoPendiente.bloqueadoPorDudosos = dudosos.length > 0
+    
   const resumen = jugadores.map(j =>
-    `• ${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
-  ).join("\n")
+`• ${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+).join("\n")
+
+const textoCoincidencias =
+coincidencias.length > 0
+? `📌 Coincidencias:\n${coincidencias.join("\n")}\n\n`
+: ""
+
+const textoDudosos =
+dudosos.length > 0
+? `⚠️ Dudosos:\n${dudosos.join("\n")}\n\n`
+: ""
+
+const textoNoEncontrados =
+noEncontrados.length > 0
+? `❌ No encontrados:\n${noEncontrados.join("\n")}\n\n`
+: ""
 
   await reaccionarMensaje(telefono, req.body?.messageId, "✅")
 
@@ -2577,15 +2640,14 @@ Jugador 10 5 8 30`
 
 📌 Estado: ${estado.toUpperCase()}
 
-${resumen}
+${textoCoincidencias}${textoDudosos}${textoNoEncontrados}${resumen}
 
-✅ Si está correcto:
-!confirmar
+${dudosos.length > 0
+? "❌ Hay jugadores dudosos. Corregí con !edit antes de confirmar."
+: "✅ Si está correcto:\n!confirmar"}
 
 ✏️ Si hay errores:
 !edit`
-  )
-
   return
 }
     
@@ -2851,6 +2913,14 @@ if (mensaje.toLowerCase() === "!confirmar") {
     return
   }
 
+if (resultadoPendiente.bloqueadoPorDudosos) {
+  await enviarMensaje(
+    telefono,
+    "❌ Hay jugadores dudosos. Corregí con !edit antes de confirmar."
+  )
+  return
+}
+    
   const { data: jugadoresSupabase, error } = await supabase
     .from("Jugadores")
     .select("*")
