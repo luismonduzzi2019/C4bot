@@ -1536,7 +1536,7 @@ ${resumen}
 !confirmar
 
 ✏️ Si hay errores:
-!edit`
+!editar`
 )
 
 return
@@ -2686,7 +2686,7 @@ ${dudosos.length > 0
 : "✅ Si está correcto:\n!confirmar"}
 
 ✏️ Si hay errores:
-!edit`
+!editar`
 )
   return
 }
