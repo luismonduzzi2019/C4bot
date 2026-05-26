@@ -1349,6 +1349,10 @@ if (mensaje.toLowerCase().startsWith("!cw ")) {
 
   return
 }
+
+// =====================================================
+// 🎮 COMANDOS C4 BOT
+// =====================================================
     
 if (mensaje.toLowerCase() === "!ping") {
 
@@ -2486,6 +2490,106 @@ ${lista || "Lista vacía."}`
     return
 }
 
+if (
+  mensaje.toLowerCase().startsWith("!resultadocw") ||
+  mensaje.toLowerCase().startsWith("!resultadomix")
+) {
+  if (!esAdminPrincipal && !esOrganizador) {
+    await enviarMensaje(telefono, "❌ Solo organizadores pueden usar este comando.")
+    return
+  }
+
+  const lineas = mensaje
+    .split("\n")
+    .map(l => l.trim())
+    .filter(Boolean)
+
+  const primeraLinea = lineas[0].toLowerCase().split(/\s+/)
+
+  const comandoResultado = primeraLinea[0]
+  const estado = primeraLinea[1]
+
+  const modo = comandoResultado === "!resultadocw" ? "cw" : "mix"
+
+  if (!["victoria", "derrota"].includes(estado)) {
+    await enviarMensaje(
+      telefono,
+      `❌ Formato incorrecto.
+
+Usá:
+!resultadocw victoria
+Jugador 10 5 8 30
+
+o:
+!resultadocw derrota
+Jugador 10 5 8 30`
+    )
+    return
+  }
+
+  const jugadores = lineas.slice(1).map(linea => {
+    const partes = linea.split(/\s+/)
+
+    if (partes.length < 5) return null
+
+    const puntos = Number(partes[partes.length - 1])
+    const muertes = Number(partes[partes.length - 2])
+    const asistencias = Number(partes[partes.length - 3])
+    const bajas = Number(partes[partes.length - 4])
+    const nombre = partes.slice(0, partes.length - 4).join(" ")
+
+    if (!nombre || isNaN(bajas) || isNaN(asistencias) || isNaN(muertes) || isNaN(puntos)) {
+      return null
+    }
+
+    return {
+      nombre,
+      bajas,
+      asistencias,
+      muertes,
+      puntos
+    }
+  }).filter(Boolean)
+
+  if (jugadores.length === 0) {
+    await enviarMensaje(telefono, "❌ No pude leer jugadores válidos.")
+    return
+  }
+
+  resultadoPendiente = {
+    modo,
+    estado,
+    jugadores
+  }
+
+  const resumen = jugadores.map(j =>
+    `• ${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
+  ).join("\n")
+
+  await reaccionarMensaje(telefono, req.body?.messageId, "✅")
+
+  await enviarMensaje(
+    telefono,
+    `📊 Resultado pendiente ${modo.toUpperCase()}
+
+📌 Estado: ${estado.toUpperCase()}
+
+${resumen}
+
+✅ Si está correcto:
+!confirmar
+
+✏️ Si hay errores:
+!edit`
+  )
+
+  return
+}
+    
+// =====================================================
+// 🎮 COMANDOS RESULTADOS
+// =====================================================
+    
 if (mensaje.toLowerCase() === "!comandos") {
   if (telefono === GRUPO_MIX) {
     await enviarMensaje(
