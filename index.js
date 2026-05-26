@@ -2624,7 +2624,6 @@ const similares = (jugadoresSupabase || [])
 })
 .filter(j => j.score >= 0.55)
 .sort((a, b) => b.score - a.score)
-})
 
 if (similares.length === 1) {
 
