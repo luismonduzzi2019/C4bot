@@ -1018,7 +1018,10 @@ app.post("/webhook", async (req, res) => {
 console.log("📩 WEBHOOK RECIBIDO")
   console.log(JSON.stringify(req.body, null, 2))
     
-  const mensaje = req.body?.text?.message || ""
+  const mensaje =
+req.body?.text?.message ||
+req.body?.image?.caption ||
+""
   const telefono = req.body?.phone    
 
     console.log("MENSAJE:", mensaje)
