@@ -1541,8 +1541,10 @@ ${resumen}
 return
 }
     
-    
-if (mensaje.toLowerCase().startsWith("!stats")) {
+    if (
+  mensaje.toLowerCase() === "!stats" ||
+  mensaje.toLowerCase().startsWith("!stats ")
+) {
 
 const partes = mensaje.split(" ")
 
