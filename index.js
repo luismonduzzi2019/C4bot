@@ -1457,13 +1457,22 @@ const esOrganizador = (organizadoresDB || []).some(org =>
 
     const comando = mensaje.toLowerCase().split(" ")[0]
 
-const esGrupoModerado = telefono === GRUPO_MIX || telefono === GRUPO_STATS
+// ==================================================
+// 🔹 SISTEMA DE REACCIONES Y VALIDACIÓN DE COMANDOS
+// ==================================================
+    
+const esGrupoModerado =
+  telefono === GRUPO_MIX ||
+  telefono === GRUPO_STATS ||
+  telefono === GRUPO_RESULTADOS
 
 if (esGrupoModerado && !req.body?.fromApi && req.body?.messageId) {
   const comandosPermitidos =
-    telefono === GRUPO_MIX
-      ? [...comandosMix, ...comandosGlobales]
-      : [...comandosStats, ...comandosGlobales]
+  telefono === GRUPO_MIX
+    ? [...comandosMix, ...comandosGlobales]
+    : telefono === GRUPO_STATS
+    ? [...comandosStats, ...comandosGlobales]
+    : [...comandosResultados, ...comandosGlobales]
 
   if (mensaje.startsWith("!")) {
     if (comandosPermitidos.includes(comando)) {
@@ -1481,17 +1490,7 @@ if (esGrupoModerado && !req.body?.fromApi && req.body?.messageId) {
   }
 }
 
-if (
-telefono === GRUPO_STATS &&
-comandosMix.includes(comando)
-) {
-await enviarMensaje(
-telefono,
-"❌ Los comandos MIX solo pueden usarse en el grupo MIX."
-)
-return
-}
-    
+  
     if (!esGrupo && !esAdminPrincipal) {
     return res.status(200).json({
         status: true
@@ -1557,27 +1556,6 @@ console.log("📌 from:", req.body?.from)
 console.log("📌 chatId:", req.body?.chatId)
 console.log("📌 groupId:", req.body?.groupId)
 
-if (
-comandosMix.includes(comando) &&
-telefono !== GRUPO_MIX
-) {
-await enviarMensaje(
-telefono,
-"❌ Los comandos MIX solo pueden usarse en el grupo Mix C4."
-)
-return
-}
-
-    if (
-comandosStats.includes(comando) &&
-telefono !== GRUPO_STATS
-) {
-await enviarMensaje(
-telefono,
-"❌ Los comandos STATS solo pueden usarse en el grupo STATS."
-)
-return
-    }
 
 if (mensaje.toLowerCase().startsWith("!cw ")) {
   if (!esAdminPrincipal && !esOrganizador) return
