@@ -2578,12 +2578,20 @@ for (const jugador of jugadores) {
 
 const nombreIngresado = jugador.nombre.toLowerCase()
 
+const normalizarNombre = texto =>
+String(texto || "")
+.toLowerCase()
+.replace(/\s+/g, "")
+.replace(/[^a-z0-9]/g, "")
+
+const nombreBuscado = normalizarNombre(nombreIngresado)
+
 const similares = (jugadoresSupabase || []).filter(j => {
-const nombreDB = String(j.nombre || "").toLowerCase()
+const nombreDB = normalizarNombre(j.nombre)
 
 return (
-nombreDB.includes(nombreIngresado) ||
-nombreIngresado.includes(nombreDB)
+nombreDB.includes(nombreBuscado) ||
+nombreBuscado.includes(nombreDB)
 )
 })
 
@@ -2612,14 +2620,15 @@ noEncontrados.push(`❌ ${jugador.nombre}`)
 }
 
 resultadoPendiente.bloqueadoPorDudosos = dudosos.length > 0
-    
-  const resumen = jugadores.map(j =>
-`• ${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
-).join("\n")
 
-const textoCoincidencias =
+const textoCorrectos =
 coincidencias.length > 0
-? `📌 Coincidencias:\n${coincidencias.join("\n")}\n\n`
+? `✅ Correctos:\n${jugadores
+.filter(j => !noEncontrados.includes(`❌ ${j.nombre}`))
+.filter(j => !dudosos.some(d => d.includes(j.nombre)))
+.map(j =>
+`• ${j.nombre} ${j.bajas} ${j.asistencias} ${j.muertes} ${j.puntos}`
+).join("\n")}\n\n`
 : ""
 
 const textoDudosos =
@@ -2640,7 +2649,7 @@ noEncontrados.length > 0
 
 📌 Estado: ${estado.toUpperCase()}
 
-${textoCoincidencias}${textoDudosos}${textoNoEncontrados}${resumen}
+${textoCorrectos}${textoDudosos}${textoNoEncontrados}
 
 ${dudosos.length > 0
 ? "❌ Hay jugadores dudosos. Corregí con !edit antes de confirmar."
