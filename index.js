@@ -1620,6 +1620,8 @@ KD:        ${kdCW}
 return
 }
 
+console.log("RESETSTATS CHECK:", mensaje.toLowerCase(), esAdminPrincipal)
+    
     if (mensaje.toLowerCase() === "!resetstats") {
 
 if (!esAdminPrincipal) {
