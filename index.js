@@ -1463,7 +1463,7 @@ const marcaMensaje =
   req.body?.moment ||
   ""
 
-const claveMensaje = `${telefono}_${mensaje}_${marcaMensaje}`
+const claveMensaje = req.body?.messageId || `${telefono}_${mensaje}_${Date.now()}`
 
 if (global.ultimosMensajes[claveMensaje]) {
   return res.sendStatus(200)
