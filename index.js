@@ -2714,9 +2714,9 @@ if (mensaje.toLowerCase() === "!comandos") {
 • !ping
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
-• !stats (solo personales)  -  (1 uso cada 24 hs)
-• !top  -  (1 uso cada 24 hs)
-• !topkills  -   (1 uso cada 24 hs)
+• !stats (solo personales)  -  (1 uso cada 12 hs)
+• !top  -  (1 uso cada 12 hs)
+• !topkills  -   (1 uso cada 12 hs)
 • !organizadores  -  (ante dudas o consultas contactarse al privado con alguno de ellos)`
     )
     return
