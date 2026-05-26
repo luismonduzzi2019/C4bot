@@ -2582,6 +2582,12 @@ const normalizarNombre = texto =>
 String(texto || "")
 .toLowerCase()
 .replace(/\s+/g, "")
+.replace(/1/g, "i")
+.replace(/3/g, "e")
+.replace(/4/g, "a")
+.replace(/0/g, "o")
+.replace(/5/g, "s")
+.replace(/7/g, "t")
 .replace(/[^a-z0-9]/g, "")
 
 const nombreBuscado = normalizarNombre(nombreIngresado)
