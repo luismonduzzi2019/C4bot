@@ -2888,20 +2888,6 @@ if (actualizado && actualizado.length > 0) {
 
   return
 }
-
-if (mensaje.toLowerCase().startsWith("!editar")) {
-  if (!resultadoPendiente) {
-    await enviarMensaje(telefono, "⚠️ No hay resultado pendiente para editar.")
-    return
-  }
-
-  await enviarMensaje(
-    telefono,
-    `✏️ Edición manual pendiente. Por ahora reenviá la captura con los nombres corregidos.`
-  )
-
-  return
-}
     
     const comandosValidos = [
   "!ping",
