@@ -1457,6 +1457,24 @@ const esOrganizador = (organizadoresDB || []).some(org =>
 
     const comando = mensaje.toLowerCase().split(" ")[0]
 
+global.ultimosMensajes = global.ultimosMensajes || {}
+
+const idMensaje =
+  req.body?.messageId ||
+  req.body?.key?.id ||
+  req.body?.id ||
+  `${telefono}_${numeroActual}_${mensaje}`
+
+if (global.ultimosMensajes[idMensaje]) {
+  return res.sendStatus(200)
+}
+
+global.ultimosMensajes[idMensaje] = true
+
+setTimeout(() => {
+  delete global.ultimosMensajes[idMensaje]
+}, 15000)
+
 // ==================================================
 // 🔹 SISTEMA DE REACCIONES Y VALIDACIÓN DE COMANDOS
 // ==================================================
