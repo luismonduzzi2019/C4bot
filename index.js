@@ -1521,6 +1521,47 @@ jugador.muertes = muertes
 jugador.puntos = puntos
 }
 
+const { data: jugadoresSupabase } = await supabase
+.from("Jugadores")
+.select("*")
+
+for (const jugador of resultadoPendiente.jugadores) {
+
+const nombreIngresado = jugador.nombre.toLowerCase()
+
+const normalizarNombre = texto =>
+String(texto || "")
+.toLowerCase()
+.replace(/\s+/g, "")
+.replace(/1/g, "i")
+.replace(/3/g, "e")
+.replace(/4/g, "a")
+.replace(/0/g, "o")
+.replace(/5/g, "s")
+.replace(/7/g, "t")
+.replace(/[^a-z0-9]/g, "")
+
+const nombreBuscado = normalizarNombre(nombreIngresado)
+
+const similares = (jugadoresSupabase || [])
+.map(j => {
+const nombreDB = normalizarNombre(j.nombre)
+
+const score =
+nombreDB.includes(nombreBuscado) || nombreBuscado.includes(nombreDB)
+? 1
+: stringSimilarity.compareTwoStrings(nombreBuscado, nombreDB)
+
+return { ...j, score }
+})
+.filter(j => j.score >= 0.55)
+.sort((a, b) => b.score - a.score)
+
+if (similares.length >= 1) {
+jugador.nombre = similares[0].nombre
+}
+}
+    
 const resumen = resultadoPendiente.jugadores.map(j =>
 `• ${j.nombre} | B:${j.bajas} A:${j.asistencias} M:${j.muertes} Pts:${j.puntos}`
 ).join("\n")
@@ -1529,7 +1570,7 @@ await enviarMensaje(
 telefono,
 `📊 Resultado pendiente ${resultadoPendiente.modo?.toUpperCase() || ""}
 
-✅ Detectados:
+✅ Resultado corregido:
 ${resumen}
 
 ✅ Si está correcto:
