@@ -2611,13 +2611,19 @@ String(texto || "")
 
 const nombreBuscado = normalizarNombre(nombreIngresado)
 
-const similares = (jugadoresSupabase || []).filter(j => {
-const nombreDB = normalizarNombre(j.nombre)
+const similares = (jugadoresSupabase || [])
+.map(j => {
+  const nombreDB = normalizarNombre(j.nombre)
 
-return (
-nombreDB.includes(nombreBuscado) ||
-nombreBuscado.includes(nombreDB)
-)
+  const score =
+    nombreDB.includes(nombreBuscado) || nombreBuscado.includes(nombreDB)
+      ? 1
+      : stringSimilarity.compareTwoStrings(nombreBuscado, nombreDB)
+
+  return { ...j, score }
+})
+.filter(j => j.score >= 0.55)
+.sort((a, b) => b.score - a.score)
 })
 
 if (similares.length === 1) {
