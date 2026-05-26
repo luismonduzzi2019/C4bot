@@ -1971,11 +1971,12 @@ await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
 
 await enviarMensaje(
 telefono,
-`⚠️ Ya estás registrado. 🎭 Rol: ${yaRegistrado.rol || "Sin rol"}
+`⚠️ Ya estás registrado.
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🎭 Rol: ${yaRegistrado.rol || "Sin rol"}`
 )
 
 return
@@ -1997,7 +1998,9 @@ telefono,
 `♻️ Registro actualizado.
 
 🎮 Nick: ${nick}
-🆔 ID: ${idGame}`
+🆔 ID: ${idGame}
+📱 Número: ${numeroLimpio}
+🎭 Rol: ${rol || "Sin rol"}`
 )
 
 return
@@ -2006,7 +2009,8 @@ return
 jugadoresRegistrados[idGame] = {
   nick,
   idGame,
-  telefono: numeroLimpio
+  telefono: numeroLimpio,
+  rol
 }
 
 guardarJugadores(jugadoresRegistrados)
@@ -2036,7 +2040,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🎭 Rol: ${rol || yaRegistrado.rol || "Sin rol"}`
 )
 
 return
@@ -2060,7 +2065,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🎭 Rol: ${yaRegistrado.rol || "Sin rol"}`
 )
 
 } else {
@@ -2091,7 +2097,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🎭 Rol: ${rol || "Sin rol"}`
 )
 
 }
@@ -2110,16 +2117,17 @@ telefono,
 `✏️ Formato incorrecto
 
 Usá:
-!editregistro NICK ID
+!editregistro NICK ID ROL
 
 Ejemplo:
-!editregistro Colt 123456`
+!editregistro Colt 123456 IGL`
 )
 return
 }
 
 const nick = partes[1]
 const idGame = partes[2]
+const rol = partes.slice(3).join(" ")
 
 const numeroLimpio = String(telefonoJugador).replace(/\D/g, "")
 
@@ -2130,7 +2138,7 @@ const { data: jugadores } = await supabase
 const jugadorExistente = jugadores.find(j =>
 j.numero === numeroLimpio ||
 j.nombre === nick ||
-j.idgame === idGame
+j.idgame === idGame 
 )
 
 if (!jugadorExistente) {
@@ -2146,7 +2154,8 @@ const { error } = await supabase
 .update({
 nombre: nick,
 numero: numeroLimpio,
-idgame: idGame
+idgame: idGame,
+rol 
 })
 .eq("id", jugadorExistente.id)
 
@@ -2158,7 +2167,8 @@ telefono,
 
 🎮 Nick: ${nick}
 🆔 ID: ${idGame}
-📱 Número: ${numeroLimpio}`
+📱 Número: ${numeroLimpio}
+🎭 Rol: ${rol || jugadorExistente.rol || "Sin rol"}`
 )
 
 return
