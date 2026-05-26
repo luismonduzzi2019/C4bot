@@ -181,6 +181,7 @@ const comandosStats = [
 "!jugadores",
 "!organizadores",
 "!stats",
+"!resetstats",
 "!top",
 "!topkills"
 ]
