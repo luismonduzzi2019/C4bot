@@ -1398,6 +1398,55 @@ console.log("❌ ERROR AL ENVIAR:", error.message)
 
 }
 
+    if (mensaje.toLowerCase() === "!resetstats") {
+    
+if (!esAdminPrincipal) {
+await enviarMensaje(
+telefono,
+"❌ Solo el admin principal puede reiniciar las estadísticas."
+)
+return
+}
+
+const { error } = await supabase
+.from("Jugadores")
+.update({
+  kills: 0,
+  muertes: 0,
+  puntos: 0,
+  victorias: 0,
+  derrotas: 0,
+
+  kills_mix: 0,
+  deaths_mix: 0,
+  points_mix: 0,
+  wins_mix: 0,
+  losses_mix: 0,
+
+  kills_cw: 0,
+  deaths_cw: 0,
+  points_cw: 0,
+  wins_cw: 0,
+  losses_cw: 0
+})
+.neq("numero", "")
+
+if (error) {
+await enviarMensaje(
+telefono,
+"❌ Error reiniciando estadísticas."
+)
+return
+}
+
+await enviarMensaje(
+telefono,
+"✅ Estadísticas reiniciadas correctamente.\n\n🏁 Nueva temporada iniciada."
+)
+
+return
+}
+
 if (mensaje.toLowerCase().startsWith("!edit")) {
 
 if (!esAdminPrincipal && !esOrganizador) {
@@ -1615,57 +1664,6 @@ Derrotas:  ${jugador.losses_cw || 0}
 WR:        ${wrCW}%
 KD:        ${kdCW}
 \`\`\``
-)
-
-return
-}
-
-console.log("RESETSTATS CHECK:", mensaje.toLowerCase(), esAdminPrincipal)
-    
-    if (mensaje.toLowerCase() === "!resetstats") {
-
-if (!esAdminPrincipal) {
-await enviarMensaje(
-telefono,
-"❌ Solo el admin principal puede reiniciar las estadísticas."
-)
-return
-}
-
-const { error } = await supabase
-.from("Jugadores")
-.update({
-  kills: 0,
-  muertes: 0,
-  puntos: 0,
-  victorias: 0,
-  derrotas: 0,
-
-  kills_mix: 0,
-  deaths_mix: 0,
-  points_mix: 0,
-  wins_mix: 0,
-  losses_mix: 0,
-
-  kills_cw: 0,
-  deaths_cw: 0,
-  points_cw: 0,
-  wins_cw: 0,
-  losses_cw: 0
-})
-.neq("numero", "")
-
-if (error) {
-await enviarMensaje(
-telefono,
-"❌ Error reiniciando estadísticas."
-)
-return
-}
-
-await enviarMensaje(
-telefono,
-"✅ Estadísticas reiniciadas correctamente.\n\n🏁 Nueva temporada iniciada."
 )
 
 return
