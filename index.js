@@ -2980,10 +2980,7 @@ if (resultadoPendiente.bloqueadoPorDudosos) {
   for (let i = 0; i < resultadoPendiente.jugadores.length; i++) {
     const stat = resultadoPendiente.jugadores[i]
 
-    const nombreFinal =
-      resultadoPendiente.modo === "cw"
-        ? resultadoPendiente.nombresCW[i]
-        : stat.nombre
+    const nombreFinal = stat.nombre
 
     const registro = buscarJugadorRegistrado(nombreFinal, jugadoresParaMatching)
 
