@@ -3012,27 +3012,28 @@ if (!mensaje.startsWith("!") && !req.body?.fromApi) {
 
     const ahora = Date.now()
 
-    if (usuariosMuteados[telefonoJugador]) {
+    const claveUsuarioGrupo = `${telefono}_${numeroActual}`
 
-        if (ahora < usuariosMuteados[telefonoJugador]) {
+    if (usuariosMuteados[claveUsuarioGrupo]) {
+
+        if (ahora < usuariosMuteados[claveUsuarioGrupo]) {
             return
         }
 
-        delete usuariosMuteados[telefonoJugador]
+        delete usuariosMuteados[claveUsuarioGrupo]
     }
 
-    if (!antiSpam[telefonoJugador]) {
-        antiSpam[telefonoJugador] = []
+    if (!antiSpam[claveUsuarioGrupo]) {
+        antiSpam[claveUsuarioGrupo] = []
     }
 
-    antiSpam[telefonoJugador].push(ahora)
+    antiSpam[claveUsuarioGrupo].push(ahora)
 
-    antiSpam[telefonoJugador] =
-        antiSpam[telefonoJugador].filter(
+    antiSpam[claveUsuarioGrupo] = antiSpam[claveUsuarioGrupo].filter(
             t => ahora - t < 12 * 60 * 60 * 1000
         )
 
-   if (antiSpam[numeroActual].length === 3) {
+   if (antiSpam[claveUsuarioGrupo].length === 3) {
 
 await reaccionarMensaje(telefono, req.body?.messageId, "⚠️")
        
@@ -3048,10 +3049,9 @@ Si seguís enviando mensajes no permitidos serás silenciado temporalmente.`
 return
 }
 
-if (antiSpam[numeroActual].length >= 4) {
+if (antiSpam[claveUsuarioGrupo].length >= 4) {
 
-        usuariosMuteados[numeroActual] =
-            ahora + (12 * 60 * 60 * 1000)
+        usuariosMuteados[claveUsuarioGrupo] = ahora + (12 * 60 * 60 * 1000)
 
 await reaccionarMensaje(telefono, req.body?.messageId, "⛔")
         
