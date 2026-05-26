@@ -2636,7 +2636,7 @@ ${lista || "Lista vacía."}`
 mixAbierto = false
 chatMixActivo = false
 
-      await cerrarChatGrupo()
+      await cerrarChatGrupo(telefono)
 
 await enviarMensaje(
 telefono,
