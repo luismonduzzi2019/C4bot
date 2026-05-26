@@ -2512,15 +2512,15 @@ if (
 
   const primeraLinea = lineas[0].toLowerCase().split(/\s+/)
 
-  const comandoResultado = primeraLinea[0]
-  const estado = primeraLinea[1]
+const comandoResultado = primeraLinea[0]
+const modo = comandoResultado === "!resultadocw" ? "cw" : "mix"
 
-  const modo = comandoResultado === "!resultadocw" ? "cw" : "mix"
+let estado = primeraLinea[1]
 
-  if (!["victoria", "derrota"].includes(estado)) {
-    await enviarMensaje(
-      telefono,
-      `❌ Formato incorrecto.
+if (modo === "cw" && !["victoria", "derrota"].includes(estado)) {
+  await enviarMensaje(
+    telefono,
+    `❌ Formato incorrecto.
 
 Usá:
 !resultadocw victoria
@@ -2529,34 +2529,50 @@ Jugador 10 5 8 30
 o:
 !resultadocw derrota
 Jugador 10 5 8 30`
-    )
-    return
-  }
+  )
+  return
+}
 
-  const jugadores = lineas.slice(1).map(linea => {
+if (modo === "mix") {
+  estado = "mix"
+}
+
+  let lineasJugadores = []
+
+if (modo === "cw") {
+  lineasJugadores = lineas.slice(1)
+} else {
+  lineasJugadores = lineas.slice(1).filter(l => {
+    const texto = l.toLowerCase()
+    return texto !== "victoria" && texto !== "derrota"
+  })
+}
+
+const jugadores = lineasJugadores.map(linea => {
+
     const partes = linea.split(/\s+/)
 
-    if (partes.length < 5) return null
+if (partes.length < 5) return null
 
-    const puntos = Number(partes[partes.length - 1])
-    const muertes = Number(partes[partes.length - 2])
-    const asistencias = Number(partes[partes.length - 3])
-    const bajas = Number(partes[partes.length - 4])
-    const nombre = partes.slice(0, partes.length - 4).join(" ")
+const puntos = Number(partes[partes.length - 1])
+const muertes = Number(partes[partes.length - 2])
+const asistencias = Number(partes[partes.length - 3])
+const bajas = Number(partes[partes.length - 4])
+const nombre = partes.slice(0, partes.length - 4).join(" ")
 
-    if (!nombre || isNaN(bajas) || isNaN(asistencias) || isNaN(muertes) || isNaN(puntos)) {
-      return null
-    }
+if (!nombre || isNaN(bajas) || isNaN(asistencias) || isNaN(muertes) || isNaN(puntos)) {
+  return null
+}
 
-    return {
-      nombre,
-      bajas,
-      asistencias,
-      muertes,
-      puntos
-    }
-  }).filter(Boolean)
-
+return {
+  nombre,
+  bajas,
+  asistencias,
+  muertes,
+  puntos
+}
+}).filter(Boolean)
+    
   if (jugadores.length === 0) {
     await enviarMensaje(telefono, "❌ No pude leer jugadores válidos.")
     return
