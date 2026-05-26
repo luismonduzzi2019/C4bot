@@ -2975,6 +2975,8 @@ if (resultadoPendiente.bloqueadoPorDudosos) {
     }
   }
 
+const jugadoresActualizados = []
+    
   let guardados = 0
 
   for (let i = 0; i < resultadoPendiente.jugadores.length; i++) {
@@ -3062,6 +3064,7 @@ if (errorUpdate) {
 
 if (actualizado && actualizado.length > 0) {
   guardados++
+  jugadoresActualizados.push(registro.nombre)
 
 }
 
@@ -3073,7 +3076,9 @@ if (actualizado && actualizado.length > 0) {
     telefono,
     `✅ Resultado guardado en Supabase.
 
-📊 Jugadores actualizados: ${guardados}`
+📊 Jugadores actualizados: ${guardados}
+
+${jugadoresActualizados.map(j => `• ${j}`).join("\n")}`
   )
 
   return
