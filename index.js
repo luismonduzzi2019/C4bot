@@ -1756,7 +1756,7 @@ if (mensaje.toLowerCase() === "!jugadores") {
     const rolTxt = String(j.rol || "Sin rol")
     const rank = `${j.ranking}`
 
-    return `_ ${nombre} - ${rolTxt} (${rank})`
+    return `_  ${nombre}    -    ${rolTxt} (${rank})`
   }).join("\n")
 }
 
