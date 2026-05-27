@@ -3392,7 +3392,7 @@ telefono,
 ⚠️ Advertencia:
 Si enviás 4 mensajes que no sean comandos, serás bloqueado por 12 horas.
 
-📊 Mensajes no permitidos: ${antiSpam[numeroActual].length}/4
+📊 Mensajes no permitidos: ${antiSpam[claveUsuarioGrupo].length}/4
 
 Usá !comandos para ver la lista disponible.`
 )
