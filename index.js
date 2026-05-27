@@ -1250,7 +1250,6 @@ if (esGrupoModerado && !req.body?.fromApi && req.body?.messageId) {
     }
   }
 }
-
   
     if (!esGrupo && !esAdminPrincipal) {
     return res.status(200).json({
@@ -2377,7 +2376,8 @@ let jugador = Object.values(jugadoresRegistrados).find(j => {
     jugador = {
       nick: jugadorSupabase.nombre,
       idGame: jugadorSupabase.idgame,
-      telefono: jugadorSupabase.numero
+      telefono: jugadorSupabase.numero,
+      rol: jugadorSupabase.rol
     }
 
     jugadoresRegistrados[jugador.idGame] = jugador
@@ -2388,7 +2388,7 @@ let jugador = Object.values(jugadoresRegistrados).find(j => {
   if (!jugador) {
     await enviarMensaje(
       telefono,
-      "❌ No estás registrado.\n\nUsá:\n!registrar NICK ID"
+      "❌ No estás registrado.\n\nUsá:\n!registrar NICK ID ROL"
     )
     return
   }
