@@ -1448,7 +1448,7 @@ telefono,
 return
 }
 
-if (mensaje.toLowerCase().startsWith("!edit")) {
+if (mensaje.toLowerCase().startsWith("!edit ")) {
 
 if (!esAdminPrincipal && !esOrganizador) {
 await enviarMensaje(
