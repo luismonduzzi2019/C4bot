@@ -1962,7 +1962,7 @@ if (!/^\d{5,}$/.test(idGame)) {
     `❌ El ID debe tener 5 o más números.
 
 Ejemplo:
-!registrar Colt 16735294`
+!registrar Colt 16735294 IGL`
   )
 
   return
@@ -2188,9 +2188,23 @@ Ejemplo:
 return
 }
 
-const nick = partes[1]
-const idGame = partes[2]
-const rol = partes.slice(3).join(" ")
+const idGame = partes[partes.length - 2]
+const rol = partes[partes.length - 1]
+const nick = partes.slice(1, -2).join(" ")
+
+if (!/^\d{5,}$/.test(idGame)) {
+await reaccionarMensaje(telefono, req.body?.messageId, "❌")
+
+await enviarMensaje(
+telefono,
+`❌ El ID debe tener 5 o más números.
+
+Ejemplo:
+!editregistro Colt 12345 IGL`
+)
+
+return
+}
 
 const numeroLimpio = String(telefonoJugador).replace(/\D/g, "")
 
