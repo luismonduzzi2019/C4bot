@@ -1023,7 +1023,16 @@ console.log("📩 WEBHOOK RECIBIDO")
 req.body?.text?.message ||
 req.body?.image?.caption ||
 ""
-  const telefono = req.body?.phone    
+  const telefono = req.body?.phone 
+  const esBot =
+req.body?.fromMe ||
+req.body?.isFromMe ||
+req.body?.from === "me"
+
+if (esBot) {
+console.log("⛔ MENSAJE DEL BOT IGNORADO")
+return res.sendStatus(200)
+}
 
     console.log("MENSAJE:", mensaje)
 console.log("TELEFONO:", telefono)
