@@ -1762,9 +1762,9 @@ if (mensaje.toLowerCase() === "!jugadores") {
 }
 
 const respuesta = `
-╔════════════════╗
-   👥 INTEGRANTES C4 👥
-╚════════════════╝
+╔════════════════════════════════════╗
+        👥 INTEGRANTES C4 👥
+╚════════════════════════════════════╝
 
 ${rolesOrden.map(rol => {
   const lista = jugadoresConRanking.filter(j =>
@@ -1774,15 +1774,19 @@ ${rolesOrden.map(rol => {
   if (lista.length === 0) {
     return `[ ${rol.toUpperCase()} ]
 
-_ Sin jugadores`
+NOMBRE
+────────────────────────
+Sin jugadores`
   }
 
   return `[ ${rol.toUpperCase()} ]
 
+NOMBRE                 TOP
+────────────────────────
 ${lista.map(j =>
-`_ ${String(j.nombre || "Sin nombre")}   (Top ${j.ranking})`
+`${String(j.nombre || "Sin nombre").padEnd(22, " ")} ${String(j.ranking)}`
 ).join("\n")}`
-}).join("\n\n────────────────\n\n")}
+}).join("\n\n")}
 `
 
   await enviarMensaje(telefono, respuesta)
