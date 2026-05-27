@@ -1127,6 +1127,7 @@ if (telefono === GRUPO_MIX) {
 
 ⚠️ REGLAS IMPORTANTES
 
+• Usa "!registra NOMBRE ID ROL" para registrarte, sin comas ni puntos de por medio, solo espacios. El rol tiene que ser con mayúscula la primer letra.
 • Respetá el uso del grupo.
 • Evitá mensajes innecesarios o fuera de contexto.
 • El spam o mensajes no permitidos pueden generar advertencias.
