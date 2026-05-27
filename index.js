@@ -1608,23 +1608,18 @@ if (error || !jugador) {
     const ahora = new Date()
 
 if (!esAdminPrincipal && jugador.ultimo_stats) {
+  const ultimaFecha = new Date(jugador.ultimo_stats)
+  const diferencia = ahora - ultimaFecha
+  const cooldown = 12 * 60 * 60 * 1000
 
-const ultimaFecha = new Date(jugador.ultimo_stats)
+  if (diferencia < cooldown) {
+    await enviarMensaje(
+      telefono,
+      "⏳ Ya usaste !stats en las últimas 12 horas.\n\n🗓️ Volvé a intentarlo más tarde."
+    )
 
-const mismoDia =
-ahora.getDate() === ultimaFecha.getDate() &&
-ahora.getMonth() === ultimaFecha.getMonth() &&
-ahora.getFullYear() === ultimaFecha.getFullYear()
-
-if (mismoDia) {
-
-await enviarMensaje(
-telefono,
-"⏳ Ya usaste !stats hoy.\n\n📅 Volvé a intentarlo mañana."
-)
-
-return
-}
+    return
+  }
 }
 
 if (!esAdminPrincipal) {
@@ -1722,6 +1717,40 @@ telefono,
 )
 return
 }
+
+const numeroActual = String(telefonoJugador).replace(/\D/g, "")
+
+const { data: jugadorTop } = await supabase
+.from("Jugadores")
+.select("*")
+.eq("numero", numeroActual)
+.single()
+
+const ahora = new Date()
+
+if (!esAdminPrincipal && jugadorTop?.ultimo_top) {
+  const ultimaFecha = new Date(jugadorTop.ultimo_top)
+  const diferencia = ahora - ultimaFecha
+  const cooldown = 12 * 60 * 60 * 1000
+
+  if (diferencia < cooldown) {
+    await enviarMensaje(
+      telefono,
+      "⏳ Ya usaste !top en las últimas 12 horas."
+    )
+
+    return
+  }
+}
+
+if (!esAdminPrincipal) {
+  await supabase
+  .from("Jugadores")
+  .update({
+    ultimo_top: ahora.toISOString()
+  })
+  .eq("id", jugadorTop.id)
+}
         
 const { data: jugadores, error } = await supabase
 .from("Jugadores")
@@ -1788,6 +1817,40 @@ telefono,
 "❌ Solo organizadores pueden usar este comando."
 )
 return
+}
+
+const numeroActual = String(telefonoJugador).replace(/\D/g, "")
+
+const { data: jugadorTopKills } = await supabase
+.from("Jugadores")
+.select("*")
+.eq("numero", numeroActual)
+.single()
+
+const ahora = new Date()
+
+if (!esAdminPrincipal && jugadorTopKills?.ultimo_topkills) {
+  const ultimaFecha = new Date(jugadorTopKills.ultimo_topkills)
+  const diferencia = ahora - ultimaFecha
+  const cooldown = 12 * 60 * 60 * 1000
+
+  if (diferencia < cooldown) {
+    await enviarMensaje(
+      telefono,
+      "⏳ Ya usaste !topkills en las últimas 12 horas."
+    )
+
+    return
+  }
+}
+
+if (!esAdminPrincipal) {
+  await supabase
+  .from("Jugadores")
+  .update({
+    ultimo_topkills: ahora.toISOString()
+  })
+  .eq("id", jugadorTopKills.id)
 }
 
 const { data: jugadores, error } = await supabase
