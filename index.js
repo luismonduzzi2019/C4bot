@@ -1754,7 +1754,7 @@ if (mensaje.toLowerCase() === "!jugadores") {
   return lista.map(j => {
     const nombre = String(j.nombre || "Sin nombre")
     const rolTxt = String(j.rol || "Sin rol")
-    const rank = `#${j.ranking}`
+    const rank = `${j.ranking}`
 
     return `_ ${nombre} - ${rolTxt} (${rank})`
   }).join("\n")
