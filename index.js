@@ -1716,6 +1716,62 @@ KD:        ${kdCW}
 return
 }
 
+if (mensaje.toLowerCase() === "!jugadores") {
+  if (!esAdminPrincipal && !esOrganizador) {
+    await enviarMensaje(telefono, "❌ Solo organizadores pueden usar !jugadores.")
+    return
+  }
+
+  const { data: jugadores, error } = await supabase
+    .from("Jugadores")
+    .select("nombre,rol,puntos")
+    .order("puntos", { ascending: false })
+
+  if (error || !jugadores) {
+    await enviarMensaje(telefono, "❌ Error al cargar jugadores.")
+    return
+  }
+
+  const jugadoresConRanking = jugadores.map((j, index) => ({
+    ...j,
+    ranking: index + 1
+  }))
+
+  const rolesOrden = ["IGL", "Entry", "Support", "Awpper", "Lurker", "Anti-Lurker"]
+
+  const normalizarRol = rol =>
+    String(rol || "Sin rol").trim().toLowerCase()
+
+  const formatoRol = rol => {
+    const lista = jugadoresConRanking.filter(j =>
+      normalizarRol(j.rol) === normalizarRol(rol)
+    )
+
+    if (lista.length === 0) {
+      return `🎭 ${rol}\nSin jugadores`
+    }
+
+    return `🎭 ${rol}\n` + lista.map(j => {
+      const nombre = String(j.nombre || "Sin nombre").padEnd(18, " ")
+      const rolTxt = String(j.rol || "Sin rol").padEnd(12, " ")
+      const rank = `#${j.ranking}`.padEnd(4, " ")
+
+      return `${nombre} ${rolTxt} ${rank}`
+    }).join("\n")
+  }
+
+  const respuesta = `
+👥 JUGADORES C4
+
+\`\`\`
+${rolesOrden.map(formatoRol).join("\n\n")}
+\`\`\`
+`
+
+  await enviarMensaje(telefono, respuesta)
+  return
+}
+    
     if (mensaje.toLowerCase() === "!top") {
 
 if (!esAdminPrincipal && !esOrganizador) {
