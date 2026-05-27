@@ -1933,7 +1933,7 @@ const jugadoresConKills = jugadores.filter(j => (j.kills || 0) > 0)
 if (jugadoresConKills.length === 0) {
 await enviarMensaje(
 telefono,
-"🔫 Todavía no hay jugadores con kills registradas."
+"☠️ Todavía no hay jugadores con kills registradas."
 )
 return
 }
@@ -1951,7 +1951,7 @@ return `${posicion} ${nombre} ${kills}`
 
 await enviarMensaje(
 telefono,
-`🔫 TOP KILLS C4
+`☠️ TOP KILLS C4
 
 \`\`\`
 ${formato}
