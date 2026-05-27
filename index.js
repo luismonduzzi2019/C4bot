@@ -1973,7 +1973,7 @@ if (partes.length < 4) {
     `❌ Formato incorrecto
 
 Usá:
-!registrar NICK ID Rol
+!registrar NICK ID ROL
 
 Ejemplo:
 !registrar Colt 16735294 IGL`
@@ -1997,6 +1997,8 @@ if (!rolesValidos.includes(rol)) {
   await enviarMensaje(
     telefono,
 `❌ Rol inválido.
+
+⚠️ Debés respetar las mayúsculas y escribir el rol exactamente como aparece.
 
 Roles válidos:
 • IGL
