@@ -1762,9 +1762,27 @@ if (mensaje.toLowerCase() === "!jugadores") {
 }
 
 const respuesta = `
-👥 Integrantes del clan C4 👥
+╔════════════════╗
+   👥 INTEGRANTES C4 👥
+╚════════════════╝
 
-${rolesOrden.map(formatoRol).join("\n\n")}
+${rolesOrden.map(rol => {
+  const lista = jugadoresConRanking.filter(j =>
+    normalizarRol(j.rol) === normalizarRol(rol)
+  )
+
+  if (lista.length === 0) {
+    return `[ ${rol.toUpperCase()} ]
+
+_ Sin jugadores`
+  }
+
+  return `[ ${rol.toUpperCase()} ]
+
+${lista.map(j =>
+`_ ${String(j.nombre || "Sin nombre")}   (Top ${j.ranking})`
+).join("\n")}`
+}).join("\n\n────────────────\n\n")}
 `
 
   await enviarMensaje(telefono, respuesta)
