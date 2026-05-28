@@ -2745,8 +2745,20 @@ Jugador 10 5 8 30`
   return
 }
 
-if (modo === "mix") {
-  estado = "mix"
+if (!["victoria", "derrota"].includes(estado)) {
+  await enviarMensaje(
+    telefono,
+    `❌ Formato incorrecto.
+
+Usá:
+!resultadomix victoria
+Jugador 10 5 8 30
+
+o:
+!resultadomix derrota
+Jugador 10 5 8 30`
+  )
+  return
 }
 
   let lineasJugadores = []
