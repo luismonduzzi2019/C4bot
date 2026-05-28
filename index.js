@@ -2916,7 +2916,7 @@ noEncontrados.length > 0
     telefono,
     `📊 Resultado pendiente ${modo.toUpperCase()}
 
-📌 Estado: ${estado.toUpperCase()}
+📌 Estado: ${modo === "mix" ? "VICTORIA / DERROTA" : estado.toUpperCase()}
 
 ${textoCorrectos}${textoDudosos}${textoNoEncontrados}
 
