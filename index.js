@@ -3230,12 +3230,13 @@ const jugadorDB = jugadoresSupabase.find(j =>
 
 if (!jugadorDB) continue
 
-const modoActual = String(resultadoPendiente.modo || "").toLowerCase()
-const estadoActual = String(resultadoPendiente.estado || "").toLowerCase()
+const modoActual = String(resultadoPendiente.modo || "").toLowerCase().trim()
+const estadoActual = String(resultadoPendiente.estado || "").toLowerCase().trim()
 
-const gano = estadoActual === "victoria"
+const esVictoria = estadoActual.includes("victoria")
+const esDerrota = estadoActual.includes("derrota")
 
-const rachaActualNueva = gano
+const rachaActualNueva = esVictoria
   ? Number(jugadorDB.racha_actual || 0) + 1
   : 0
 
@@ -3247,16 +3248,14 @@ const rachaMaximaNueva = Math.max(
 const { data: actualizado, error: errorUpdate } = await supabase
   .from("Jugadores")
   .update({
-    // GENERALES
     kills: Number(jugadorDB.kills || 0) + Number(stat.bajas || 0),
     muertes: Number(jugadorDB.muertes || 0) + Number(stat.muertes || 0),
     puntos: Number(jugadorDB.puntos || 0) + Number(stat.puntos || 0),
-    victorias: Number(jugadorDB.victorias || 0) + (estadoActual === "victoria" ? 1 : 0),
-    derrotas: Number(jugadorDB.derrotas || 0) + (estadoActual === "derrota" ? 1 : 0),
+    victorias: Number(jugadorDB.victorias || 0) + (esVictoria ? 1 : 0),
+    derrotas: Number(jugadorDB.derrotas || 0) + (esDerrota ? 1 : 0),
     racha_actual: rachaActualNueva,
     racha_maxima: rachaMaximaNueva,
 
-    // MIX
     kills_mix: modoActual === "mix"
       ? Number(jugadorDB.kills_mix || 0) + Number(stat.bajas || 0)
       : Number(jugadorDB.kills_mix || 0),
@@ -3270,14 +3269,13 @@ const { data: actualizado, error: errorUpdate } = await supabase
       : Number(jugadorDB.points_mix || 0),
 
     wins_mix: modoActual === "mix"
-      ? Number(jugadorDB.wins_mix || 0) + (estadoActual === "victoria" ? 1 : 0)
+      ? Number(jugadorDB.wins_mix || 0) + (esVictoria ? 1 : 0)
       : Number(jugadorDB.wins_mix || 0),
 
     losses_mix: modoActual === "mix"
-      ? Number(jugadorDB.losses_mix || 0) + (estadoActual === "derrota" ? 1 : 0)
+      ? Number(jugadorDB.losses_mix || 0) + (esDerrota ? 1 : 0)
       : Number(jugadorDB.losses_mix || 0),
 
-    // CW
     kills_cw: modoActual === "cw"
       ? Number(jugadorDB.kills_cw || 0) + Number(stat.bajas || 0)
       : Number(jugadorDB.kills_cw || 0),
@@ -3291,11 +3289,11 @@ const { data: actualizado, error: errorUpdate } = await supabase
       : Number(jugadorDB.points_cw || 0),
 
     wins_cw: modoActual === "cw"
-      ? Number(jugadorDB.wins_cw || 0) + (estadoActual === "victoria" ? 1 : 0)
+      ? Number(jugadorDB.wins_cw || 0) + (esVictoria ? 1 : 0)
       : Number(jugadorDB.wins_cw || 0),
 
     losses_cw: modoActual === "cw"
-      ? Number(jugadorDB.losses_cw || 0) + (estadoActual === "derrota" ? 1 : 0)
+      ? Number(jugadorDB.losses_cw || 0) + (esDerrota ? 1 : 0)
       : Number(jugadorDB.losses_cw || 0)
   })
   .eq("id", jugadorDB.id)
