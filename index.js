@@ -2890,14 +2890,26 @@ noEncontrados.push(`❌ ${jugador.nombre}`)
 
 resultadoPendiente.bloqueadoPorDudosos = dudosos.length > 0
 
-const textoCorrectos =
-coincidencias.length > 0
-? `✅ Correctos:\n${jugadores
+const jugadoresCorrectos = jugadores
 .filter(j => !noEncontrados.includes(`❌ ${j.nombre}`))
 .filter(j => !dudosos.some(d => d.includes(j.nombre)))
-.map(j =>
-`• ${j.nombre} ${j.bajas} ${j.asistencias} ${j.muertes} ${j.puntos}`
-).join("\n")}\n\n`
+
+const textoCorrectos =
+jugadoresCorrectos.length > 0
+? modo === "mix"
+  ? `✅ Victoria:\n${jugadoresCorrectos
+      .filter(j => j.estado === "victoria")
+      .map(j => `• ${j.nombre} ${j.bajas} ${j.asistencias} ${j.muertes} ${j.puntos}`)
+      .join("\n")}
+
+❌ Derrota:
+${jugadoresCorrectos
+      .filter(j => j.estado === "derrota")
+      .map(j => `• ${j.nombre} ${j.bajas} ${j.asistencias} ${j.muertes} ${j.puntos}`)
+      .join("\n")}\n\n`
+  : `✅ Correctos:\n${jugadoresCorrectos
+      .map(j => `• ${j.nombre} ${j.bajas} ${j.asistencias} ${j.muertes} ${j.puntos}`)
+      .join("\n")}\n\n`
 : ""
 
 const textoDudosos =
