@@ -1199,7 +1199,7 @@ const esOrganizador = (organizadoresDB || []).some(org =>
   org.numero?.replace(/\D/g, "") === numeroActual
 )
 
-    const comando = mensaje.toLowerCase().split(" ")[0]
+    const comando = mensaje.toLowerCase().trim().split(/\s+/)[0]
 
 global.ultimosMensajes = global.ultimosMensajes || {}
 
