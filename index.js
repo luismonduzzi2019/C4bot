@@ -1437,7 +1437,10 @@ const { error } = await supabase
   deaths_cw: 0,
   points_cw: 0,
   wins_cw: 0,
-  losses_cw: 0
+  losses_cw: 0,
+
+  racha_actual: 0,
+  racha_maxima: 0
 })
 .neq("numero", "")
 
