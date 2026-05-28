@@ -2727,7 +2727,7 @@ const primeraLinea = lineas[0].toLowerCase().split(/\s+/)
 const comandoResultado = primeraLinea[0]
 const modo = comandoResultado === "!resultadocw" ? "cw" : "mix"
 
-let estado = primeraLinea[1]
+let estado = modo === "cw" ? primeraLinea[1] : null
 
 if (modo === "cw" && !["victoria", "derrota"].includes(estado)) {
   await enviarMensaje(
