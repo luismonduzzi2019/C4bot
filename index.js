@@ -3224,72 +3224,81 @@ const jugadoresActualizados = []
 
     if (!registro) continue
 
-const gano = resultadoPendiente.estado === "victoria"
+const jugadorDB = jugadoresSupabase.find(j =>
+    j.nombre === registro.nombre
+)
+
+if (!jugadorDB) continue
+
+const modoActual = String(resultadoPendiente.modo || "").toLowerCase()
+const estadoActual = String(resultadoPendiente.estado || "").toLowerCase()
+
+const gano = estadoActual === "victoria"
 
 const rachaActualNueva = gano
-? Number(registro.racha_actual || 0) + 1
-: 0
+  ? Number(jugadorDB.racha_actual || 0) + 1
+  : 0
 
 const rachaMaximaNueva = Math.max(
-Number(registro.racha_maxima || 0),
-rachaActualNueva
+  Number(jugadorDB.racha_maxima || 0),
+  rachaActualNueva
 )
-      
-    const { data: actualizado, error: errorUpdate } = await supabase
+
+const { data: actualizado, error: errorUpdate } = await supabase
   .from("Jugadores")
   .update({
-  // GENERALES
-  kills: Number(registro.kills || 0) + Number(stat.bajas || 0),
-  muertes: Number(registro.muertes || 0) + Number(stat.muertes || 0),
-  puntos: Number(registro.puntos || 0) + Number(stat.puntos || 0),
-  victorias: Number(registro.victorias || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0),
-  derrotas: Number(registro.derrotas || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0),
-  racha_actual: rachaActualNueva,
-  racha_maxima: rachaMaximaNueva,
-      
-  // MIX
-  kills_mix: resultadoPendiente.modo === "mix"
-    ? Number(registro.kills_mix || 0) + Number(stat.bajas || 0)
-    : Number(registro.kills_mix || 0),
+    // GENERALES
+    kills: Number(jugadorDB.kills || 0) + Number(stat.bajas || 0),
+    muertes: Number(jugadorDB.muertes || 0) + Number(stat.muertes || 0),
+    puntos: Number(jugadorDB.puntos || 0) + Number(stat.puntos || 0),
+    victorias: Number(jugadorDB.victorias || 0) + (estadoActual === "victoria" ? 1 : 0),
+    derrotas: Number(jugadorDB.derrotas || 0) + (estadoActual === "derrota" ? 1 : 0),
+    racha_actual: rachaActualNueva,
+    racha_maxima: rachaMaximaNueva,
 
-  deaths_mix: resultadoPendiente.modo === "mix"
-    ? Number(registro.deaths_mix || 0) + Number(stat.muertes || 0)
-    : Number(registro.deaths_mix || 0),
+    // MIX
+    kills_mix: modoActual === "mix"
+      ? Number(jugadorDB.kills_mix || 0) + Number(stat.bajas || 0)
+      : Number(jugadorDB.kills_mix || 0),
 
-  points_mix: resultadoPendiente.modo === "mix"
-    ? Number(registro.points_mix || 0) + Number(stat.puntos || 0)
-    : Number(registro.points_mix || 0),
+    deaths_mix: modoActual === "mix"
+      ? Number(jugadorDB.deaths_mix || 0) + Number(stat.muertes || 0)
+      : Number(jugadorDB.deaths_mix || 0),
 
-  wins_mix: resultadoPendiente.modo === "mix"
-    ? Number(registro.wins_mix || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0)
-    : Number(registro.wins_mix || 0),
+    points_mix: modoActual === "mix"
+      ? Number(jugadorDB.points_mix || 0) + Number(stat.puntos || 0)
+      : Number(jugadorDB.points_mix || 0),
 
-  losses_mix: resultadoPendiente.modo === "mix"
-    ? Number(registro.losses_mix || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
-    : Number(registro.losses_mix || 0),
+    wins_mix: modoActual === "mix"
+      ? Number(jugadorDB.wins_mix || 0) + (estadoActual === "victoria" ? 1 : 0)
+      : Number(jugadorDB.wins_mix || 0),
 
-  // CW
-  kills_cw: resultadoPendiente.modo === "cw"
-    ? Number(registro.kills_cw || 0) + Number(stat.bajas || 0)
-    : Number(registro.kills_cw || 0),
+    losses_mix: modoActual === "mix"
+      ? Number(jugadorDB.losses_mix || 0) + (estadoActual === "derrota" ? 1 : 0)
+      : Number(jugadorDB.losses_mix || 0),
 
-  deaths_cw: resultadoPendiente.modo === "cw"
-    ? Number(registro.deaths_cw || 0) + Number(stat.muertes || 0)
-    : Number(registro.deaths_cw || 0),
+    // CW
+    kills_cw: modoActual === "cw"
+      ? Number(jugadorDB.kills_cw || 0) + Number(stat.bajas || 0)
+      : Number(jugadorDB.kills_cw || 0),
 
-  points_cw: resultadoPendiente.modo === "cw"
-    ? Number(registro.points_cw || 0) + Number(stat.puntos || 0)
-    : Number(registro.points_cw || 0),
+    deaths_cw: modoActual === "cw"
+      ? Number(jugadorDB.deaths_cw || 0) + Number(stat.muertes || 0)
+      : Number(jugadorDB.deaths_cw || 0),
 
-  wins_cw: resultadoPendiente.modo === "cw"
-    ? Number(registro.wins_cw || 0) + (resultadoPendiente.estado === "victoria" ? 1 : 0)
-    : Number(registro.wins_cw || 0),
+    points_cw: modoActual === "cw"
+      ? Number(jugadorDB.points_cw || 0) + Number(stat.puntos || 0)
+      : Number(jugadorDB.points_cw || 0),
 
-  losses_cw: resultadoPendiente.modo === "cw"
-    ? Number(registro.losses_cw || 0) + (resultadoPendiente.estado === "derrota" ? 1 : 0)
-    : Number(registro.losses_cw || 0)
-})
-  .eq("nombre", registro.nombre)
+    wins_cw: modoActual === "cw"
+      ? Number(jugadorDB.wins_cw || 0) + (estadoActual === "victoria" ? 1 : 0)
+      : Number(jugadorDB.wins_cw || 0),
+
+    losses_cw: modoActual === "cw"
+      ? Number(jugadorDB.losses_cw || 0) + (estadoActual === "derrota" ? 1 : 0)
+      : Number(jugadorDB.losses_cw || 0)
+  })
+  .eq("id", jugadorDB.id)
   .select()
 
 if (errorUpdate) {
@@ -3300,7 +3309,7 @@ if (errorUpdate) {
 
 if (actualizado && actualizado.length > 0) {
   guardados++
-  jugadoresActualizados.push(registro.nombre)
+  jugadoresActualizados.push(jugadorDB.nombre)
 
 }
 
