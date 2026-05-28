@@ -2717,12 +2717,12 @@ if (
     return
   }
 
-  const lineas = mensaje
-    .split("\n")
-    .map(l => l.trim())
-    .filter(Boolean)
+const lineas = mensaje
+  .split("\n")
+  .map(l => l.trim())
+  .filter(Boolean)
 
-  const primeraLinea = lineas[0].toLowerCase().split(/\s+/)
+const primeraLinea = lineas[0].toLowerCase().split(/\s+/)
 
 const comandoResultado = primeraLinea[0]
 const modo = comandoResultado === "!resultadocw" ? "cw" : "mix"
@@ -2745,57 +2745,72 @@ Jugador 10 5 8 30`
   return
 }
 
-if (!["victoria", "derrota"].includes(estado)) {
-  await enviarMensaje(
-    telefono,
-    `❌ Formato incorrecto.
-
-Usá:
-!resultadomix victoria
-Jugador 10 5 8 30
-
-o:
-!resultadomix derrota
-Jugador 10 5 8 30`
-  )
-  return
-}
-
-  let lineasJugadores = []
+let jugadores = []
 
 if (modo === "cw") {
-  lineasJugadores = lineas.slice(1)
-} else {
-  lineasJugadores = lineas.slice(1).filter(l => {
-    const texto = l.toLowerCase()
-    return texto !== "victoria" && texto !== "derrota"
-  })
+  jugadores = lineas.slice(1).map(linea => {
+    const partes = linea.split(/\s+/)
+
+    if (partes.length < 5) return null
+
+    const puntos = Number(partes[partes.length - 1])
+    const muertes = Number(partes[partes.length - 2])
+    const asistencias = Number(partes[partes.length - 3])
+    const bajas = Number(partes[partes.length - 4])
+    const nombre = partes.slice(0, partes.length - 4).join(" ")
+
+    if (!nombre || isNaN(bajas) || isNaN(asistencias) || isNaN(muertes) || isNaN(puntos)) {
+      return null
+    }
+
+    return {
+      nombre,
+      bajas,
+      asistencias,
+      muertes,
+      puntos,
+      estado
+    }
+  }).filter(Boolean)
 }
 
-const jugadores = lineasJugadores.map(linea => {
+if (modo === "mix") {
+  let estadoActual = null
+
+  jugadores = lineas.slice(1).map(linea => {
+    const texto = linea.toLowerCase()
+
+    if (texto === "victoria" || texto === "derrota") {
+      estadoActual = texto
+      return null
+    }
+
+    if (!estadoActual) return null
 
     const partes = linea.split(/\s+/)
 
-if (partes.length < 5) return null
+    if (partes.length < 5) return null
 
-const puntos = Number(partes[partes.length - 1])
-const muertes = Number(partes[partes.length - 2])
-const asistencias = Number(partes[partes.length - 3])
-const bajas = Number(partes[partes.length - 4])
-const nombre = partes.slice(0, partes.length - 4).join(" ")
+    const puntos = Number(partes[partes.length - 1])
+    const muertes = Number(partes[partes.length - 2])
+    const asistencias = Number(partes[partes.length - 3])
+    const bajas = Number(partes[partes.length - 4])
+    const nombre = partes.slice(0, partes.length - 4).join(" ")
 
-if (!nombre || isNaN(bajas) || isNaN(asistencias) || isNaN(muertes) || isNaN(puntos)) {
-  return null
+    if (!nombre || isNaN(bajas) || isNaN(asistencias) || isNaN(muertes) || isNaN(puntos)) {
+      return null
+    }
+
+    return {
+      nombre,
+      bajas,
+      asistencias,
+      muertes,
+      puntos,
+      estado: estadoActual
+    }
+  }).filter(Boolean)
 }
-
-return {
-  nombre,
-  bajas,
-  asistencias,
-  muertes,
-  puntos
-}
-}).filter(Boolean)
     
   if (jugadores.length === 0) {
     await enviarMensaje(telefono, "❌ No pude leer jugadores válidos.")
@@ -3243,7 +3258,7 @@ const jugadorDB = jugadoresSupabase.find(j =>
 if (!jugadorDB) continue
 
 const modoActual = String(resultadoPendiente.modo || "").toLowerCase().trim()
-const estadoActual = String(resultadoPendiente.estado || "").toLowerCase().trim()
+const estadoActual = String(stat.estado || resultadoPendiente.estado || "").toLowerCase().trim()
 
 const esVictoria = estadoActual.includes("victoria")
 const esDerrota = estadoActual.includes("derrota")
