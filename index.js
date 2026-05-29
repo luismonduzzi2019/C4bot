@@ -2967,7 +2967,7 @@ noEncontrados.length > 0
     telefono,
     `📊 Resultado pendiente ${modo.toUpperCase()}
 
-📌 Estado: ${modo === "mix" ? "VICTORIA / DERROTA" : estado.toUpperCase()}
+📌 Estado: ${modo === "mix" || modo === "cw" ? "VICTORIA / DERROTA" : estado.toUpperCase()}
 
 ${textoCorrectos}${textoDudosos}${textoNoEncontrados}
 
