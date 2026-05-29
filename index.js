@@ -1499,38 +1499,79 @@ Colt 16 5 10 35`
 return
 }
 
+const normalizarEdit = texto =>
+String(texto || "")
+.toLowerCase()
+.replace(/\s+/g, "")
+.replace(/1/g, "i")
+.replace(/3/g, "e")
+.replace(/4/g, "a")
+.replace(/0/g, "o")
+.replace(/5/g, "s")
+.replace(/7/g, "t")
+.replace(/[^a-z0-9]/g, "")
+
+const erroresEdit = []
+
 for (const linea of lineas) {
 
-const partes = linea.split(" ")
+let lineaTrabajo = linea
+let nombreViejo = null
 
-if (partes.length < 5) continue
+if (linea.includes("=")) {
+const partesReemplazo = linea.split("=")
+nombreViejo = partesReemplazo[0].trim()
+lineaTrabajo = partesReemplazo.slice(1).join("=").trim()
+}
 
-const nombreBuscado = partes[0].toLowerCase()
+const partes = lineaTrabajo.split(/\s+/)
 
-const bajas = Number(partes[1]) || 0
-const asistencias = Number(partes[2]) || 0
-const muertes = Number(partes[3]) || 0
-const puntos = Number(partes[4]) || 0
+if (partes.length < 5) {
+erroresEdit.push(`❌ Formato inválido: ${linea}`)
+continue
+}
 
-let jugador = resultadoPendiente.jugadores.find(j =>
-String(j.nombre || "").toLowerCase().includes(nombreBuscado)
+const puntos = Number(partes[partes.length - 1]) || 0
+const muertes = Number(partes[partes.length - 2]) || 0
+const asistencias = Number(partes[partes.length - 3]) || 0
+const bajas = Number(partes[partes.length - 4]) || 0
+const nombreCorrecto = partes.slice(0, partes.length - 4).join(" ")
+
+const nombreABuscar = nombreViejo || nombreCorrecto
+const buscadoNormalizado = normalizarEdit(nombreABuscar)
+
+let jugador = resultadoPendiente.jugadores.find(j => {
+const nombrePendiente = normalizarEdit(j.nombre)
+
+return (
+nombrePendiente === buscadoNormalizado ||
+nombrePendiente.includes(buscadoNormalizado) ||
+buscadoNormalizado.includes(nombrePendiente)
 )
+})
 
 if (!jugador) {
-jugador = {
-nombre: partes[0],
-bajas: 0,
-asistencias: 0,
-muertes: 0,
-puntos: 0
-}
-resultadoPendiente.jugadores.push(jugador)
+erroresEdit.push(`❌ No encontré en el pendiente: ${nombreABuscar}`)
+continue
 }
 
+jugador.nombre = nombreCorrecto
 jugador.bajas = bajas
 jugador.asistencias = asistencias
 jugador.muertes = muertes
 jugador.puntos = puntos
+}
+
+if (erroresEdit.length > 0) {
+await enviarMensaje(
+telefono,
+`⚠️ Algunos cambios no se pudieron aplicar:
+
+${erroresEdit.join("\n")}
+
+Revisá el nombre que aparece en el resultado pendiente.`
+)
+return
 }
 
 const { data: jugadoresSupabase } = await supabase
