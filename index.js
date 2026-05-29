@@ -2771,28 +2771,23 @@ const primeraLinea = lineas[0].toLowerCase().split(/\s+/)
 const comandoResultado = primeraLinea[0]
 const modo = comandoResultado === "!resultadocw" ? "cw" : "mix"
 
-let estado = modo === "cw" ? primeraLinea[1] : null
-
-if (modo === "cw" && !["victoria", "derrota"].includes(estado)) {
-  await enviarMensaje(
-    telefono,
-    `❌ Formato incorrecto.
-
-Usá:
-!resultadocw victoria
-Jugador 10 5 8 30
-
-o:
-!resultadocw derrota
-Jugador 10 5 8 30`
-  )
-  return
-}
+let estado = null
 
 let jugadores = []
 
 if (modo === "cw") {
+  let estadoActual = null
+
   jugadores = lineas.slice(1).map(linea => {
+    const texto = linea.toLowerCase()
+
+    if (texto === "victoria" || texto === "derrota") {
+      estadoActual = texto
+      return null
+    }
+
+    if (!estadoActual) return null
+
     const partes = linea.split(/\s+/)
 
     if (partes.length < 5) return null
@@ -2813,7 +2808,7 @@ if (modo === "cw") {
       asistencias,
       muertes,
       puntos,
-      estado
+      estado: estadoActual
     }
   }).filter(Boolean)
 }
