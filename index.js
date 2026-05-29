@@ -1460,7 +1460,12 @@ telefono,
 return
 }
 
-if (mensaje.toLowerCase().startsWith("!edit ")) {
+if (
+  mensaje.toLowerCase().startsWith("!editar ") ||
+  mensaje.toLowerCase() === "!editar" ||
+  mensaje.toLowerCase().startsWith("!edit ") ||
+  mensaje.toLowerCase() === "!edit"
+) {
 
 if (!esAdminPrincipal && !esOrganizador) {
 await enviarMensaje(
