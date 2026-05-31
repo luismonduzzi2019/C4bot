@@ -1835,14 +1835,6 @@ ${lista.map(j =>
     
     if (mensaje.toLowerCase() === "!top") {
 
-if (!esAdminPrincipal && !esOrganizador) {
-await enviarMensaje(
-telefono,
-"❌ Solo organizadores pueden usar !top."
-)
-return
-}
-
 const numeroActual = String(telefonoJugador).replace(/\D/g, "")
 
 const { data: jugadorTop } = await supabase
@@ -1890,19 +1882,9 @@ telefono,
 return
 }
 
-const jugadoresConPuntos = jugadores.filter(j => (j.puntos || 0) > 0)
-
-if (jugadoresConPuntos.length === 0) {
-await enviarMensaje(
-telefono,
-"📊 Todavía no hay jugadores con puntos en el ranking."
-)
-return
-}
-
-const tier1 = jugadoresConPuntos.slice(0, 6)
-const tier2 = jugadoresConPuntos.slice(6, 16)
-const tier3 = jugadoresConPuntos.slice(16)
+const tier1 = jugadores.slice(0, 6)
+const tier2 = jugadores.slice(6, 16)
+const tier3 = jugadores.slice(16)
 
 const formato = (lista, inicio) => 
   "```\n" +
