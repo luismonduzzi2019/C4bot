@@ -1369,8 +1369,8 @@ if (mensaje.toLowerCase().startsWith("!cw ")) {
     
 if (mensaje.toLowerCase() === "!ping") {
 
-    if (!esAdminPrincipal && !esOrganizador) {
-return
+    if (telefono !== GRUPO_STATS && !esAdminPrincipal && !esOrganizador) {
+  return
     }
 
 const inicio = Date.now()
@@ -1918,14 +1918,6 @@ return
 
 if (mensaje.toLowerCase() === "!topkills") {
 
-if (!esAdminPrincipal && !esOrganizador) {
-await enviarMensaje(
-telefono,
-"❌ Solo organizadores pueden usar este comando."
-)
-return
-}
-
 const numeroActual = String(telefonoJugador).replace(/\D/g, "")
 
 const { data: jugadorTopKills } = await supabase
@@ -2115,10 +2107,10 @@ telefono,
 `❌ Formato incorrecto.
 
 Usá:
-!registrar NICK ID
+!registrar NICK ID ROL
 
 Ejemplo:
-!registrar Colt 139527319
+!registrar Colt 139527319 IGL
 
 ⚠️ El ID debe ser numérico y real.`
 )
@@ -3007,9 +2999,9 @@ if (mensaje.toLowerCase() === "!comandos") {
 
 🤙🏻 ADMIN / ORGANIZADORES
 • !jugadores
-• !ping
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
+• !ping
 • !stats (solo personales)  -  (1 uso cada 12 hs)
 • !top  -  (1 uso cada 12 hs)
 • !topkills  -   (1 uso cada 12 hs)
