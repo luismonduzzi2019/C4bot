@@ -1883,8 +1883,8 @@ return
 }
 
 const tier1 = jugadores.slice(0, 6)
-const tier2 = jugadores.slice(6, 16)
-const tier3 = jugadores.slice(16)
+const tier2 = jugadores.slice(6, 14)
+const tier3 = jugadores.slice(14)
 
 const formato = (lista, inicio) => 
   "```\n" +
@@ -1910,7 +1910,7 @@ ${tier1.length ? formato(tier1, 1) : "Sin jugadores"}
 ${tier2.length ? formato(tier2, 7) : "Sin jugadores"}
 
 🥉 TIER 3
-${tier3.length ? formato(tier3, 17) : "Sin jugadores"}`
+${tier3.length ? formato(tier3, 14) : "Sin jugadores"}`
 )
 
 return
