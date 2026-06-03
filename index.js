@@ -1099,7 +1099,15 @@ telefono,
 return res.sendStatus(200)
 }  
 
-if (req.body?.notification === "GROUP_PARTICIPANT_ADD") {
+const esNuevoMiembro =
+  req.body?.notification === "GROUP_PARTICIPANT_ADD" ||
+  req.body?.notification === "GROUP_PARTICIPANT_JOIN" ||
+  req.body?.type === "GroupParticipantAdd" ||
+  req.body?.type === "GroupParticipantJoin" ||
+  req.body?.event === "group.participant.add" ||
+  req.body?.event === "group.participant.join"
+
+if (esNuevoMiembro) {
 
 if (!req.body?.notificationParameters?.length) {
 return
