@@ -2663,6 +2663,10 @@ if (!esAdminPrincipal && !esOrganizador) {
 const equipoA = jugadoresMezclados.slice(0, 5)
 const equipoB = jugadoresMezclados.slice(5, 10)
 
+const lados = Math.random() < 0.5
+  ? { equipoA: "CT", equipoB: "TT" }
+  : { equipoA: "TT", equipoB: "CT" }
+
 let listaA = ""
 let listaB = ""
 
@@ -2678,10 +2682,10 @@ await enviarMensaje(
     telefono,
 `🔥 MIX COMPLETO
 
-🔵 EQUIPO A
+🔵 EQUIPO A (${lados.equipoA})
 ${listaA}
 
-🔴 EQUIPO B
+🔴 EQUIPO B (${lados.equipoB})
 ${listaB}`
 )
 
@@ -2993,10 +2997,11 @@ if (mensaje.toLowerCase() === "!comandos") {
 
 👥 ADMIN / ORGANIZADORES / INTEGRANTES
 • !registrar NICK ID ROL
-• !editregistro
+• !editregistro NICK ID ROL
 • !entrar
 • !salir
-• !organizadores`
+• !organizadores
+• !comandos`
     )
     return
   }
@@ -3017,7 +3022,8 @@ if (mensaje.toLowerCase() === "!comandos") {
 • !stats (solo personales)  -  (1 uso cada 12 hs)
 • !top  -  (1 uso cada 12 hs)
 • !topkills  -   (1 uso cada 12 hs)
-• !organizadores  -  (ante dudas o consultas contactarse al privado con alguno de ellos)`
+• !organizadores  -  (ante dudas o consultas contactarse al privado con alguno de ellos)
+• !comandos`
     )
     return
   }
@@ -3033,7 +3039,8 @@ if (mensaje.toLowerCase() === "!comandos") {
 • !resultadocw
 • !confirmar
 • !editar
-• !ping`
+• !ping
+• !comandos`
     )
     return
   }
@@ -3058,6 +3065,7 @@ telefono,
 🌸 hanami
 🏢 breeze
 🔒 prison
+🎲 azar
 
 Usá:
 !votar MAPA
