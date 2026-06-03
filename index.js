@@ -952,6 +952,12 @@ poll: [
     console.log("STATUS ENCUESTA:", resposta.status)
     console.log("RESPUESTA ENCUESTA:", texto)
 
+votacionActiva = true
+votosMapa = {}
+
+global.mapaDeciderEnviado = global.mapaDeciderEnviado || {}
+delete global.mapaDeciderEnviado[groupId]
+
 console.log("🔒 INTENTANDO CERRAR CHAT:", groupId)
 console.log("TELEFONO PARA CERRAR:", groupId)
 
@@ -1033,6 +1039,65 @@ req.body?.from === "me"
 if (esBot) {
 console.log("⛔ MENSAJE DEL BOT IGNORADO")
 return res.sendStatus(200)
+}
+
+const mapaVotado = req.body?.pollVote?.options?.[0]?.name
+
+if (mapaVotado) {
+  const votante = String(
+    req.body?.participantPhone ||
+    req.body?.connectedPhone ||
+    req.body?.from ||
+    ""
+  ).replace(/\D/g, "")
+
+  if (!votacionActiva) {
+    return res.sendStatus(200)
+  }
+
+  if (!mapas.includes(mapaVotado)) {
+    return res.sendStatus(200)
+  }
+
+  votosMapa[votante] = mapaVotado
+
+  const totalVotos = Object.keys(votosMapa).length
+
+  if (totalVotos >= 6) {
+    global.mapaDeciderEnviado = global.mapaDeciderEnviado || {}
+
+    if (global.mapaDeciderEnviado[telefono]) {
+      return res.sendStatus(200)
+    }
+
+    const conteo = {}
+
+    Object.values(votosMapa).forEach(voto => {
+      conteo[voto] = (conteo[voto] || 0) + 1
+    })
+
+    let ganador = Object.keys(conteo).sort((a, b) => conteo[b] - conteo[a])[0]
+
+    let mensajeFinal = ""
+
+    if (ganador === "Azar 🎲") {
+      const mapasNormales = mapas.filter(m => m !== "Azar 🎲")
+      ganador = mapasNormales[Math.floor(Math.random() * mapasNormales.length)]
+
+      mensajeFinal = `🎲 AZAR eligió:
+
+🗺️ Mapa Decider: ${ganador}`
+    } else {
+      mensajeFinal = `🗺️ Mapa Decider: ${ganador}`
+    }
+
+    votacionActiva = false
+    global.mapaDeciderEnviado[telefono] = true
+
+    await enviarMensaje(telefono, mensajeFinal)
+  }
+
+  return res.sendStatus(200)
 }
 
     console.log("MENSAJE:", mensaje)
