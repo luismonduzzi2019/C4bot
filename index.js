@@ -940,7 +940,8 @@ poll: [
     { name: "Province" },
     { name: "Prisión" },
     { name: "Hanami" },
-    { name: "Breeze" }
+    { name: "Breeze" },
+    { name: "Azar 🎲" }
 ]
         })
     }
