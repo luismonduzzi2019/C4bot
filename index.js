@@ -1792,6 +1792,10 @@ const wrMix = calcWR(jugador.wins_mix, jugador.losses_mix)
 const kdCW = calcKD(jugador.kills_cw, jugador.deaths_cw)
 const wrCW = calcWR(jugador.wins_cw, jugador.losses_cw)
 
+const partidasGeneral = Number(jugador.victorias || 0) + Number(jugador.derrotas || 0)
+const partidasMix = Number(jugador.wins_mix || 0) + Number(jugador.losses_mix || 0)
+const partidasCW = Number(jugador.wins_cw || 0) + Number(jugador.losses_cw || 0)
+        
 await enviarMensaje(
 telefono,
 `📊 STATS — ${jugador.nombre} (${jugador.rol || "Sin rol"})
@@ -1804,31 +1808,34 @@ telefono,
 
 \`\`\`
 GENERALES
-Kills:     ${jugador.kills || 0}
-Muertes:   ${jugador.muertes || 0}
-Puntos:    ${jugador.puntos || 0}
-Victorias: ${jugador.victorias || 0}
-Derrotas:  ${jugador.derrotas || 0}
-WR:        ${wrGeneral}%
-KD:        ${kdGeneral}
+Kills:      ${jugador.kills || 0}
+Muertes:    ${jugador.muertes || 0}
+Puntos:     ${jugador.puntos || 0}
+P. jugadas: ${partidasGeneral}
+Victorias:  ${jugador.victorias || 0}
+Derrotas:   ${jugador.derrotas || 0}
+WR:         ${wrGeneral}%
+KD:         ${kdGeneral}
 
 MIX
-Kills:     ${jugador.kills_mix || 0}
-Muertes:   ${jugador.deaths_mix || 0}
-Puntos:    ${jugador.points_mix || 0}
-Victorias: ${jugador.wins_mix || 0}
-Derrotas:  ${jugador.losses_mix || 0}
-WR:        ${wrMix}%
-KD:        ${kdMix}
+Kills:      ${jugador.kills_mix || 0}
+Muertes:    ${jugador.deaths_mix || 0}
+Puntos:     ${jugador.points_mix || 0}
+P. jugadas: ${partidasMix}
+Victorias:  ${jugador.wins_mix || 0}
+Derrotas:   ${jugador.losses_mix || 0}
+WR:         ${wrMix}%
+KD:         ${kdMix}
 
 CW / TORNEO
-Kills:     ${jugador.kills_cw || 0}
-Muertes:   ${jugador.deaths_cw || 0}
-Puntos:    ${jugador.points_cw || 0}
-Victorias: ${jugador.wins_cw || 0}
-Derrotas:  ${jugador.losses_cw || 0}
-WR:        ${wrCW}%
-KD:        ${kdCW}
+Kills:      ${jugador.kills_cw || 0}
+Muertes:    ${jugador.deaths_cw || 0}
+Puntos:     ${jugador.points_cw || 0}
+P. jugadas: ${partidasCW}
+Victorias:  ${jugador.wins_cw || 0}
+Derrotas:   ${jugador.losses_cw || 0}
+WR:         ${wrCW}%
+KD:         ${kdCW}
 \`\`\``
 )
 
