@@ -2729,38 +2729,7 @@ if (!esAdminPrincipal && !esOrganizador) {
 
 👥 Cupos: 10/10`
     )
-
-    const jugadoresMezclados = [...jugadoresMix].sort(() => Math.random() - 0.5)
-
-const equipoA = jugadoresMezclados.slice(0, 5)
-const equipoB = jugadoresMezclados.slice(5, 10)
-
-const lados = Math.random() < 0.5
-  ? { equipoA: "CT", equipoB: "TT" }
-  : { equipoA: "TT", equipoB: "CT" }
-
-let listaA = ""
-let listaB = ""
-
-equipoA.forEach((j, i) => {
-    listaA += `${i + 1}. ${j.nick}\n`
-})
-
-equipoB.forEach((j, i) => {
-    listaB += `${i + 1}. ${j.nick}\n`
-})
-
-await enviarMensaje(
-    telefono,
-`🔥 MIX COMPLETO
-
-🔵 EQUIPO A (${lados.equipoA})
-${listaA}
-
-🔴 EQUIPO B (${lados.equipoB})
-${listaB}`
-)
-
+      
 await enviarEncuesta(telefono)
 
       mixAbierto = false
