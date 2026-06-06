@@ -1045,6 +1045,10 @@ return res.sendStatus(200)
 
 const mapaVotado = req.body?.pollVote?.options?.[0]?.name
 
+if (global.mapaDeciderEnviado?.[telefono]) {
+  return res.sendStatus(200)
+}
+
 if (mapaVotado) {
   const votante = String(
     req.body?.participantPhone ||
