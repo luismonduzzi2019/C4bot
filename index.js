@@ -203,6 +203,8 @@ const usuariosMuteados = {}
 let votosMapa = {}
 let votacionActiva = false
 
+global.mapaDeciderEnviado = global.mapaDeciderEnviado || {}
+
 const mapas = [
     "Dune",
     "Rust",
@@ -1073,25 +1075,51 @@ const ganadorEntrada = Object.entries(conteo)
 if (ganadorEntrada) {
   let ganador = ganadorEntrada[0]
 
+  let mensajeMapa = ""
+
   if (ganador === "Azar 🎲") {
     const mapasNormales = mapas.filter(m => m !== "Azar 🎲")
     ganador = mapasNormales[Math.floor(Math.random() * mapasNormales.length)]
 
-    await enviarMensaje(
-      telefono,
-      `🎲 AZAR eligió:
+    mensajeMapa = `🎲 AZAR eligió:
 
 🗺️ Mapa Decider: ${ganador}`
-    )
   } else {
-    await enviarMensaje(
-      telefono,
-      `🗺️ Mapa Decider: ${ganador}`
-    )
+    mensajeMapa = `🗺️ Mapa Decider: ${ganador}`
   }
 
+  const mezclados = [...jugadoresMix].sort(() => Math.random() - 0.5)
+  const equipoA = mezclados.slice(0, 5)
+  const equipoB = mezclados.slice(5, 10)
+
+  equiposMixActual = {
+    equipoA,
+    equipoB
+  }
+
+  const lados = Math.random() < 0.5
+    ? { equipoA: "CT", equipoB: "TT" }
+    : { equipoA: "TT", equipoB: "CT" }
+
+  const listaA = equipoA.map((j, i) => `${i + 1}. ${j.nick}`).join("\n")
+  const listaB = equipoB.map((j, i) => `${i + 1}. ${j.nick}`).join("\n")
+
   votacionActiva = false
-    global.mapaDeciderEnviado[telefono] = true
+  global.mapaDeciderEnviado[telefono] = true
+
+  await enviarMensaje(
+    telefono,
+    `${mensajeMapa}
+
+🔥 MIX COMPLETO
+
+🔵 EQUIPO A (${lados.equipoA})
+${listaA}
+
+🔴 EQUIPO B (${lados.equipoB})
+${listaB}`
+  )
+
   return res.sendStatus(200)
 }
 
@@ -2610,34 +2638,7 @@ telefono,
 `🔒 Chat cerrado automáticamente.
 
 🎮 Mix completa.
-📋 Generando equipos...`
-)
-
-const mezclados = [...jugadoresMix].sort(() => Math.random() - 0.5)
-const equipoA = mezclados.slice(0, 5)
-const equipoB = mezclados.slice(5, 10)
-
-      equiposMixActual = {
-  equipoA,
-  equipoB
-      }
-
-const lados = Math.random() < 0.5
-  ? { equipoA: "CT", equipoB: "TT" }
-  : { equipoA: "TT", equipoB: "CT" }
-
-const listaA = equipoA.map((j, i) => `${i + 1}. ${j.nick}`).join("\n")
-const listaB = equipoB.map((j, i) => `${i + 1}. ${j.nick}`).join("\n")
-
-await enviarMensaje(
-telefono,
-`🔥 MIX COMPLETO
-
-🔵 EQUIPO A (${lados.equipoA})
-${listaA}
-
-🔴 EQUIPO B (${lados.equipoB})
-${listaB}`
+🗺️ Iniciando votación de mapa...`
 )
 
    await enviarEncuesta(telefono)   
