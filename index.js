@@ -3488,7 +3488,13 @@ ${jugadoresActualizados.map(j => `• ${j}`).join("\n")}`
   "!topkills"
 ]
 
-if (!mensaje.startsWith("!") && !req.body?.fromApi) {
+if (
+  (telefono === GRUPO_MIX ||
+   telefono === GRUPO_STATS ||
+   telefono === GRUPO_RESULTADOS) &&
+  !mensaje.startsWith("!") &&
+  !req.body?.fromApi
+) {
 
     const ahora = Date.now()
 
