@@ -1061,41 +1061,39 @@ if (mapaVotado) {
 
   votosMapa[votante] = mapaVotado
 
-  const totalVotos = Object.keys(votosMapa).length
+  const conteo = {}
 
-  if (totalVotos >= 6) {
-    global.mapaDeciderEnviado = global.mapaDeciderEnviado || {}
+Object.values(votosMapa).forEach(voto => {
+  conteo[voto] = (conteo[voto] || 0) + 1
+})
 
-    if (global.mapaDeciderEnviado[telefono]) {
-      return res.sendStatus(200)
-    }
+const ganadorEntrada = Object.entries(conteo)
+  .find(([mapa, cantidad]) => cantidad >= 6)
 
-    const conteo = {}
+if (ganadorEntrada) {
+  let ganador = ganadorEntrada[0]
 
-    Object.values(votosMapa).forEach(voto => {
-      conteo[voto] = (conteo[voto] || 0) + 1
-    })
+  if (ganador === "Azar 🎲") {
+    const mapasNormales = mapas.filter(m => m !== "Azar 🎲")
+    ganador = mapasNormales[Math.floor(Math.random() * mapasNormales.length)]
 
-    let ganador = Object.keys(conteo).sort((a, b) => conteo[b] - conteo[a])[0]
-
-    let mensajeFinal = ""
-
-    if (ganador === "Azar 🎲") {
-      const mapasNormales = mapas.filter(m => m !== "Azar 🎲")
-      ganador = mapasNormales[Math.floor(Math.random() * mapasNormales.length)]
-
-      mensajeFinal = `🎲 AZAR eligió:
+    await enviarMensaje(
+      telefono,
+      `🎲 AZAR eligió:
 
 🗺️ Mapa Decider: ${ganador}`
-    } else {
-      mensajeFinal = `🗺️ Mapa Decider: ${ganador}`
-    }
-
-    votacionActiva = false
-    global.mapaDeciderEnviado[telefono] = true
-
-    await enviarMensaje(telefono, mensajeFinal)
+    )
+  } else {
+    await enviarMensaje(
+      telefono,
+      `🗺️ Mapa Decider: ${ganador}`
+    )
   }
+
+  votacionActiva = false
+    global.mapaDeciderEnviado[telefono] = true
+  return res.sendStatus(200)
+}
 
   return res.sendStatus(200)
 }
