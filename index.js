@@ -2062,15 +2062,25 @@ const ahora = new Date()
 if (!esAdminPrincipal && jugadorTopKills?.ultimo_topkills) {
   const ultimaFecha = new Date(jugadorTopKills.ultimo_topkills)
   const diferencia = ahora - ultimaFecha
-  const cooldown = 12 * 60 * 60 * 1000
+  const cooldown = 24 * 60 * 60 * 1000
 
   if (diferencia < cooldown) {
-    await enviarMensaje(
-      telefono,
-      "⏳ Ya usaste !topkills en las últimas 12 horas."
-    )
 
-    return
+  const restante = cooldown - diferencia
+
+  const horas = Math.floor(restante / (1000 * 60 * 60))
+  const minutos = Math.floor((restante % (1000 * 60 * 60)) / (1000 * 60))
+
+  await enviarMensaje(
+    telefono,
+    `⏳ Ya usaste !topkills.
+
+🕒 Tiempo restante: ${horas}h ${minutos}m
+
+🗓️ Volvé a intentarlo más tarde.`
+  )
+
+  return
   }
 }
 
