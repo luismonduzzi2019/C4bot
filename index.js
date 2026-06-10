@@ -1767,16 +1767,26 @@ if (error || !jugador) {
 if (!esAdminPrincipal && jugador.ultimo_stats) {
   const ultimaFecha = new Date(jugador.ultimo_stats)
   const diferencia = ahora - ultimaFecha
-  const cooldown = 12 * 60 * 60 * 1000
+  const cooldown = 24 * 60 * 60 * 1000
 
-  if (diferencia < cooldown) {
-    await enviarMensaje(
-      telefono,
-      "⏳ Ya usaste !stats en las últimas 12 horas.\n\n🗓️ Volvé a intentarlo más tarde."
-    )
+if (diferencia < cooldown) {
 
-    return
-  }
+  const restante = cooldown - diferencia
+
+  const horas = Math.floor(restante / (1000 * 60 * 60))
+  const minutos = Math.floor((restante % (1000 * 60 * 60)) / (1000 * 60))
+
+  await enviarMensaje(
+    telefono,
+    `⏳ Ya usaste !stats.
+
+🕒 Tiempo restante: ${horas}h ${minutos}m
+
+🗓️ Volvé a intentarlo más tarde.`
+  )
+
+  return
+}
 }
 
 if (!esAdminPrincipal) {
@@ -1959,15 +1969,25 @@ const ahora = new Date()
 if (!esAdminPrincipal && jugadorTop?.ultimo_top) {
   const ultimaFecha = new Date(jugadorTop.ultimo_top)
   const diferencia = ahora - ultimaFecha
-  const cooldown = 12 * 60 * 60 * 1000
+  const cooldown = 24 * 60 * 60 * 1000
 
   if (diferencia < cooldown) {
-    await enviarMensaje(
-      telefono,
-      "⏳ Ya usaste !top en las últimas 12 horas."
-    )
 
-    return
+  const restante = cooldown - diferencia
+
+  const horas = Math.floor(restante / (1000 * 60 * 60))
+  const minutos = Math.floor((restante % (1000 * 60 * 60)) / (1000 * 60))
+
+  await enviarMensaje(
+    telefono,
+    `⏳ Ya usaste !top.
+
+🕒 Tiempo restante: ${horas}h ${minutos}m
+
+🗓️ Volvé a intentarlo más tarde.`
+  )
+
+  return
   }
 }
 
