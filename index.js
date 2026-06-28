@@ -183,6 +183,7 @@ const comandosStats = [
 "!stats",
 "!resetstats",
 "!top",
+"!toptemporada",
 "!topkills"
 ]
 
@@ -2181,6 +2182,42 @@ ${formato}
 )
 
 return
+}
+
+if (mensaje.toLowerCase() === "!toptemporada") {
+
+  const { data: temporadas, error } = await supabase
+    .from("Temporadas")
+    .select("*")
+    .order("temporada", { ascending: true })
+
+  if (error || !temporadas || temporadas.length === 0) {
+    await enviarMensaje(
+      telefono,
+      "🏆 Todavía no hay temporadas registradas."
+    )
+    return
+  }
+
+  const lista = temporadas.map(t => {
+    const titulo = Number(t.temporada) === 1
+      ? `🧪 Temporada ${t.temporada} (Prueba) - ${t.anio}`
+      : `🏆 Temporada ${t.temporada} - ${t.anio}`
+
+    return `${titulo}
+👤 ${t.nombre}
+🆔 ${t.idgame}
+⭐ ${t.puntos} puntos`
+  }).join("\n\n━━━━━━━━━━━━━━\n\n")
+
+  await enviarMensaje(
+    telefono,
+    `🏆 TOP TEMPORADAS C4
+
+${lista}`
+  )
+
+  return
 }
     
 if (mensaje.trim().toLowerCase().startsWith("!registrar")) {
