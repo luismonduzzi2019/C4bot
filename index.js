@@ -1530,6 +1530,42 @@ telefono,
 return
 }
 
+const { data: topJugador } = await supabase
+  .from("Jugadores")
+  .select("nombre,idgame,puntos")
+  .order("puntos", { ascending: false })
+  .limit(1)
+  .single()
+
+if (topJugador && (topJugador.puntos || 0) > 0) {
+  const { data: ultimaTemporada, error: errorUltima } = await supabase
+    .from("Temporadas")
+    .select("temporada")
+    .order("temporada", { ascending: false })
+    .limit(1)
+    .single()
+    if (errorUltima && errorUltima.code !== "PGRST116") {
+  console.log(errorUltima.message)
+    }
+
+  const nuevaTemporada = (ultimaTemporada?.temporada || 0) + 1
+  const anioActual = new Date().getFullYear()
+
+  const { error: errorTemporada } = await supabase
+  .from("Temporadas")
+  .insert({
+      temporada: nuevaTemporada,
+      anio: anioActual,
+      nombre: topJugador.nombre,
+      idgame: topJugador.idgame,
+      puntos: topJugador.puntos || 0,
+      fecha_cierre: new Date().toISOString()
+    })
+      if (errorTemporada) {
+  console.log("Error guardando temporada:", errorTemporada.message)
+      }
+}
+
 const { error } = await supabase
 .from("Jugadores")
 .update({
