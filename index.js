@@ -1205,11 +1205,19 @@ const esNuevoMiembro =
 
 if (esNuevoMiembro) {
 
-if (!req.body?.notificationParameters?.length) {
-return
-}
+const numeroNuevo = String(
+  req.body?.notificationParameters?.[0] ||
+  req.body?.participantPhone ||
+  req.body?.connectedPhone ||
+  req.body?.from ||
+  req.body?.senderPhone ||
+  req.body?.author ||
+  "desconocido"
+).replace(/\D/g, "")
 
-    const numeroNuevo = req.body.notificationParameters?.[0]
+if (!numeroNuevo || numeroNuevo === "desconocido") {
+  return res.sendStatus(200)
+}
 
 global.ultimasBienvenidas = global.ultimasBienvenidas || {}
 
