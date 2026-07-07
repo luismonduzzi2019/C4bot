@@ -1690,13 +1690,9 @@ const nombreABuscar = nombreViejo || nombreCorrecto
 const buscadoNormalizado = normalizarEdit(nombreABuscar)
 
 let jugador = resultadoPendiente.jugadores.find(j => {
-const nombrePendiente = normalizarEdit(j.nombre)
+  const nombrePendiente = normalizarEdit(j.nombre)
 
-return (
-nombrePendiente === buscadoNormalizado ||
-nombrePendiente.includes(buscadoNormalizado) ||
-buscadoNormalizado.includes(nombrePendiente)
-)
+  return nombrePendiente === buscadoNormalizado
 })
 
 if (!jugador) {
@@ -1746,21 +1742,19 @@ String(texto || "")
 const nombreBuscado = normalizarNombre(nombreIngresado)
 
 const similares = (jugadoresSupabase || [])
-.map(j => {
-const nombreDB = normalizarNombre(j.nombre)
+  .map(j => {
+    const nombreDB = normalizarNombre(j.nombre)
 
-const score =
-nombreDB.includes(nombreBuscado) || nombreBuscado.includes(nombreDB)
-? 1
-: stringSimilarity.compareTwoStrings(nombreBuscado, nombreDB)
+    return {
+      ...j,
+      score: stringSimilarity.compareTwoStrings(nombreBuscado, nombreDB)
+    }
+  })
+  .filter(j => j.score >= 0.85)
+  .sort((a, b) => b.score - a.score)
 
-return { ...j, score }
-})
-.filter(j => j.score >= 0.55)
-.sort((a, b) => b.score - a.score)
-
-if (similares.length >= 1) {
-jugador.nombre = similares[0].nombre
+if (similares.length === 1) {
+  jugador.nombre = similares[0].nombre
 }
 }
     
